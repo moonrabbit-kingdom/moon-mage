@@ -6,6 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "move-phaser": "cp ./node_modules/phaser/build/phaser.js ./game/assets/js/phaser.js",
+    "start-dev": "browser-sync start -s './game' -f './game'",
     "start": "npm run move-phaser && http-server ./game"
   },
   "author": "Spencer Apple (http://spencerapple.com/)",
@@ -13,5 +14,8 @@
   "dependencies": {
     "http-server": "^0.9.0",
     "phaser": "^2.6.2"
+  },
+  "devDependencies": {
+    "browser-sync": "^2.11.1"
   }
 }
