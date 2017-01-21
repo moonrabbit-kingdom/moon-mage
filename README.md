@@ -7,7 +7,7 @@ Basic template for a Phaser browser game
     npm install
 
 # Usage
-    npm run play
+    npm run start
 
 # Resources
 * [Phaser Examples](http://phaser.io/examples)
