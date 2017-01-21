@@ -1,11 +1,11 @@
-MoonMage.Preloader = function (game) {
+MoonMage.states.Preloader = function (game) {
     console.log('Preloader.construct');
     //this.preloadBar = null;
     //this.titleText = null;
     //this.ready = false;
 };
 
-MoonMage.Preloader.prototype = {
+MoonMage.states.Preloader.prototype = {
 
     preload: function () {
         console.log('Preloader.preload');

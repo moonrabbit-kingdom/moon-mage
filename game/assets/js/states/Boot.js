@@ -1,11 +1,9 @@
-var MoonMage = {};
-
-MoonMage.Boot = function(game) {
+MoonMage.states.Boot = function(game) {
     console.log('Boot.construct');
     this.game = game;
 };
 
-MoonMage.Boot.prototype = {
+MoonMage.states.Boot.prototype = {
     preload: function() {
         console.log('Boot.preload', this.game);
         this.game.load.image('logo', 'phaser.png');

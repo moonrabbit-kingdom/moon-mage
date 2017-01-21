@@ -1,4 +1,4 @@
-MoonMage.Level1 = function(game) {
+MoonMage.states.Level1 = function(game) {
     console.log('Level1.construct');
     this.game = game;
 
@@ -6,7 +6,7 @@ MoonMage.Level1 = function(game) {
     this.platformGroup;
 };
 
-MoonMage.Level1.prototype = {
+MoonMage.states.Level1.prototype = {
     preload: function() {
         console.log('Level1.preload');
     },

@@ -1,5 +1,3 @@
-MoonMage.entities = MoonMage.entities || {};
-
 MoonMage.entities.player = function (game) {
     this.game = game;
 

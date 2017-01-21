@@ -3,10 +3,16 @@
     <head>
         <meta charset="UTF-8" />
         <title>hello phaser!</title>
+        <script>
+            var MoonMage = {
+                states: {},
+                entities: {}
+            };
+        </script>
         <script src="/assets/js/phaser.js"></script>
-        <script src="/assets/js/Boot.js"></script>
-        <script src="/assets/js/Preloader.js"></script>
-        <script src="/assets/js/Level1.js"></script>
+        <script src="/assets/js/states/Boot.js"></script>
+        <script src="/assets/js/states/Preloader.js"></script>
+        <script src="/assets/js/states/Level1.js"></script>
         <!--entities/-->
         <script src="/assets/js/entities/Player.js"></script>
     </head>
@@ -21,9 +27,9 @@
 
         var game = new Phaser.Game(1000, 562, Phaser.AUTO, '');
 
-        game.state.add('Boot', MoonMage.Boot);
-        game.state.add('Preloader', MoonMage.Preloader);
-        game.state.add('Level1', MoonMage.Level1);
+        game.state.add('Boot', MoonMage.states.Boot);
+        game.state.add('Preloader', MoonMage.states.Preloader);
+        game.state.add('Level1', MoonMage.states.Level1);
 
         game.state.start('Boot');
     };

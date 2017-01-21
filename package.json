@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "move-phaser": "cp ./node_modules/phaser/build/phaser.js ./game/assets/js/phaser.js",
-    "start-dev": "browser-sync start -s './game' -f './game'",
+    "move-phaser": "cp ./node_modules/phaser/build/phaser.js ./game/assets/js/lib/phaser.js",
+    "start-dev": "npm run move-phaser && browser-sync start -s './game' -f './game'",
     "start": "npm run move-phaser && http-server ./game"
   },
   "author": "Spencer Apple (http://spencerapple.com/)",
