@@ -40,7 +40,7 @@ MoonMage.Level1.prototype = {
         // draw platforms
         for (var i = 0; i < 10; i++) {
 
-            var platform = this.platformGroup.create();
+            var platform = this.platformGroup.create(i * 32, this.game.world.height - 64);
 
             this.game.add.sprite(i * 32, this.game.world.height - 64, 'platform');
             //  This stops it from falling away when you jump on it
