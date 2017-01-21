@@ -5,6 +5,8 @@
         <title>hello phaser!</title>
         <script src="/assets/js/phaser.js"></script>
         <script src="/assets/js/Boot.js"></script>
+        <script src="/assets/js/Preloader.js"></script>
+        <script src="/assets/js/Level1.js"></script>
     </head>
     <body>
 
@@ -19,12 +21,14 @@
         var game = new Phaser.Game(1000, 562, Phaser.AUTO, '', { preload: preload, create: create });
 
         game.state.add('Boot', MoonMage.Boot);
+        game.state.add('Preloader', MoonMage.Preloader);
+        game.state.add('Level1', MoonMage.Level1);
 
         game.state.start('Boot');
 
         // TODO figure out why we need these haha
-        function preload () {}
-        function create() {}
+        function preload () { console.log('preload'); }
+        function create() { console.log('create'); }
 
     };
 
