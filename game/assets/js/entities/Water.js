@@ -24,7 +24,7 @@ MoonMage.entities.Water = function(game) {
 
     this.graphics = this.game.add.graphics(-this.constants.OFFSCREEN_OVERFLOW, 0);
 
-    this.info = this.game.add.text(32, 32, 'Value', { font: "24px Arial", fill: "#ffffff", align: "center" });
+    // this.info = this.game.add.text(32, 32, 'Value', { font: "24px Arial", fill: "#ffffff", align: "center" });
 
     // TODO commenting out water movement until we know phaser enough to optimize
     // this.waterMorph = {min: 0, max: 0};
@@ -33,7 +33,7 @@ MoonMage.entities.Water = function(game) {
 
 MoonMage.entities.Water.prototype = {
     update: function() {
-        this.info.text = Math.round(this.waterMorph.max);
+        // this.info.text = Math.round(this.waterMorph.max);
 
         this.draw();
     },
@@ -45,7 +45,7 @@ MoonMage.entities.Water.prototype = {
         this.graphics.moveTo(this.points[0][0],this.points[0][1]);
 
 
-        var change = -this.constants.WATER_VARIATION/2 + this.waterMorph.max;
+        // var change = -this.constants.WATER_VARIATION/2 + this.waterMorph.max;
 
         for(var i = 1; i < this.points.length; i++) {
             // TODO commenting out water movement until we know phaser enough to optimize
