@@ -5,11 +5,13 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "play": "http-server ./game"
+    "move-phaser": "cp ./node_modules/phaser/build/phaser.js ./game/assets/js/phaser.js",
+    "play": "npm run move-phaser && http-server ./game"
   },
   "author": "Spencer Apple (http://spencerapple.com/)",
   "license": "MIT",
   "dependencies": {
-    "http-server": "^0.9.0"
+    "http-server": "^0.9.0",
+    "phaser": "^2.6.2"
   }
 }
