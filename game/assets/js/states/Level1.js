@@ -19,6 +19,7 @@ MoonMage.states.Level1.prototype = {
 
         this.player = new MoonMage.entities.player(this.game);
 
+        this.water = new MoonMage.entities.Water(this.game);
     },
 
     buildWorld: function () {
@@ -40,5 +41,6 @@ MoonMage.states.Level1.prototype = {
         var hitPlatform = this.game.physics.arcade.collide(this.player.sprite, this.platformGroup);
 
         this.player.update(hitPlatform);
+        this.water.update();
     },
 }
