@@ -22,7 +22,6 @@ MoonMage.entities.player = function (game) {
 
 MoonMage.entities.player.prototype = {
     update: function (hitPlatform) {
-        console.log('player update', this.cursors.left.isDown);
         //  Reset the players velocity (movement)
         this.sprite.body.velocity.x = 0;
 
