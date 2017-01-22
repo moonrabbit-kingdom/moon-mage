@@ -18,35 +18,65 @@ MoonMage.entities.player = function (game) {
 
     // controls
     this.cursors = this.game.input.keyboard.createCursorKeys();
+
+    this.isDown = {
+        left: false,
+        right: false
+    };
 }
 
 MoonMage.entities.player.prototype = {
     update: function (hitPlatform) {
-        //  Reset the players velocity (movement)
-        this.sprite.body.velocity.x = 0;
 
-        if (this.cursors.left.isDown) {
-            //  Move to the left
-            this.sprite.body.velocity.x = -150;
-
-            this.sprite.animations.play('left');
-        }
-        else if (this.cursors.right.isDown) {
-            //  Move to the right
-            this.sprite.body.velocity.x = 150;
-
-            this.sprite.animations.play('right');
-        }
-        else {
-            //  Stand still
-            this.sprite.animations.stop();
-
-            this.sprite.frame = 4;
-        }
+        this.handleHorizontalMovement();
 
         //  Allow the sprite to jump if they are touching the ground.
         if (this.cursors.up.isDown && this.sprite.body.touching.down && hitPlatform) {
             this.sprite.body.velocity.y = -350;
         }
+    },
+
+    handleVerticalMovement: function() {
+
+    },
+
+    handleHorizontalMovement: function() {
+        var newRightIsDown = this.cursors.right.isDown
+        var newLeftIsDown = !newRightIsDown && this.cursors.left.isDown;
+
+        if (newRightIsDown && !this.isDown.right) {
+            this.startMoveRight();
+        } else if (newLeftIsDown && !this.isDown.left) {
+            this.startMoveLeft();
+        } else if (!newRightIsDown && !newLeftIsDown) {
+            this.stopMoving();
+        }
+    },
+
+    stopMoving: function() {
+        this.sprite.body.velocity.x = 0;
+
+        this.sprite.animations.stop();
+
+        this.sprite.frame = 4;
+
+        this.isDown.left = false;
+        this.isDown.right = false;
+    },
+
+    startMoveLeft: function() {
+        this.sprite.body.velocity.x = -150;
+
+        this.sprite.animations.play('left');
+
+        this.isDown.left = true;
+    },
+
+    startMoveRight: function() {
+        this.sprite.body.velocity.x = 150;
+
+        this.sprite.animations.play('right');
+
+        this.isDown.right = true;
     }
 }

@@ -19,7 +19,7 @@ MoonMage.entities.Moon = function(game) {
     this.xVelocity = 0;
     this.yVelocity = 0;
 
-    this.isBeingControlled = true; // TODO set to false by default when play toggles control
+    this.isBeingControlled = false; // TODO set to false by default when play toggles control
 };
 
 MoonMage.entities.Moon.prototype = {
