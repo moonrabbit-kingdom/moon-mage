@@ -2,7 +2,7 @@ MoonMage.entities.Water = function(game, level) {
     this.game = game;
     this.constants = {
         HEIGHT_OFFSET: 470,
-        OFFSCREEN_OVERFLOW: 10,
+        OFFSCREEN_OVERFLOW: 15,
         MAX_WAVE_HEIGHT: 300,
         WAVE_WIDTH: 120,
         COLOR: 0x0033FF,
@@ -42,10 +42,11 @@ MoonMage.entities.Water.prototype = {
     },
 
     _createElaborateWaterBasin() {
+        var beyondScreenY = MoonMage.config.viewport.height + this.constants.HEIGHT_OFFSET;
         this.points = [
             [MoonMage.config.viewport.width, this.constants.HEIGHT_OFFSET],
-            [MoonMage.config.viewport.width, MoonMage.config.viewport.height],
-            [-this.constants.OFFSCREEN_OVERFLOW, MoonMage.config.viewport.height],
+            [MoonMage.config.viewport.width, beyondScreenY],
+            [-this.constants.OFFSCREEN_OVERFLOW, beyondScreenY],
             [-this.constants.OFFSCREEN_OVERFLOW, this.constants.HEIGHT_OFFSET]
         ];
 
@@ -139,7 +140,6 @@ MoonMage.entities.Water.prototype = {
             waveTexture
         );
 
-        // this.waveSprite.height = 10;
 
         this.game.physics.arcade.enable(this.waveSprite);
         this.waveSprite.anchor.set(1);
@@ -152,7 +152,7 @@ MoonMage.entities.Water.prototype = {
             wavePhysicsGraphics.lineStyle(2, 0xFF0000);
         }
 
-        wavePhysicsGraphics.beginFill(0xFF0000, 1);
+        wavePhysicsGraphics.beginFill(0xFF0000, 0);
         var minX = this.constants.WAVE_WIDTH * 1/4;
         var width = this.constants.WAVE_WIDTH * 2/4;
         wavePhysicsGraphics.drawRect(
