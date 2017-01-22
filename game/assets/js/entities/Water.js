@@ -64,25 +64,26 @@ MoonMage.entities.Water.prototype = {
 
         // Create Physics
         var waterBasinGraphics = this.game.add.graphics(0, 0);
-        waterBasinGraphics.beginFill(this.constants.COLOR, 0); // clear
+        waterBasinGraphics.beginFill(this.constants.COLOR, 0.5); // clear
         waterBasinGraphics.drawRect(
             -this.constants.OFFSCREEN_OVERFLOW,
             this.constants.HEIGHT_OFFSET + 10,
             this.game.world.bounds.width + this.constants.OFFSCREEN_OVERFLOW * 2,
-            this.game._height + this.constants.OFFSCREEN_OVERFLOW);
+            90);
 
         var waterBasinTexture = waterBasinGraphics.generateTexture();
         waterBasinGraphics.destroy();
 
         this.waterBasinSprite = this.game.add.sprite(
-            0,
-            this.constants.HEIGHT_OFFSET,
+            this.game.world.bounds.width / 2,
+            this.constants.HEIGHT_OFFSET + 50,
             waterBasinTexture
         );
 
-        this.game.physics.arcade.enable(this.waterBasinSprite);
-        this.waterBasinSprite.body.immovable = true;
-        this.waterBasinSprite.anchor.set(0);
+        this.game.physics.p2.enable(this.waterBasinSprite);
+        this.waterBasinSprite.body.kinematic = true;
+
+        this.waterBasinSprite.body.updateCollisionMask();
     },
 
     _updateElaborateWaterBasin() {
@@ -100,7 +101,7 @@ MoonMage.entities.Water.prototype = {
         }
         for(; i < this.points.length - 1; i++) {
             var x = this.points[i][0] + this.game.camera.x;
-            if (i%2 === 0) {
+            if (i % 2 === 0) {
                 this.elaborateGraphics.lineTo(x, this.points[i][1] + mod);
             } else {
                 this.elaborateGraphics.lineTo(x, this.points[i][1] - mod);
@@ -140,8 +141,6 @@ MoonMage.entities.Water.prototype = {
             waveTexture
         );
 
-        this.waveSprite.mass = 100;
-
         this.game.physics.arcade.enable(this.waveSprite);
         this.waveSprite.anchor.set(1);
         this.waveSprite.x = level.moon.getX();
@@ -172,9 +171,9 @@ MoonMage.entities.Water.prototype = {
             wavePhysicsTexture
         );
 
-        this.game.physics.arcade.enable(this.wavePhysicsSprite);
-        this.wavePhysicsSprite.body.immovable = true;
-        this.wavePhysicsSprite.anchor.set(0);
+        this.game.physics.p2.enable(this.wavePhysicsSprite);
+        this.wavePhysicsSprite.body.fixedRotation = true;
+        this.wavePhysicsSprite.body.offset.setTo(this.constants.WAVE_WIDTH * 1/4, -this.constants.MAX_WAVE_HEIGHT/2);
     },
 
     _updateWave(level) {
@@ -207,7 +206,6 @@ MoonMage.entities.Water.prototype = {
         var xNotMovingMuch = xDiff < distanceThreshold;
         var yNotMovingMuch = yDiff < distanceThreshold;
 
-        MoonMage.debug('water', `xDiff: ${xDiff}, xYDiff: ${yDiff}`);
         if (xNotMovingMuch && level.moon.isStopped) {
             desiredVelocity.x = 0;
         }
