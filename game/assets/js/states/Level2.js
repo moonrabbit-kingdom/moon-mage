@@ -21,7 +21,7 @@ MoonMage.states.Level2.prototype = {
         this.game.world.setBounds(0, 0, this.map.widthInPixels, 562);
         this.groundLayer = levelController.createGround(this.map, 'Tile Layer 1');
 
-        //this.moon = new MoonMage.entities.Moon(this.game);
+        this.moon = new MoonMage.entities.Moon(this.game);
 
         this.game.physics.startSystem(Phaser.Physics.P2JS);
         this.game.physics.p2.setImpactEvents(true);
@@ -64,7 +64,7 @@ MoonMage.states.Level2.prototype = {
 
         for (var i = 0; i < objects.length; i++) {
             var object = objects[i];
-            var box = boxes.create(object.x, object.y, 'diamond');
+            var box = boxes.create(object.x, object.y, 'box');
             this.game.physics.p2.enable(box, false);
             box.body.setRectangle(32, 32, 0, 0);
             box.body.setCollisionGroup(boxCollisionGroup);
@@ -83,6 +83,7 @@ MoonMage.states.Level2.prototype = {
     update: function() {
         if (!this.pauseBox.isPaused()) {
             this.player.update();
+            this.moon.update();
 
             if (this._shouldTogglePause()) {
                 this.game.physics.p2.paused = true;
