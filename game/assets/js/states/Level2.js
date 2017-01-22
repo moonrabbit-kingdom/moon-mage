@@ -65,7 +65,7 @@ MoonMage.states.Level2.prototype = {
 
         for (var i = 0; i < objects.length; i++) {
             var object = objects[i];
-            var box = boxes.create(object.x, object.y, 'diamond');
+            var box = boxes.create(object.x, object.y, 'box');
             this.game.physics.p2.enable(box, false);
             box.body.setRectangle(32, 32, 0, 0);
             box.body.setCollisionGroup(boxCollisionGroup);
