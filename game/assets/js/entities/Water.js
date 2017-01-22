@@ -2,7 +2,7 @@ MoonMage.entities.Water = function(game, level) {
     this.game = game;
     this.constants = {
         HEIGHT_OFFSET: 470,
-        OFFSCREEN_OVERFLOW: 10,
+        OFFSCREEN_OVERFLOW: 15,
         MAX_WAVE_HEIGHT: 300,
         WAVE_WIDTH: 120,
         COLOR: 0x0033FF,
@@ -42,10 +42,11 @@ MoonMage.entities.Water.prototype = {
     },
 
     _createElaborateWaterBasin() {
+        var beyondScreenY = MoonMage.config.viewport.height + this.constants.HEIGHT_OFFSET;
         this.points = [
             [MoonMage.config.viewport.width, this.constants.HEIGHT_OFFSET],
-            [MoonMage.config.viewport.width, MoonMage.config.viewport.height],
-            [-this.constants.OFFSCREEN_OVERFLOW, MoonMage.config.viewport.height],
+            [MoonMage.config.viewport.width, beyondScreenY],
+            [-this.constants.OFFSCREEN_OVERFLOW, beyondScreenY],
             [-this.constants.OFFSCREEN_OVERFLOW, this.constants.HEIGHT_OFFSET]
         ];
 
