@@ -9,8 +9,7 @@ MoonMage.entities.Water = function(game) {
     };
 
     this.createWaterBasin();
-    this.createWavePolygon();
-    this.createWaterPhysics();
+    this.createWaveSprite();
 };
 
 MoonMage.entities.Water.prototype = {
@@ -32,10 +31,18 @@ MoonMage.entities.Water.prototype = {
             waterBasinTexture
         );
 
+        this.game.physics.arcade.enable(this.waterBasinSprite);
+        this.waterBasinSprite.body.immovable = true;
         this.waterBasinSprite.anchor.set(0);
+
+
+        // waterBasinGraphics.boundsPadding = 0;
+        // this.waterBasinSprite = this.game.add.sprite(0, 0);
+        // this.waterBasinSprite.addChild(waterBasinGraphics);
+        // this.game.physics.arcade.enable(this.waterBasinSprite);
     },
 
-    createWavePolygon() {
+    createWaveSprite() {
         var wavePoly = new Phaser.Polygon([
             new Phaser.Point(0, this.constants.MAX_WAVE_HEIGHT),
             new Phaser.Point(this.constants.WAVE_WIDTH * 1/4, 0),
@@ -53,41 +60,24 @@ MoonMage.entities.Water.prototype = {
 
         this.waveSprite = this.game.add.sprite(
             0,
-            this.constants.HEIGHT_OFFSET - 10,
+            this.constants.HEIGHT_OFFSET,
             waveTexture
         );
 
         this.waveSprite.height = 10;
 
-        this.waveSprite.anchor.set(0);
-    },
-
-    createWaterPhysics() {
-        var waterBasinGraphics = this.game.add.graphics(0, 0);
-        waterBasinGraphics.beginFill(0xFF0000, 0.5);
-        waterBasinGraphics.drawRect(0, 0, this.constants.WAVE_WIDTH, this.constants.MAX_WAVE_HEIGHT);
-
-        var waterBasinTexture = waterBasinGraphics.generateTexture();
-        waterBasinGraphics.destroy();
-
-        this.wavePhysics = this.game.add.sprite(
-            0,
-            this.constants.HEIGHT_OFFSET,
-            waterBasinTexture
-        );
-
-        this.game.physics.arcade.enable(this.wavePhysics);
-        this.wavePhysics.body.immovable = true;
-        this.wavePhysics.anchor.set(0);
+        this.game.physics.arcade.enable(this.waveSprite);
+        this.waveSprite.anchor.set(1);
     },
 
     update: function(level) {
         var moonX = level.moon.getX();
         var moonStrength = level.moon.getStrength();
 
-        this.waveSprite.height = this.constants.MAX_WAVE_HEIGHT * moonStrength;
-        this.waveSprite.position.x = moonX - this.constants.WAVE_WIDTH / 2;
-        this.waveSprite.position.y = this.constants.HEIGHT_OFFSET - this.waveSprite.height;
-        this.wavePhysics.position = this.waveSprite.position;
+        var moonVelocity = level.moon.getVelocity();
+
+        // this.waveSprite.height = this.constants.MAX_WAVE_HEIGHT * moonStrength;
+        this.waveSprite.scale.y = (level.moon.getY() - level.moon.getRangeY()) / level.moon.getRangeY() * 1.4;
+        this.waveSprite.body.velocity.x = moonVelocity.x * 55;
     }
 };
