@@ -216,7 +216,6 @@ MoonMage.entities.Water.prototype = {
     },
 
     _updateWavePhysics() {
-        // console.log(this.wavePhysicsSprite.position);
         if (this.isControlled) {
             var intent = this._getMovementIntent();
             console.log(intent);
@@ -224,8 +223,37 @@ MoonMage.entities.Water.prototype = {
             this.wavePhysicsSprite.body.velocity.x = 100 * intent.x;
             this.wavePhysicsSprite.body.velocity.y = 100 * intent.y;
         } else {
-            // seek starting position
+            var desiredX = 250 + this.game.camera.x;
+            var desiredY = this.constants.HEIGHT_OFFSET + this.constants.MAX_WAVE_HEIGHT + this.constants.RIPPLE_VARIANCE + 40;
+
+            var desiredVelocity = getVelocityToPoint(
+                desiredX,
+                desiredY,
+                this.wavePhysicsSprite.position.x,
+                this.wavePhysicsSprite.position.y,
+                180
+            );
+
+            // distance threshold dampens middle wobbling
+            var distanceThreshold = 2.7;
+            var xDiff = Math.abs(this.wavePhysicsSprite.position.x - desiredX)
+            var yDiff = Math.abs(this.wavePhysicsSprite.position.y - desiredY)
+            var xNotMovingMuch = xDiff < distanceThreshold;
+            var yNotMovingMuch = yDiff < distanceThreshold;
+
+            if (xNotMovingMuch) {
+                desiredVelocity.x = 0;
+            }
+            if (yNotMovingMuch) {
+                desiredVelocity.y = 0;
+            }
+
+            this.wavePhysicsSprite.body.velocity.x = desiredVelocity.x;
+            this.wavePhysicsSprite.body.velocity.y = desiredVelocity.y;
         }
+
+        this.wavePhysicsSprite.body.x = Math.min(Math.max(this.wavePhysicsSprite.body.x, this.game.camera.x), this.game.camera.x + MoonMage.config.viewport.width);
+        this.wavePhysicsSprite.body.y = Math.max(Math.min(this.wavePhysicsSprite.body.y, MoonMage.config.viewport.height + this.constants.MAX_WAVE_HEIGHT/2), 350);
     },
 
     // TODO, holding onto this equation for now, don't remove
