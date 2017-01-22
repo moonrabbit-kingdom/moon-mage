@@ -19,15 +19,21 @@ MoonMage.states.Level1.prototype = {
 
         this.map = levelController.loadTileMap();
         this.groundLayer = levelController.createGround(this.map, 'Tile Layer 1');
-        this.createBoxes = levelController.createBoxes(this.map, 'Object Layer 1', 'diamond');
+        this.boxes = levelController.createBoxes(this.map, 'Object Layer 1', 'diamond');
 
         this.game.physics.startSystem(Phaser.Physics.ARCADE);
 
         this.player = new MoonMage.entities.player(this.game, 32, this.game.world.height - 300);
     },
 
+    pushBoxes: function (player, star) {
+        console.log(player, star);
+    },
+
     update: function() {
         var hitPlatform = this.game.physics.arcade.collide(this.player.sprite, this.groundLayer);
+        this.game.physics.arcade.collide(this.boxes, this.groundLayer);
+        this.game.physics.arcade.collide(this.player.sprite, this.boxes, this.pushBoxes);
 
         this.player.update(hitPlatform);
         this.moon.update();

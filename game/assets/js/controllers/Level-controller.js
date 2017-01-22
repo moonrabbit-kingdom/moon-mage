@@ -22,7 +22,14 @@ MoonMage.controllers.LevelController.prototype = {
     createBoxes: function (map, layerName, spriteName) {
         var boxes = this.game.add.group();
         boxes.enableBody = true;
-        map.createFromObjects(layerName, 3, spriteName, null, true, false, boxes);
+        map.createFromObjects(layerName, // layer name in json
+                              3, // gid
+                              spriteName, //
+                              null,
+                              true,
+                              false,
+                              boxes, // group name
+                              MoonMage.entities.Box); // custom class
 
         return boxes;
     }
