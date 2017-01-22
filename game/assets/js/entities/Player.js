@@ -1,16 +1,19 @@
-MoonMage.entities.player = function (game) {
+MoonMage.entities.player = function (game, startingX, startingY) {
     this.game = game;
 
+    this.startingX = startingX;
+    this.startingY = startingY;
+
     // The player and its settings
-    this.sprite = this.game.add.sprite(32, this.game.world.height - 300, 'dude');
+    this.sprite = this.game.add.sprite(this.startingX, this.startingY, 'dude');
 
     //  We need to enable physics on the player
     this.game.physics.arcade.enable(this.sprite);
 
     //  Player physics properties. Give the little guy a slight bounce.
     this.sprite.body.bounce.y = 0.2;
-    this.sprite.body.gravity.y = 300;
-    this.sprite.body.collideWorldBounds = true;
+    this.sprite.body.gravity.y = 600;
+    //this.sprite.body.collideWorldBounds = true;
 
     //  Our two animations, walking left and right.
     this.sprite.animations.add('left', [0, 1, 2, 3], 10, true);
@@ -32,8 +35,9 @@ MoonMage.entities.player.prototype = {
 
         //  Allow the sprite to jump if they are touching the ground.
         if (this.cursors.up.isDown && this.sprite.body.blocked.down) {
-            this.sprite.body.velocity.y = -350;
+            this.sprite.body.velocity.y = -200;
         }
+        this.checkIfDead();
     },
 
     handleVerticalMovement: function() {
@@ -78,5 +82,15 @@ MoonMage.entities.player.prototype = {
         this.sprite.animations.play('right');
 
         this.isDown.right = true;
+    },
+
+    checkIfDead: function() {
+        if(this.sprite.body.y > this.game.world.height ||
+           this.sprite.body.x < 0) this.respawn();
+    },
+
+    respawn: function() {
+        this.sprite.body.x = this.startingX;
+        this.sprite.body.y = this.startingY;
     }
 }
