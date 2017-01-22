@@ -10,7 +10,7 @@ MoonMage.entities.Water = function(game, level) {
     };
 
     this._createElaborateWaterBasin();
-    this.createWaveSprite(level);
+    this._createWaveSprite(level);
 };
 
 MoonMage.entities.Water.prototype = {
@@ -108,7 +108,7 @@ MoonMage.entities.Water.prototype = {
         this.elaborateGraphics.endFill();
     },
 
-    createWaveSprite(level) {
+    _createWaveSprite(level) {
         var wavePoly = new Phaser.Polygon([
             new Phaser.Point(0, this.constants.MAX_WAVE_HEIGHT),
             new Phaser.Point(this.constants.WAVE_WIDTH * 1/4, 0),
@@ -138,9 +138,7 @@ MoonMage.entities.Water.prototype = {
         this.waveSprite.x = level.moon.getX();
     },
 
-    update: function(level) {
-        this._updateElaborateWaterBasin();
-
+    _updateWaveSprite(level) {
         if (!level.moon.isBeingControlled) {
             this.waveSprite.x = level.moon.getX() + 50;
         } else {
@@ -151,5 +149,10 @@ MoonMage.entities.Water.prototype = {
         }
         // this.waveSprite.height = this.constants.MAX_WAVE_HEIGHT * moonStrength;
         this.waveSprite.scale.y = (level.moon.getY() - level.moon.getRangeY()) / level.moon.getRangeY() * 1.4;
+    },
+
+    update: function(level) {
+        this._updateElaborateWaterBasin();
+        this._updateWaveSprite(level);
     }
 };
