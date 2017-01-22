@@ -66,6 +66,9 @@ MoonMage.entities.ui.PauseBox.prototype = {
     },
 
     openPauseMenu: function() {
+        this.pauseBox.position.x =  this.game.camera.x + MoonMage.config.viewport.width/2;
+        this.pauseBox.position.y =  this.game.camera.y + MoonMage.config.viewport.height/2;
+
         var tween = this.pause.tween;
 
         if ((this.pop !== null && tween.isRunning) || this.pause.isPaused) {
