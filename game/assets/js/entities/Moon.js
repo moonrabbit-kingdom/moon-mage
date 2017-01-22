@@ -13,11 +13,13 @@ MoonMage.entities.Moon = function(game) {
     this.speed = 3;
     this.distanceThreshold = 2.7;
     this.maxY = 160;
-
     this.minY = 60;
     this.rangeY = this.maxY - this.minY;
+    this.maxRelativeX = this.game._width - 60;
+    this.minRelativeX = 60;
     this.maxX = this._getMaxX();
     this.minX = this._getMinX();
+    this.rangeX = this.maxRelativeX - this.minRelativeX;
 
     this.position = this.moonRender.position;
 
@@ -42,10 +44,10 @@ MoonMage.entities.Moon.prototype = {
     },
 
     setVelocityToPoint(destinationX, destinationY) {
-        var angle = Math.atan2(destinationY - this.position.y, destinationX - this.position.x);
+        var velocity = getVelocityToPoint(destinationX, destinationY, this.position.x, this.position.y, this.speed);
 
-        this.velocity.x = Math.cos(angle) * this.speed;
-        this.velocity.y = Math.sin(angle) * this.speed;
+        this.velocity.x = velocity.x;
+        this.velocity.y = velocity.y;
     },
 
     applyVelocity(destinationX, destinationY) {
@@ -103,16 +105,28 @@ MoonMage.entities.Moon.prototype = {
         }
     },
 
+    getMaxY() {
+        return this.maxY;
+    },
+
+    getMinY() {
+        return this.minY;
+    },
+
     getRangeY() {
-        return this.rangeY;
+        return this.rangeY; // - this.moonRender.height;
     },
 
     _getMaxX: function() {
-        return this.game.camera.x + this.game._width - 60;
+        return this.game.camera.x + this.maxRelativeX;
     },
 
     _getMinX: function() {
-        return this.game.camera.x + 60;
+        return this.game.camera.x + this.minRelativeX;
+    },
+
+    getRangeX() {
+        return this.rangeX;
     },
 
     /**

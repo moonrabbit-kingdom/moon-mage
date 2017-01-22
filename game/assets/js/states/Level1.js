@@ -109,9 +109,10 @@ MoonMage.states.Level1.prototype = {
 
         // this.game.physics.arcade.collide(this.water.wavePhysics, this.player.sprite);
         this.game.physics.arcade.collide(this.water.waterBasinSprite, this.boxes);
-        this.game.physics.arcade.collide(this.water.waveSprite, this.boxes);
-        this.game.physics.arcade.collide(this.water.wavePhysics, this.boxes);
-        this.game.physics.arcade.collide(this.water.wavePhysics, this.player.sprite);
+        // this.game.physics.arcade.collide(this.water.waveSprite, this.boxes);
+        // this.game.physics.arcade.collide(this.water.wavePhysics, this.boxes);
+        // this.game.physics.arcade.collide(this.water.wavePhysics, this.player.sprite);
+        this.game.physics.arcade.collide(this.water.wavePhysicsSprite, this.boxes);
 
         if (!this.pause.isPaused) {
             this.player.update(hitPlatform);

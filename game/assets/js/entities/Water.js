@@ -109,6 +109,13 @@ MoonMage.entities.Water.prototype = {
         this.elaborateGraphics.endFill();
     },
 
+    _createWave(level) {
+        // create visual
+        this._createWaveSprite(level);
+        // create physics
+        this._createWavePhysics(level);
+    },
+
     _createWaveSprite(level) {
         var wavePoly = new Phaser.Polygon([
             new Phaser.Point(0, this.constants.MAX_WAVE_HEIGHT),
@@ -132,7 +139,7 @@ MoonMage.entities.Water.prototype = {
             waveTexture
         );
 
-        this.waveSprite.height = 10;
+        // this.waveSprite.height = 10;
         this.waveSprite.mass = 6000;
 
         this.game.physics.arcade.enable(this.waveSprite);
@@ -140,32 +147,91 @@ MoonMage.entities.Water.prototype = {
         this.waveSprite.x = level.moon.getX();
     },
 
-    _updateWaveSprite(level) {
-        if (!level.moon.isBeingControlled) {
-            this.waveSprite.x = level.moon.getX() + 50;
-        } else {
-            var moonStrength = level.moon.getStrength();
-            var moonVelocity = level.moon.getVelocity();
-
-            this.waveSprite.body.velocity.x = moonVelocity.x * 60;
+    _createWavePhysics(level) {
+        var wavePhysicsGraphics = this.game.add.graphics(0, 0);
+        if (MoonMage.config.debug.wavePhysics) {
+            wavePhysicsGraphics.lineStyle(2, 0xFF0000);
         }
-        // this.waveSprite.height = this.constants.MAX_WAVE_HEIGHT * moonStrength;
-        this.waveSprite.scale.y = Math.max((level.moon.getY() - level.moon.getRangeY()) / level.moon.getRangeY() * 1.4, 0);
+
+        wavePhysicsGraphics.beginFill(0xFF0000, 0);
+        var minX = this.constants.WAVE_WIDTH * 1/4;
+        var width = this.constants.WAVE_WIDTH * 2/4;
+        wavePhysicsGraphics.drawRect(
+            minX,
+            0,
+            width,
+            this.constants.MAX_WAVE_HEIGHT
+        );
+
+        var wavePhysicsTexture = wavePhysicsGraphics.generateTexture();
+        wavePhysicsGraphics.destroy();
+
+        this.wavePhysicsSprite = this.game.add.sprite(
+            level.moon.getX(),
+            this.constants.HEIGHT_OFFSET,
+            wavePhysicsTexture
+        );
+
+        this.game.physics.arcade.enable(this.wavePhysicsSprite);
+        this.wavePhysicsSprite.body.immovable = true;
+        this.wavePhysicsSprite.anchor.set(0);
     },
 
-    _createWave(level) {
-        // create visual
-        this._createWaveSprite(level);
-        // create physics
-    },
-
-    _updateWave() {
-        // update visual (scale, etc)
+    _updateWave(level) {
         // update physics
+        this._updateWavePhysics(level);
+        // update visual (scale, etc)
+        this._updateWaveSprite(level);
+    },
+
+    _updateWavePhysics(level) {
+        var desiredX = level.moon.position.x - 30; // woah oah it's magic
+        var desiredY = this.constants.HEIGHT_OFFSET + this.constants.RIPPLE_VARIANCE + 40;
+
+        if (level.moon.isBeingControlled) {
+            desiredY = this._mapMoonY(level.moon);
+        }
+
+        var desiredVelocity = getVelocityToPoint(
+            desiredX,
+            desiredY,
+            this.wavePhysicsSprite.position.x,
+            this.wavePhysicsSprite.position.y,
+            180
+        );
+
+        if (level.moon.isBeingControlled && this.wavePhysicsSprite.position.y < 260) {
+            desiredVelocity.y = 0;
+        }
+
+        this.wavePhysicsSprite.body.velocity.x = desiredVelocity.x;
+        this.wavePhysicsSprite.body.velocity.y = desiredVelocity.y;
+    },
+
+    _mapMoonY(moon) {
+        var moonY = moon.position.y;
+        var moonMinY = moon.getMinY();
+        var moonRangeY = moon.getRangeY();
+        var waveMinY = 260;
+        var waveRangeY = 270;
+
+        var scalar = (moonY - moonMinY) / moonRangeY;
+        var mappedY = waveMinY + (waveRangeY * (1 - scalar));
+
+        return mappedY;
+    },
+
+    _updateWaveSprite() {
+        this.waveSprite.position.x = this.wavePhysicsSprite.position.x + this.constants.WAVE_WIDTH * 3/4;
+
+        var baseY = this.constants.HEIGHT_OFFSET + this.constants.RIPPLE_VARIANCE;
+        var physicsY = this.wavePhysicsSprite.position.y;
+        var rangeY = this.constants.MAX_WAVE_HEIGHT;
+        this.waveSprite.scale.y = (baseY - physicsY) / rangeY;
     },
 
     update: function(level) {
         this._updateElaborateWaterBasin();
-        this._updateWaveSprite(level);
+        this._updateWave(level);
     }
 };
