@@ -4,10 +4,12 @@ MoonMage.entities.Moon = function(game) {
     // TODO replace with sprite
     this.defaultX = 300;
     this.defaultY = 60;
-    this.moonRender = this.game.add.graphics(this.defaultX, this.defaultY);
+    //this.moonRender = this.game.add.graphics(this.defaultX, this.defaultY);
 
-    this.moonRender.beginFill(0xBBBBBB, 1);
-    this.moonRender.drawCircle(0, 0, 100);
+    //this.moonRender.beginFill(0xBBBBBB, 1);
+    //this.moonRender.drawCircle(0, 0, 100);
+
+    this.moonRender = this.game.add.sprite(this.defaultX, this.defaultY, "moon");
 
     this.pointer = this.game.input.activePointer;
     this.speed = 6;

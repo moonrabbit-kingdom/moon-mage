@@ -20,6 +20,8 @@ MoonMage.entities.player = function (game, moon, startingX, startingY) {
     this.sprite.body.damping = 0.5;
 
     //  Our two animations, walking left and right.
+    // castsing animation: 1, 50, 30
+    // idle: 1, 180
     this.sprite.animations.add('left', [0, 1, 2, 3], 10, true);
     this.sprite.animations.add('right', [5, 6, 7, 8], 10, true);
 

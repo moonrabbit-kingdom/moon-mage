@@ -35,7 +35,7 @@ MoonMage.entities.ui.TextBox.prototype = {
         );
 
         var style = { font: '36px Arial', fill: '#000000', align: 'left' };
-        var text = this.game.add.text(- (this.width / 2.6), -25, this.text, style);
+        var text = this.game.add.text(- (this.width / 2.6), -20, this.text, style);
         this.textBox.addChild(text);
 
         this.textBox.anchor.set(0.5, 0.5);

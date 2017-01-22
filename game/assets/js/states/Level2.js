@@ -82,7 +82,7 @@ MoonMage.states.Level2.prototype = {
 
         var firstText = new MoonMage.entities.ui.TextBox(this.game, "'↑' to jump", 500, 80, 250);
 
-        var secondText = new MoonMage.entities.ui.TextBox(this.game, "hold 'a' to invoke moon powers", 1500, 80, 600);
+        var secondText = new MoonMage.entities.ui.TextBox(this.game, "hold 'space' to invoke moon powers", 1500, 80, 700);
 
         this.game.camera.follow(this.player.sprite, Phaser.Camera.FOLLOW_PLATFORMER);
 
