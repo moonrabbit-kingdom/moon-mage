@@ -122,7 +122,7 @@ MoonMage.entities.Moon.prototype = {
         return (this.position.y - this.minY) / this.rangeY;
     },
 
-    toggleMoonControl() {
-        this.isBeingControlled = !this.isBeingControlled;
+    setMoonControl(isBeingControlled) {
+        this.isBeingControlled = isBeingControlled;
     }
 };

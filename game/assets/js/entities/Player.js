@@ -35,11 +35,13 @@ MoonMage.entities.player = function (game, moon, startingX, startingY) {
 
 MoonMage.entities.player.prototype = {
     update: function (hitPlatform) {
-        if (this.game.input.keyboard.isDown(Phaser.Keyboard.A)
-            && this.isMoonControlToggleThrottled()) {
-            this.isControllingMoon = !this.isControllingMoon;
+        if (this.game.input.keyboard.isDown(Phaser.Keyboard.A)) {
+            this.isControllingMoon = true;
             this.stopMoving();
-            this.moon.toggleMoonControl();
+            this.moon.setMoonControl(true);
+        } else {
+            this.isControllingMoon = false;
+            this.moon.setMoonControl(false);
         }
 
         if (!this.isControllingMoon) {
@@ -48,18 +50,6 @@ MoonMage.entities.player.prototype = {
         // else -> Moon control handled by moon
 
         this.checkIfDead();
-    },
-
-    isMoonControlToggleThrottled() {
-        var currentTime = new Date().getTime();
-        var isThrottled = false;
-
-        if (currentTime - this.moonControlToggleThrottle > 300) {
-            isThrottled = true;
-            this.moonControlToggleThrottle = currentTime;
-        }
-
-        return isThrottled;
     },
 
     handleControllingPlayer: function() {
