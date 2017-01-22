@@ -1,6 +1,7 @@
-MoonMage.entities.player = function (game, moon, startingX, startingY) {
+MoonMage.entities.player = function (game, moon, water, startingX, startingY) {
     this.game = game;
     this.moon = moon;
+    this.water = water;
     this.ridingOn = null;
     this.intendedVelocity = 0;
     this.ridingVelocity = 0;
@@ -12,16 +13,19 @@ MoonMage.entities.player = function (game, moon, startingX, startingY) {
     this.sprite = this.game.add.sprite(this.startingX, this.startingY, 'dude');
 
     //  We need to enable physics on the player
-    this.game.physics.p2.enable(this.sprite, false);
+    this.game.physics.p2.enable(this.sprite);
+    //this.game.physics.arcade.enable(this.sprite);
 
-    this.sprite.body.setCircle(25);
+    ////  Player physics properties. Give the little guy a slight bounce.
+    //this.sprite.body.bounce.y = 0.2;
+    //this.sprite.body.gravity.y = 600;
+    //this.sprite.mass = 1;
+    //this.sprite.body.collideWorldBounds = true;
 
     this.sprite.body.fixedRotation = true;
     this.sprite.body.damping = 0.5;
 
     //  Our two animations, walking left and right.
-    // castsing animation: 1, 50, 30
-    // idle: 1, 180
     this.sprite.animations.add('left', [0, 1, 2, 3], 10, true);
     this.sprite.animations.add('right', [5, 6, 7, 8], 10, true);
 
@@ -46,18 +50,20 @@ MoonMage.entities.player.prototype = {
             this.ridingVelocity = this.ridingOn.body.velocity.x;
         }
 
-        //if (this.game.input.keyboard.isDown(Phaser.Keyboard.A)) {
-        //    this.isControllingMoon = true;
-        //    this.stopMoving();
+        if (this.game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR)) {
+           this.isControllingMoon = true;
+           this.stopMoving();
         //    this.moon.setMoonControl(true);
-        //} else {
-        //    this.isControllingMoon = false;
+            this.water.setControl(true);
+        } else {
+           this.isControllingMoon = false;
         //    this.moon.setMoonControl(false);
-        //}
+            this.water.setControl(false);
+        }
 
-        //if (!this.isControllingMoon) {
+        if (!this.isControllingMoon) {
             this.handleControllingPlayer();
-        //}
+        }
         // else -> Moon control handled by moon
 
         var newVelocity = this.intendedVelocity + this.ridingVelocity;
@@ -87,7 +93,6 @@ MoonMage.entities.player.prototype = {
         {
             var c = this.game.physics.p2.world.narrowphase.contactEquations[i];
 
-            // debugger
             if (c.bodyA === this.sprite.body.data || c.bodyB === this.sprite.body.data)
             {
                 var d = p2.vec2.dot(c.normalA, yAxis);
@@ -96,6 +101,7 @@ MoonMage.entities.player.prototype = {
                 {
                     d *= -1;
                 }
+
                 if (d > 0.5)
                 {
                     result = true;
