@@ -2,9 +2,13 @@ MoonMage.entities.ui.PauseBox = function (game, state) {
     this.game = game;
     this.state = state;
 
+    // define fullscreen mode
+    game.scale.fullScreenScaleMode = Phaser.ScaleManager.EXACT_FIT;
+
     this._setupBox();
     this._setupButton(-60, -10, 'Continue', this.closePauseMenu);
     this._setupButton(-60, 40, 'Exit', this._exitPlay);
+    this._setupButton(-60, 90, 'Fullscreen', this._toggleFullScreen);
 
     this.pauseBox.scale.set(0);
 
@@ -87,4 +91,13 @@ MoonMage.entities.ui.PauseBox.prototype = {
         this.game.world.setBounds(0, 0, MoonMage.config.viewport.width, MoonMage.config.viewport.height);
         this.state.start('MainMenu');
     },
+
+    _toggleFullScreen: function() {
+        if (this.game.scale.isFullScreen) {
+            this.game.scale.stopFullScreen();
+        }
+        else {
+            this.game.scale.startFullScreen(false);
+        }
+    }
 }
