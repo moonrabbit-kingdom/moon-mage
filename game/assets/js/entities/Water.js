@@ -200,7 +200,8 @@ MoonMage.entities.Water.prototype = {
             180
         );
 
-        if (level.moon.isBeingControlled && this.wavePhysicsSprite.position.y < 260) {
+        if (level.moon.isBeingControlled && this.wavePhysicsSprite.position.y < 260 &&
+            level.moon.position.y === level.moon.maxY) {
             desiredVelocity.y = 0;
         }
 
