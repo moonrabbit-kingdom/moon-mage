@@ -4,28 +4,27 @@ MoonMage.entities.ui.PauseBox = function (game, state) {
 
     var centerX = this.game.camera.x + MoonMage.config.viewport.width/2;
     var centerY = this.game.camera.y + MoonMage.config.viewport.height/2;
-    var pauseBox = this.game.add.sprite(centerX, centerY, 'pause-menu-box');
-    pauseBox.anchor.setTo(0.5, 0.5);
+    this.pauseBox = this.game.add.sprite(centerX, centerY, 'pause-menu-box');
+    this.pauseBox.anchor.setTo(0.5, 0.5);
 
-    var continueButton = this.game.add.button(-140, 15, 'pause-continue', this.closePauseMenu, this);
-    continueButton.input.useHandCursor = true;
-    pauseBox.addChild(continueButton);
+    this._setupButton(-140, 15, 'pause-continue', this.closePauseMenu);
+    this._setupButton(0, 15, 'pause-exit', this._exitPlay);
 
-
-    var exitButton = this.game.add.button(0, 15, 'pause-exit', this._exitPlay, this);
-    exitButton.input.useHandCursor = true;
-    pauseBox.addChild(exitButton);
-
-    pauseBox.scale.set(0);
+    this.pauseBox.scale.set(0);
 
     this.pause = {
-        box: pauseBox,
         tween: {},
         isPaused: false
     }
 }
 
 MoonMage.entities.ui.PauseBox.prototype = {
+    _setupButton(x, y, sprite, callback) {
+        var button = this.game.add.button(x, y, sprite, callback, this);
+        button.input.useHandCursor = true;
+        this.pauseBox.addChild(button);
+    },
+
     isPaused: function() {
         return this.pause.isPaused;
     },
@@ -38,7 +37,7 @@ MoonMage.entities.ui.PauseBox.prototype = {
         }
 
         this.pause.isPaused = true;
-        this.pause.tween = this.game.add.tween(this.pause.box.scale).to( { x: 1, y: 1 }, 100, Phaser.Easing.Linear.None, true);
+        this.pause.tween = this.game.add.tween(this.pauseBox.scale).to( { x: 1, y: 1 }, 100, Phaser.Easing.Linear.None, true);
     },
 
     closePauseMenu: function() {
@@ -49,7 +48,7 @@ MoonMage.entities.ui.PauseBox.prototype = {
         }
 
         this.pause.isPaused = false;
-        this.pause.tween = this.game.add.tween(this.pause.box.scale).to( { x: 0, y: 0 }, 150, Phaser.Easing.Linear.None, true);
+        this.pause.tween = this.game.add.tween(this.pauseBox.scale).to( { x: 0, y: 0 }, 150, Phaser.Easing.Linear.None, true);
     },
 
     _exitPlay: function() {
