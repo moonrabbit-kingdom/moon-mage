@@ -75,12 +75,42 @@ MoonMage.states.Level2.prototype = {
 
         this.game.camera.follow(this.player.sprite, Phaser.Camera.FOLLOW_PLATFORMER);
 
-        //this._createPauseMenu();
+        this.pauseBox = new MoonMage.entities.ui.PauseBox(this.game, this.state);
+        this.pauseLastPressed = new Date().getTime();
     },
 
     testCollide: function (a, b) { console.log('test', a, b); },
 
     update: function() {
-        this.player.update();
+        if (!this.pauseBox.isPaused()) {
+            this.player.update();
+
+            if (this._shouldTogglePause()) {
+                this.game.physics.p2.paused = true;
+                this.player.pause();
+                this.pauseBox.openPauseMenu();
+            }
+        } else {
+            if (this._shouldTogglePause()) {
+                this.game.physics.p2.paused = false;
+                this.player.unpause();
+                this.pauseBox.closePauseMenu();
+            }
+        }
     },
+
+    _shouldTogglePause() {
+        if (!this.game.input.keyboard.isDown(Phaser.Keyboard.P)) {
+            return false;
+        }
+
+        var newTime = new Date().getTime();
+
+        if ((newTime - this.pauseLastPressed) > 300) {
+            this.pauseLastPressed = newTime;
+            return true;
+        }
+
+        return false;
+    }
 }
