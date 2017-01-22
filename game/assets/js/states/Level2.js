@@ -45,7 +45,7 @@ MoonMage.states.Level2.prototype = {
         // new this.game.physics.p2.BodyDebug(this.game, this.water.wavePhysicsSprite.body);
         // Phaser.Physics.P2.BodyDebug(this.game, this.water.wavePhysicsSprite.body);
 
-        this.player = new MoonMage.entities.player(this.game, this.moon, /* 1430 */ 32, this.game.world.height - 300);
+        this.player = new MoonMage.entities.player(this.game, this.moon, 1430 + 32, this.game.world.height - 300);
 
         // copypast
         this.game.physics.p2.enable('dude', false);
@@ -83,9 +83,6 @@ MoonMage.states.Level2.prototype = {
         var firstText = new MoonMage.entities.ui.TextBox(this.game, "'↑' to jump", 500, 80, 250);
 
         var secondText = new MoonMage.entities.ui.TextBox(this.game, "hold 'a' to invoke moon powers", 1500, 80, 600);
-        //this.game.add.text(100, 100,
-        //this.game.add.text(400, 100,
-        //this.game.add.text(600, 100, "notice the moon");
 
         this.game.camera.follow(this.player.sprite, Phaser.Camera.FOLLOW_PLATFORMER);
 

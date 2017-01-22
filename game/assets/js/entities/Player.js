@@ -12,14 +12,9 @@ MoonMage.entities.player = function (game, moon, startingX, startingY) {
     this.sprite = this.game.add.sprite(this.startingX, this.startingY, 'dude');
 
     //  We need to enable physics on the player
-    this.game.physics.p2.enable(this.sprite);
-    //this.game.physics.arcade.enable(this.sprite);
+    this.game.physics.p2.enable(this.sprite, false);
 
-    ////  Player physics properties. Give the little guy a slight bounce.
-    //this.sprite.body.bounce.y = 0.2;
-    //this.sprite.body.gravity.y = 600;
-    //this.sprite.mass = 1;
-    //this.sprite.body.collideWorldBounds = true;
+    this.sprite.body.setCircle(25);
 
     this.sprite.body.fixedRotation = true;
     this.sprite.body.damping = 0.5;
@@ -49,18 +44,18 @@ MoonMage.entities.player.prototype = {
             this.ridingVelocity = this.ridingOn.body.velocity.x;
         }
 
-        if (this.game.input.keyboard.isDown(Phaser.Keyboard.A)) {
-           this.isControllingMoon = true;
-           this.stopMoving();
-           this.moon.setMoonControl(true);
-        } else {
-           this.isControllingMoon = false;
-           this.moon.setMoonControl(false);
-        }
+        //if (this.game.input.keyboard.isDown(Phaser.Keyboard.A)) {
+        //    this.isControllingMoon = true;
+        //    this.stopMoving();
+        //    this.moon.setMoonControl(true);
+        //} else {
+        //    this.isControllingMoon = false;
+        //    this.moon.setMoonControl(false);
+        //}
 
-        if (!this.isControllingMoon) {
+        //if (!this.isControllingMoon) {
             this.handleControllingPlayer();
-        }
+        //}
         // else -> Moon control handled by moon
 
         var newVelocity = this.intendedVelocity + this.ridingVelocity;
@@ -90,6 +85,7 @@ MoonMage.entities.player.prototype = {
         {
             var c = this.game.physics.p2.world.narrowphase.contactEquations[i];
 
+            // debugger
             if (c.bodyA === this.sprite.body.data || c.bodyB === this.sprite.body.data)
             {
                 var d = p2.vec2.dot(c.normalA, yAxis);
@@ -98,7 +94,6 @@ MoonMage.entities.player.prototype = {
                 {
                     d *= -1;
                 }
-
                 if (d > 0.5)
                 {
                     result = true;
