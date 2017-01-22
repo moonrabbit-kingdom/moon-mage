@@ -140,7 +140,6 @@ MoonMage.entities.Water.prototype = {
             waveTexture
         );
 
-        // this.waveSprite.height = 10;
         this.waveSprite.mass = 100;
 
         this.game.physics.arcade.enable(this.waveSprite);
@@ -154,7 +153,7 @@ MoonMage.entities.Water.prototype = {
             wavePhysicsGraphics.lineStyle(2, 0xFF0000);
         }
 
-        wavePhysicsGraphics.beginFill(0xFF0000, 1);
+        wavePhysicsGraphics.beginFill(0xFF0000, 0);
         var minX = this.constants.WAVE_WIDTH * 1/4;
         var width = this.constants.WAVE_WIDTH * 2/4;
         wavePhysicsGraphics.drawRect(
