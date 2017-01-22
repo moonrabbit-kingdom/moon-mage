@@ -1,7 +1,7 @@
 MoonMage.entities.Water = function(game, level) {
     this.game = game;
     this.constants = {
-        HEIGHT_OFFSET: 520,
+        HEIGHT_OFFSET: 470,
         OFFSCREEN_OVERFLOW: 10,
         MAX_WAVE_HEIGHT: 300,
         WAVE_WIDTH: 120,
@@ -202,9 +202,12 @@ MoonMage.entities.Water.prototype = {
 
         // distance threshold dampens middle wobbling
         var distanceThreshold = 2.7;
-        var xNotMovingMuch = Math.abs(this.wavePhysicsSprite.position.x - desiredX) < distanceThreshold;
-        var yNotMovingMuch = Math.abs(this.wavePhysicsSprite.position.y - desiredY) < distanceThreshold;
+        var xDiff = Math.abs(this.wavePhysicsSprite.position.x - desiredX)
+        var yDiff = Math.abs(this.wavePhysicsSprite.position.y - desiredY)
+        var xNotMovingMuch = xDiff < distanceThreshold;
+        var yNotMovingMuch = yDiff < distanceThreshold;
 
+        MoonMage.debug('water', `xDiff: ${xDiff}, xYDiff: ${yDiff}`);
         if (xNotMovingMuch && level.moon.isStopped) {
             desiredVelocity.x = 0;
         }

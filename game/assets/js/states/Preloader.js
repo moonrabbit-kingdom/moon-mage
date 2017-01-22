@@ -18,6 +18,7 @@ MoonMage.states.Preloader.prototype = {
         //this.load.bitmapFont('eightbitwonder', ..., ...);
         this.game.load.image('platform', 'assets/img/platform.png');
         this.game.load.image('diamond', 'assets/img/diamond.png');
+        this.game.load.image('box', 'assets/img/box.png');
 
         this.game.load.spritesheet('dude', 'assets/img/dude.png', 32, 48);
         this.game.load.spritesheet('ground', 'assets/spritesheets/ground.png', 32, 32, 2);
