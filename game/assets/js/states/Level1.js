@@ -19,9 +19,9 @@ MoonMage.states.Level1.prototype = {
         this.groundLayer = levelController.createGround(this.map, 'Tile Layer 1');
         this.boxes = levelController.createBoxes(this.map, 'Object Layer 1', 'diamond');
 
-        this.water = new MoonMage.entities.Water(this.game);
-
         this.moon = new MoonMage.entities.Moon(this.game);
+
+        this.water = new MoonMage.entities.Water(this.game, this);
 
         this.player = new MoonMage.entities.player(this.game, this.moon, 32, this.game.world.height - 300);
         this.game.camera.follow(this.player.sprite, Phaser.Camera.FOLLOW_PLATFORMER);

@@ -1,4 +1,4 @@
-MoonMage.entities.Water = function(game) {
+MoonMage.entities.Water = function(game, level) {
     this.game = game;
     this.constants = {
         HEIGHT_OFFSET: 520,
@@ -9,7 +9,7 @@ MoonMage.entities.Water = function(game) {
     };
 
     this.createWaterBasin();
-    this.createWaveSprite();
+    this.createWaveSprite(level);
 };
 
 MoonMage.entities.Water.prototype = {
@@ -36,7 +36,7 @@ MoonMage.entities.Water.prototype = {
         this.waterBasinSprite.anchor.set(0);
     },
 
-    createWaveSprite() {
+    createWaveSprite(level) {
         var wavePoly = new Phaser.Polygon([
             new Phaser.Point(0, this.constants.MAX_WAVE_HEIGHT),
             new Phaser.Point(this.constants.WAVE_WIDTH * 1/4, 0),
@@ -62,16 +62,19 @@ MoonMage.entities.Water.prototype = {
 
         this.game.physics.arcade.enable(this.waveSprite);
         this.waveSprite.anchor.set(1);
+        this.waveSprite.x = level.moon.getX();
     },
 
     update: function(level) {
-        var moonX = level.moon.getX();
-        var moonStrength = level.moon.getStrength();
+        if (!level.moon.isBeingControlled) {
+            this.waveSprite.x = level.moon.getX() + 50;
+        } else {
+            var moonStrength = level.moon.getStrength();
+            var moonVelocity = level.moon.getVelocity();
 
-        var moonVelocity = level.moon.getVelocity();
-
+            this.waveSprite.body.velocity.x = moonVelocity.x * 55;
+        }
         // this.waveSprite.height = this.constants.MAX_WAVE_HEIGHT * moonStrength;
         this.waveSprite.scale.y = (level.moon.getY() - level.moon.getRangeY()) / level.moon.getRangeY() * 1.4;
-        this.waveSprite.body.velocity.x = moonVelocity.x * 55;
     }
 };
