@@ -18,8 +18,11 @@ MoonMage.config = {
     /**
      * Used in conjunction with MoonMage.debug to define channels to enable debugging on
      * When a flag is enabled, all debug prints on that channel will print to the console
+     *
+     * Some enable additional debugging features
      */
     debug: {
-        stateHooks: false
+        stateHooks: false,
+        wavePhysics: false // bounding boxes, etc
     }
 };

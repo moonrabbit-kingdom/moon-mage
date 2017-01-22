@@ -6,11 +6,12 @@ MoonMage.entities.Water = function(game, level) {
         MAX_WAVE_HEIGHT: 300,
         WAVE_WIDTH: 120,
         COLOR: 0x0033FF,
-        COLOR_HIGHLIGHT: 0x2577FF
+        COLOR_HIGHLIGHT: 0x2577FF,
+        RIPPLE_VARIANCE: 10
     };
 
+    this._createWave(level);
     this._createElaborateWaterBasin();
-    this._createWaveSprite(level);
 };
 
 MoonMage.entities.Water.prototype = {
@@ -53,10 +54,10 @@ MoonMage.entities.Water.prototype = {
         }
 
         this.mod = {
-            y: -5
+            y: -this.constants.RIPPLE_VARIANCE/2
         };
 
-        this.game.add.tween(this.mod).to( { y: 5}, 1000, Phaser.Easing.Sinusoidal.InOut, true, 1, -1, true);
+        this.game.add.tween(this.mod).to( { y: this.constants.RIPPLE_VARIANCE/2}, 1000, Phaser.Easing.Sinusoidal.InOut, true, 1, -1, true);
 
         this.elaborateGraphics = this.game.add.graphics(0, 0);
 
@@ -117,6 +118,7 @@ MoonMage.entities.Water.prototype = {
         ]);
 
         var waveGraphics = this.game.add.graphics(0, 0);
+        waveGraphics.lineStyle(2, this.constants.COLOR_HIGHLIGHT);
 
         waveGraphics.beginFill(this.constants.COLOR);
         waveGraphics.drawPolygon(wavePoly.points);
@@ -126,7 +128,7 @@ MoonMage.entities.Water.prototype = {
 
         this.waveSprite = this.game.add.sprite(
             0,
-            this.constants.HEIGHT_OFFSET,
+            this.constants.HEIGHT_OFFSET + this.constants.RIPPLE_VARIANCE,
             waveTexture
         );
 
@@ -145,10 +147,21 @@ MoonMage.entities.Water.prototype = {
             var moonStrength = level.moon.getStrength();
             var moonVelocity = level.moon.getVelocity();
 
-            this.waveSprite.body.velocity.x = moonVelocity.x * 55;
+            this.waveSprite.body.velocity.x = moonVelocity.x * 60;
         }
         // this.waveSprite.height = this.constants.MAX_WAVE_HEIGHT * moonStrength;
-        this.waveSprite.scale.y = (level.moon.getY() - level.moon.getRangeY()) / level.moon.getRangeY() * 1.4;
+        this.waveSprite.scale.y = Math.max((level.moon.getY() - level.moon.getRangeY()) / level.moon.getRangeY() * 1.4, 0);
+    },
+
+    _createWave(level) {
+        // create visual
+        this._createWaveSprite(level);
+        // create physics
+    },
+
+    _updateWave() {
+        // update visual (scale, etc)
+        // update physics
     },
 
     update: function(level) {
