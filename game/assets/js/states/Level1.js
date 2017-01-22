@@ -30,7 +30,6 @@ MoonMage.states.Level1.prototype = {
         var hitPlatform = this.game.physics.arcade.collide(this.player.sprite, this.groundLayer);
 
         this.player.update(hitPlatform);
-        this.water.update();
         this.moon.update();
     },
 }
