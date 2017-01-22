@@ -96,8 +96,8 @@ MoonMage.states.Level2.prototype = {
     update: function() {
         if (!this.pauseBox.isPaused()) {
             this.player.update();
-            this.moon.update();
             this.water.update(this);
+            this.moon.update(this.water.wavePhysicsSprite.position.x);
 
             if (this._shouldTogglePause()) {
                 this.game.physics.p2.paused = true;

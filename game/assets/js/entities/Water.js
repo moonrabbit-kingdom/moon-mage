@@ -146,7 +146,6 @@ MoonMage.entities.Water.prototype = {
 
         this.game.physics.arcade.enable(this.waveSprite);
         this.waveSprite.anchor.set(1);
-        this.waveSprite.x = level.moon.getX();
     },
 
     _createWavePhysics(level) {
@@ -169,7 +168,7 @@ MoonMage.entities.Water.prototype = {
         wavePhysicsGraphics.destroy();
 
         this.wavePhysicsSprite = this.game.add.sprite(
-            level.moon.getX(),
+            0,
             this.constants.HEIGHT_OFFSET,
             wavePhysicsTexture
         );
@@ -299,18 +298,18 @@ MoonMage.entities.Water.prototype = {
     //     this.wavePhysicsSprite.body.velocity.y = desiredVelocity.y;
     // },
 
-    _mapMoonY(moon) {
-        var moonY = moon.position.y;
-        var moonMinY = moon.getMinY();
-        var moonRangeY = moon.getRangeY();
-        var waveMinY = 260;
-        var waveRangeY = 270;
+    // _mapMoonY(moon) {
+    //     var moonY = moon.position.y;
+    //     var moonMinY = moon.getMinY();
+    //     var moonRangeY = moon.getRangeY();
+    //     var waveMinY = 260;
+    //     var waveRangeY = 270;
 
-        var scalar = (moonY - moonMinY) / moonRangeY;
-        var mappedY = waveMinY + (waveRangeY * (1 - scalar));
+    //     var scalar = (moonY - moonMinY) / moonRangeY;
+    //     var mappedY = waveMinY + (waveRangeY * (1 - scalar));
 
-        return mappedY;
-    },
+    //     return mappedY;
+    // },
 
     _updateWaveSprite() {
         this.waveSprite.position.x = this.wavePhysicsSprite.position.x + this.constants.WAVE_WIDTH * 1/2;
