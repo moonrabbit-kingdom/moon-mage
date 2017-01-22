@@ -35,7 +35,7 @@ MoonMage.states.Level2.prototype = {
         var tilesCollisionGroup = this.physics.p2.createCollisionGroup();
         var boxCollisionGroup = this.physics.p2.createCollisionGroup();
 
-        this.game.physics.p2.updateBoundsCollisionGroup();
+        this.game.physics.p2.updateBoundsCollisionGroup(false);
 
         this.player = new MoonMage.entities.player(this.game, this.moon, 1430, this.game.world.height - 300);
 
