@@ -24,6 +24,7 @@ MoonMage.states.Level1.prototype = {
         this.game.physics.startSystem(Phaser.Physics.ARCADE);
 
         this.player = new MoonMage.entities.player(this.game, 32, this.game.world.height - 300);
+        this.game.camera.follow(this.player.sprite);
     },
 
     pushBoxes: function (player, star) {
