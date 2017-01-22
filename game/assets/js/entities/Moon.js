@@ -55,6 +55,10 @@ MoonMage.entities.Moon.prototype = {
             this.position.x = this.clamp(this.position.x, this.minX, this.maxX, 'x');
             this.position.y = this.clamp(this.position.y, this.minY, this.maxY , 'y');
         }
+        else {
+            this.velocity.x = 0;
+            this.velocity.y = 0;
+        }
     },
 
     handleUncontrolledMovement() {
@@ -83,6 +87,21 @@ MoonMage.entities.Moon.prototype = {
 
     getX() {
         return this.position.x;
+    },
+
+    getY() {
+        return this.position.y;
+    },
+
+    getVelocity() {
+        return {
+            x: this.velocity.x,
+            y: this.velocity.y
+        }
+    },
+
+    getRangeY() {
+        return this.rangeY;
     },
 
     /**

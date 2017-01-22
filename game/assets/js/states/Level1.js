@@ -10,6 +10,8 @@ MoonMage.states.Level1.prototype = {
 
     create: function() {
 
+        this.game.physics.startSystem(Phaser.Physics.ARCADE);
+
         this.water = new MoonMage.entities.Water(this.game);
 
         this.moon = new MoonMage.entities.Moon(this.game);
@@ -20,8 +22,6 @@ MoonMage.states.Level1.prototype = {
         this.map = levelController.loadTileMap();
         this.groundLayer = levelController.createGround(this.map, 'Tile Layer 1');
         this.boxes = levelController.createBoxes(this.map, 'Object Layer 1', 'diamond');
-
-        this.game.physics.startSystem(Phaser.Physics.ARCADE);
 
         this.player = new MoonMage.entities.player(this.game, this.moon, 32, this.game.world.height - 300);
     },
@@ -36,8 +36,19 @@ MoonMage.states.Level1.prototype = {
         this.game.physics.arcade.collide(this.boxes, this.groundLayer);
         this.game.physics.arcade.collide(this.player.sprite, this.boxes);
 
-        this.game.physics.arcade.collide(this.water.wavePhysics, this.player.sprite);
-        this.game.physics.arcade.collide(this.water.wavePhysics, this.boxes);
+        // this.game.physics.arcade.collide(this.water.wavePhysics, this.player.sprite);
+        this.game.physics.arcade.collide(this.water.waterBasinSprite, this.boxes);
+        this.game.physics.arcade.collide(this.water.waveSprite, this.boxes, function() {
+            console.log('wave sprite hit boxes');
+            return true;
+        });
+        this.game.physics.arcade.collide(this.water.wavePhysics, this.boxes, function() {
+            console.log('wave physics hit boxes');
+            return true;
+        });
+        this.game.physics.arcade.collide(this.water.wavePhysics, this.player.sprite, function() {
+            console.log('wave hit player');
+        });
 
         this.player.update(hitPlatform);
         this.moon.update();
