@@ -1,5 +1,6 @@
-MoonMage.entities.player = function (game, startingX, startingY) {
+MoonMage.entities.player = function (game, moon, startingX, startingY) {
     this.game = game;
+    this.moon = moon;
 
     this.startingX = startingX;
     this.startingY = startingY;
@@ -26,22 +27,48 @@ MoonMage.entities.player = function (game, startingX, startingY) {
         left: false,
         right: false
     };
+
+    this.moonControlToggleThrottle = new Date().getTime() // throttle
+
+    this.isControllingMoon = false;
 }
 
 MoonMage.entities.player.prototype = {
     update: function (hitPlatform) {
+        if (this.game.input.keyboard.isDown(Phaser.Keyboard.A)
+            && this.isMoonControlToggleThrottled()) {
+            this.isControllingMoon = !this.isControllingMoon;
+            this.stopMoving();
+            this.moon.toggleMoonControl();
+        }
 
+        if (!this.isControllingMoon) {
+            this.handleControllingPlayer();
+        }
+        // else -> Moon control handled by moon
+
+        this.checkIfDead();
+    },
+
+    isMoonControlToggleThrottled() {
+        var currentTime = new Date().getTime();
+        var isThrottled = false;
+
+        if (currentTime - this.moonControlToggleThrottle > 300) {
+            isThrottled = true;
+            this.moonControlToggleThrottle = currentTime;
+        }
+
+        return isThrottled;
+    },
+
+    handleControllingPlayer: function() {
         this.handleHorizontalMovement();
 
         //  Allow the sprite to jump if they are touching the ground.
         if (this.cursors.up.isDown && this.sprite.body.blocked.down) {
             this.sprite.body.velocity.y = -200;
         }
-        this.checkIfDead();
-    },
-
-    handleVerticalMovement: function() {
-
     },
 
     handleHorizontalMovement: function() {
