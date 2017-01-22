@@ -49,10 +49,6 @@ MoonMage.states.Level1.prototype = {
         this.pauseBox = new MoonMage.entities.ui.PauseBox(this.game, this.state);
     },
 
-    onCollideWaterBox: function (water, box) {
-        //console.log(water, box);
-    },
-
     onCollideBoxGround: function (box, ground) {
         if (ground.faceLeft || ground.faceRight) {
             box.body.position = box.body.prev;

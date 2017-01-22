@@ -40,8 +40,12 @@ MoonMage.states.Level2.prototype = {
 
         this.water.waterBasinSprite.body.setCollisionGroup(waterCollisionGroup);
         this.water.waterBasinSprite.body.collides([boxCollisionGroup]);
+        this.water.wavePhysicsSprite.body.setCollisionGroup(waterCollisionGroup);
+        this.water.wavePhysicsSprite.body.collides([boxCollisionGroup]);
+        // new this.game.physics.p2.BodyDebug(this.game, this.water.wavePhysicsSprite.body);
+        // Phaser.Physics.P2.BodyDebug(this.game, this.water.wavePhysicsSprite.body);
 
-        this.player = new MoonMage.entities.player(this.game, this.moon, 100, this.game.world.height - 300);
+        this.player = new MoonMage.entities.player(this.game, this.moon, /* 1430 */ 32, this.game.world.height - 300);
 
         // copypast
         this.game.physics.p2.enable('dude', false);
@@ -89,12 +93,11 @@ MoonMage.states.Level2.prototype = {
         this.pauseLastPressed = new Date().getTime();
     },
 
-    testCollide: function (a, b) { console.log('test', a, b); },
-
     update: function() {
         if (!this.pauseBox.isPaused()) {
             this.player.update();
             this.moon.update();
+            this.water.update(this);
 
             if (this._shouldTogglePause()) {
                 this.game.physics.p2.paused = true;
