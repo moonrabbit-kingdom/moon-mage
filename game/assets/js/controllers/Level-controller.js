@@ -5,7 +5,6 @@ MoonMage.controllers.LevelController = function (game, level) {
 
 MoonMage.controllers.LevelController.prototype = {
     loadTileMap: function () {
-        console.log(this.game);
         map = this.game.add.tilemap(this.level, 32, 32);
         map.addTilesetImage('background');
 

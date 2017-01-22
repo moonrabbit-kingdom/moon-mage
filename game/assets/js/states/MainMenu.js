@@ -1,10 +1,10 @@
 MoonMage.states.MainMenu = function(game) {
-    console.log('MainMenu.construct');
+    MoonMage.debug('stateHooks', 'MainMenu.constructor');
 };
 
 MoonMage.states.MainMenu.prototype = {
     preload: function() {
-        console.log('MainMenu.preload', this.game);
+        MoonMage.debug('stateHooks', 'MainMenu.preload');
 
         this.game.load.image('main-menu-background', 'assets/img/main-menu/background.png');
         this.game.load.image('main-menu-caret', 'assets/img/main-menu/caret.png');
@@ -12,7 +12,7 @@ MoonMage.states.MainMenu.prototype = {
     },
 
     create: function() {
-        console.log('MainMenu.create');
+        MoonMage.debug('stateHooks', 'MainMenu.create');
 
         var background = this.game.add.sprite(this.game.world.centerX, this.game.world.centerY, 'main-menu-background');
         background.anchor.setTo(0.5, 0.5);

@@ -1,5 +1,5 @@
 MoonMage.states.Preloader = function (game) {
-    console.log('Preloader.construct');
+    MoonMage.debug('stateHooks', 'Preloader.constructor');
     //this.preloadBar = null;
     //this.titleText = null;
     //this.ready = false;
@@ -8,7 +8,7 @@ MoonMage.states.Preloader = function (game) {
 MoonMage.states.Preloader.prototype = {
 
     preload: function () {
-        console.log('Preloader.preload');
+        MoonMage.debug('stateHooks', 'Preloader.preload');
         //this.preloadBar = this.add.sprite(this.world.centerX, this.world.centerY, 'preloaderBar');
         //this.preloadBar.anchor.setTo(0.5, 0.5);
         //this.load.setPreloadSprite(this.preloadBar);
@@ -29,7 +29,7 @@ MoonMage.states.Preloader.prototype = {
     },
 
     create: function () {
-        console.log('Preloader.create');
+    MoonMage.debug('stateHooks', 'Preloader.create');
         //this.preloadBar.cropEnabled = false;
     },
 

@@ -1,5 +1,5 @@
 MoonMage.states.Level1 = function(game) {
-    console.log('Level1.construct');
+    MoonMage.debug('stateHooks', 'Level1.constructor');
     this.game = game;
     this.player;
     this.platformGroup;
@@ -9,6 +9,7 @@ MoonMage.states.Level1.prototype = {
     preload: function() {},
 
     create: function() {
+        MoonMage.debug('stateHooks', 'Level1.create');
 
 
         // load the tilemap and create the ground and moveable "diamonds"
@@ -28,11 +29,6 @@ MoonMage.states.Level1.prototype = {
 
     },
 
-    pushBoxes: function (player, star) {
-        console.log(player, star);
-        return true;
-    },
-
     update: function() {
         var hitPlatform = this.game.physics.arcade.collide(this.player.sprite, this.groundLayer);
         this.game.physics.arcade.collide(this.boxes, this.groundLayer);
@@ -40,17 +36,9 @@ MoonMage.states.Level1.prototype = {
 
         // this.game.physics.arcade.collide(this.water.wavePhysics, this.player.sprite);
         this.game.physics.arcade.collide(this.water.waterBasinSprite, this.boxes);
-        this.game.physics.arcade.collide(this.water.waveSprite, this.boxes, function() {
-            console.log('wave sprite hit boxes');
-            return true;
-        });
-        this.game.physics.arcade.collide(this.water.wavePhysics, this.boxes, function() {
-            console.log('wave physics hit boxes');
-            return true;
-        });
-        this.game.physics.arcade.collide(this.water.wavePhysics, this.player.sprite, function() {
-            console.log('wave hit player');
-        });
+        this.game.physics.arcade.collide(this.water.waveSprite, this.boxes);
+        this.game.physics.arcade.collide(this.water.wavePhysics, this.boxes);
+        this.game.physics.arcade.collide(this.water.wavePhysics, this.player.sprite);
 
         this.player.update(hitPlatform);
         this.moon.update();

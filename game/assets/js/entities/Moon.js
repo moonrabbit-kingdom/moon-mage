@@ -65,8 +65,6 @@ MoonMage.entities.Moon.prototype = {
     handleUncontrolledMovement() {
         var returnToX = this.defaultX + this.game.camera.x;
 
-        console.log('camera', this.game.camera.x, returnToX);
-
         this.setVelocityToPoint(returnToX, this.defaultY);
         this.applyVelocity(returnToX, this.defaultY);
     },
