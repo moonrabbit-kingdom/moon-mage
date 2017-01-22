@@ -12,12 +12,17 @@ MoonMage.entities.player = function (game, moon, startingX, startingY) {
     this.sprite = this.game.add.sprite(this.startingX, this.startingY, 'dude');
 
     //  We need to enable physics on the player
-    this.game.physics.arcade.enable(this.sprite);
+    this.game.physics.p2.enable(this.sprite);
+    //this.game.physics.arcade.enable(this.sprite);
 
-    //  Player physics properties. Give the little guy a slight bounce.
-    this.sprite.body.bounce.y = 0.2;
-    this.sprite.body.gravity.y = 600;
+    ////  Player physics properties. Give the little guy a slight bounce.
+    //this.sprite.body.bounce.y = 0.2;
+    //this.sprite.body.gravity.y = 600;
+    //this.sprite.mass = 1;
     //this.sprite.body.collideWorldBounds = true;
+
+    this.sprite.body.fixedRotation = true;
+    this.sprite.body.damping = 0.5;
 
     //  Our two animations, walking left and right.
     this.sprite.animations.add('left', [0, 1, 2, 3], 10, true);
@@ -44,21 +49,26 @@ MoonMage.entities.player.prototype = {
             this.ridingVelocity = this.ridingOn.body.velocity.x;
         }
 
-        if (this.game.input.keyboard.isDown(Phaser.Keyboard.A)) {
-            this.isControllingMoon = true;
-            this.stopMoving();
-            this.moon.setMoonControl(true);
-        } else {
-            this.isControllingMoon = false;
-            this.moon.setMoonControl(false);
-        }
+        //if (this.game.input.keyboard.isDown(Phaser.Keyboard.A)) {
+        //    this.isControllingMoon = true;
+        //    this.stopMoving();
+        //    this.moon.setMoonControl(true);
+        //} else {
+        //    this.isControllingMoon = false;
+        //    this.moon.setMoonControl(false);
+        //}
 
-        if (!this.isControllingMoon) {
+        //if (!this.isControllingMoon) {
             this.handleControllingPlayer();
-        }
+        //}
         // else -> Moon control handled by moon
 
-        this.sprite.body.velocity.x = this.intendedVelocity + this.ridingVelocity;
+        var newVelocity = this.intendedVelocity + this.ridingVelocity;
+        if (newVelocity < 0) {
+            this.sprite.body.moveLeft(-newVelocity);
+        } else {
+            this.sprite.body.moveRight(newVelocity);
+        }
         this.checkIfDead();
     },
 
@@ -66,16 +76,42 @@ MoonMage.entities.player.prototype = {
         this.handleHorizontalMovement();
 
         //  Allow the sprite to jump if they are touching the ground.
-        if (this.cursors.up.isDown && (this.sprite.body.blocked.down || this.ridingOn)) {
+        if (this.cursors.up.isDown && this.checkIfCanJump()) {
             this.sprite.body.velocity.y = -300;
             this.ridingOn = null;
         }
+
+    },
+
+    checkIfCanJump: function() {
+        var result = false;
+        var yAxis = p2.vec2.fromValues(0, 1);
+        for (var i=0; i < this.game.physics.p2.world.narrowphase.contactEquations.length; i++)
+        {
+            var c = this.game.physics.p2.world.narrowphase.contactEquations[i];
+
+            if (c.bodyA === this.sprite.body.data || c.bodyB === this.sprite.body.data)
+            {
+                var d = p2.vec2.dot(c.normalA, yAxis);
+
+                if (c.bodyA === this.sprite.body.data)
+                {
+                    d *= -1;
+                }
+
+                if (d > 0.5)
+                {
+                    result = true;
+                }
+            }
+        }
+        return result;
     },
 
     handleHorizontalMovement: function() {
-        if (this.sprite.body.blocked.left || this.sprite.body.blocked.right) {
-            this.ridingOn = null;
-        }
+        //if (this.sprite.body.blocked.left || this.sprite.body.blocked.right) {
+        //    this.ridingOn = null;
+        //}
 
         var newRightIsDown = this.cursors.right.isDown
         var newLeftIsDown = !newRightIsDown && this.cursors.left.isDown;
@@ -127,6 +163,12 @@ MoonMage.entities.player.prototype = {
     checkIfDead: function() {
         if(this.sprite.body.y > this.game.world.height ||
            this.sprite.body.x < 0) this.respawn();
+    },
+
+    toRide: function (player, box) {
+        if (this.sprite.body.touching.down) {
+            this.ridingOn = box;
+        }
     },
 
     respawn: function() {

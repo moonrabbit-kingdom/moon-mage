@@ -22,6 +22,14 @@ MoonMage.states.Level1.prototype = {
     create: function() {
         MoonMage.debug('stateHooks', 'Level1.create');
 
+        // todo:
+        // crystal should interact with physics when 'riding' on the wave
+        // wave shouldn't vibrase
+        // wave shouldn't launch crystal and person up
+        // player shouldn't fall through crystal
+        // player stops riding when crystal is jumpy
+
+        // d wave doesn't go down until released
 
         // load the tilemap and create the ground and moveable "diamonds"
         var levelController = new MoonMage.controllers.LevelController(this.game, 'level1');
@@ -29,13 +37,13 @@ MoonMage.states.Level1.prototype = {
         this.map = levelController.loadTileMap();
         this.game.world.setBounds(0, 0, this.map.widthInPixels, 562);
         this.groundLayer = levelController.createGround(this.map, 'Tile Layer 1');
-        this.boxes = levelController.createBoxes(this.map, 'Object Layer 1', 'diamond');
+        this.boxes = levelController.createBoxes(this.map, 'Object Layer 1', 'box');
 
         this.moon = new MoonMage.entities.Moon(this.game);
 
         this.water = new MoonMage.entities.Water(this.game, this);
 
-        this.player = new MoonMage.entities.player(this.game, this.moon, 32, this.game.world.height - 300);
+        this.player = new MoonMage.entities.player(this.game, this.moon, 1522, this.game.world.height - 300);
         this.game.camera.follow(this.player.sprite, Phaser.Camera.FOLLOW_PLATFORMER);
 
         this._createPauseMenu();
@@ -96,19 +104,24 @@ MoonMage.states.Level1.prototype = {
         this.state.start('MainMenu');
     },
 
-    toRide: function (player, box) {
-        if (player.body.touching.down) {
-            this.player.ridingOn = box;
+    onCollideWaterBox: function (water, box) {
+        //console.log(water, box);
+    },
+
+    onCollideBoxGround: function (box, ground) {
+        if (ground.faceLeft || ground.faceRight) {
+            box.body.position = box.body.prev;
+            box.body.velocity.x = 0;
         }
     },
 
     update: function() {
         var hitPlatform = this.game.physics.arcade.collide(this.player.sprite, this.groundLayer);
-        this.game.physics.arcade.collide(this.boxes, this.groundLayer);
-        this.game.physics.arcade.collide(this.player.sprite, this.boxes, this.toRide.bind(this));
+        this.game.physics.arcade.collide(this.boxes, this.groundLayer, this.onCollideBoxGround);
+        this.game.physics.arcade.collide(this.player.sprite, this.boxes, this.player.toRide.bind(this.player));
 
         // this.game.physics.arcade.collide(this.water.wavePhysics, this.player.sprite);
-        this.game.physics.arcade.collide(this.water.waterBasinSprite, this.boxes);
+        this.game.physics.arcade.collide(this.water.waterBasinSprite, this.boxes, this.onCollideWaterBox);
         // this.game.physics.arcade.collide(this.water.waveSprite, this.boxes);
         // this.game.physics.arcade.collide(this.water.wavePhysics, this.boxes);
         // this.game.physics.arcade.collide(this.water.wavePhysics, this.player.sprite);

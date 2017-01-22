@@ -20,7 +20,10 @@ MoonMage.controllers.LevelController.prototype = {
 
     createBoxes: function (map, layerName, spriteName) {
         var boxes = this.game.add.group();
-        boxes.enableBody = true;
+        //boxes.enableBody = true;
+        //boxes.enableBody = true;
+        //boxes.physicsBodyType = Phaser.Physics.P2JS;
+
         map.createFromObjects(layerName, // layer name in json
                               2, // gid
                               spriteName, //
