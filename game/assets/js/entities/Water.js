@@ -10,7 +10,7 @@ MoonMage.entities.Water = function(game, level) {
         RIPPLE_VARIANCE: 10
     };
 
-    //this._createWave(level);
+    this._createWave(level);
     this._createElaborateWaterBasin();
 };
 
@@ -251,6 +251,6 @@ MoonMage.entities.Water.prototype = {
 
     update: function(level) {
         this._updateElaborateWaterBasin();
-        //this._updateWave(level);
+        this._updateWave(level);
     }
 };

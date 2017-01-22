@@ -23,7 +23,7 @@ MoonMage.config = {
      */
     debug: {
         stateHooks: false,
-        wavePhysics: false, // bounding boxes, etc
+        wavePhysics: true, // bounding boxes, etc
         water: false
     }
 };
