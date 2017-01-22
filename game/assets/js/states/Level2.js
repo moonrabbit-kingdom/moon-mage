@@ -66,9 +66,12 @@ MoonMage.states.Level2.prototype = {
             var object = objects[i];
             var box = boxes.create(object.x, object.y, 'box');
             this.game.physics.p2.enable(box, false);
-            box.body.setRectangle(32, 32, 0, 0);
+            box.body.setRectangle(64, 64, 0, 0);
             box.body.setCollisionGroup(boxCollisionGroup);
-            box.body.collides([spritesCollisionGroup, tilesCollisionGroup, waterCollisionGroup]);
+            box.body.collides([spritesCollisionGroup,
+                               tilesCollisionGroup,
+                               waterCollisionGroup,
+                               boxCollisionGroup]);
         };
 
 
