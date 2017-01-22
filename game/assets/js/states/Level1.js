@@ -29,7 +29,8 @@ MoonMage.states.Level1.prototype = {
         this.map = levelController.loadTileMap();
         this.game.world.setBounds(0, 0, this.map.widthInPixels, 562);
         this.groundLayer = levelController.createGround(this.map, 'Tile Layer 1');
-        this.boxes = levelController.createBoxes(this.map, 'Object Layer 1', 'diamond');
+        this.boxes = levelController.createBoxes(this.map, 'Object Layer 1', 'box');
+
 
         this.moon = new MoonMage.entities.Moon(this.game);
 
