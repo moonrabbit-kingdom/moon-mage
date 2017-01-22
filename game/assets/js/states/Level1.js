@@ -10,6 +10,10 @@ MoonMage.states.Level1.prototype = {
 
     create: function() {
 
+        this.water = new MoonMage.entities.Water(this.game);
+
+        this.moon = new MoonMage.entities.Moon(this.game);
+
         // load the tilemap and create the ground and moveable "diamonds"
         var levelController = new MoonMage.controllers.LevelController(this.game, 'level1');
 
@@ -26,5 +30,7 @@ MoonMage.states.Level1.prototype = {
         var hitPlatform = this.game.physics.arcade.collide(this.player.sprite, this.groundLayer);
 
         this.player.update(hitPlatform);
+        this.water.update();
+        this.moon.update();
     },
 }
