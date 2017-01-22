@@ -49,18 +49,18 @@ MoonMage.entities.player.prototype = {
             this.ridingVelocity = this.ridingOn.body.velocity.x;
         }
 
-        //if (this.game.input.keyboard.isDown(Phaser.Keyboard.A)) {
-        //    this.isControllingMoon = true;
-        //    this.stopMoving();
-        //    this.moon.setMoonControl(true);
-        //} else {
-        //    this.isControllingMoon = false;
-        //    this.moon.setMoonControl(false);
-        //}
+        if (this.game.input.keyboard.isDown(Phaser.Keyboard.A)) {
+           this.isControllingMoon = true;
+           this.stopMoving();
+           this.moon.setMoonControl(true);
+        } else {
+           this.isControllingMoon = false;
+           this.moon.setMoonControl(false);
+        }
 
-        //if (!this.isControllingMoon) {
+        if (!this.isControllingMoon) {
             this.handleControllingPlayer();
-        //}
+        }
         // else -> Moon control handled by moon
 
         var newVelocity = this.intendedVelocity + this.ridingVelocity;

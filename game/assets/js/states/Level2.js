@@ -21,7 +21,7 @@ MoonMage.states.Level2.prototype = {
         this.game.world.setBounds(0, 0, this.map.widthInPixels, 562);
         this.groundLayer = levelController.createGround(this.map, 'Tile Layer 1');
 
-        //this.moon = new MoonMage.entities.Moon(this.game);
+        this.moon = new MoonMage.entities.Moon(this.game);
 
         this.game.physics.startSystem(Phaser.Physics.P2JS);
         this.game.physics.p2.setImpactEvents(true);
@@ -84,6 +84,7 @@ MoonMage.states.Level2.prototype = {
     update: function() {
         if (!this.pauseBox.isPaused()) {
             this.player.update();
+            this.moon.update();
 
             if (this._shouldTogglePause()) {
                 this.game.physics.p2.paused = true;
