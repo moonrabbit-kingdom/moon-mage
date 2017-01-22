@@ -35,7 +35,7 @@ MoonMage.states.Level1.prototype = {
 
         this.water = new MoonMage.entities.Water(this.game, this);
 
-        this.player = new MoonMage.entities.player(this.game, this.moon, 1520, this.game.world.height - 300);
+        this.player = new MoonMage.entities.player(this.game, this.moon, 32, this.game.world.height - 300);
         this.game.camera.follow(this.player.sprite, Phaser.Camera.FOLLOW_PLATFORMER);
 
         this._createPauseMenu();
