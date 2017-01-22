@@ -35,7 +35,7 @@ MoonMage.states.Level1.prototype = {
 
         this.water = new MoonMage.entities.Water(this.game, this);
 
-        this.player = new MoonMage.entities.player(this.game, this.moon, 32, this.game.world.height - 300);
+        this.player = new MoonMage.entities.player(this.game, this.moon, 1520, this.game.world.height - 300);
         this.game.camera.follow(this.player.sprite, Phaser.Camera.FOLLOW_PLATFORMER);
 
         this._createPauseMenu();
@@ -96,10 +96,16 @@ MoonMage.states.Level1.prototype = {
         this.state.start('MainMenu');
     },
 
+    toRide: function (player, box) {
+        if (player.body.touching.down) {
+            this.player.ridingOn = box;
+        }
+    },
+
     update: function() {
         var hitPlatform = this.game.physics.arcade.collide(this.player.sprite, this.groundLayer);
         this.game.physics.arcade.collide(this.boxes, this.groundLayer);
-        this.game.physics.arcade.collide(this.player.sprite, this.boxes);
+        this.game.physics.arcade.collide(this.player.sprite, this.boxes, this.toRide.bind(this));
 
         // this.game.physics.arcade.collide(this.water.wavePhysics, this.player.sprite);
         this.game.physics.arcade.collide(this.water.waterBasinSprite, this.boxes);

@@ -59,6 +59,7 @@ MoonMage.entities.Water.prototype = {
         );
 
         this.waveSprite.height = 10;
+        this.waveSprite.mass = 6000;
 
         this.game.physics.arcade.enable(this.waveSprite);
         this.waveSprite.anchor.set(1);

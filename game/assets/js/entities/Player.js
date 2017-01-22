@@ -1,6 +1,9 @@
 MoonMage.entities.player = function (game, moon, startingX, startingY) {
     this.game = game;
     this.moon = moon;
+    this.ridingOn = null;
+    this.intendedVelocity = 0;
+    this.ridingVelocity = 0;
 
     this.startingX = startingX;
     this.startingY = startingY;
@@ -35,6 +38,12 @@ MoonMage.entities.player = function (game, moon, startingX, startingY) {
 
 MoonMage.entities.player.prototype = {
     update: function (hitPlatform) {
+
+        this.ridingVelocity = 0;
+        if (this.ridingOn !== null) {
+            this.ridingVelocity = this.ridingOn.body.velocity.x;
+        }
+
         if (this.game.input.keyboard.isDown(Phaser.Keyboard.A)) {
             this.isControllingMoon = true;
             this.stopMoving();
@@ -49,6 +58,7 @@ MoonMage.entities.player.prototype = {
         }
         // else -> Moon control handled by moon
 
+        this.sprite.body.velocity.x = this.intendedVelocity + this.ridingVelocity;
         this.checkIfDead();
     },
 
@@ -56,12 +66,17 @@ MoonMage.entities.player.prototype = {
         this.handleHorizontalMovement();
 
         //  Allow the sprite to jump if they are touching the ground.
-        if (this.cursors.up.isDown && this.sprite.body.blocked.down) {
+        if (this.cursors.up.isDown && (this.sprite.body.blocked.down || this.ridingOn)) {
             this.sprite.body.velocity.y = -300;
+            this.ridingOn = null;
         }
     },
 
     handleHorizontalMovement: function() {
+        if (this.sprite.body.blocked.left || this.sprite.body.blocked.right) {
+            this.ridingOn = null;
+        }
+
         var newRightIsDown = this.cursors.right.isDown
         var newLeftIsDown = !newRightIsDown && this.cursors.left.isDown;
 
@@ -70,35 +85,34 @@ MoonMage.entities.player.prototype = {
         } else if (newLeftIsDown && !this.isDown.left) {
             this.startMoveLeft();
         } else if (!newRightIsDown && !newLeftIsDown) {
-            this.stopMoving();
+           this.stopMoving();
         }
+
     },
 
     stopMoving: function() {
-        this.sprite.body.velocity.x = 0;
-
         this.sprite.animations.stop();
 
         this.sprite.frame = 4;
 
         this.isDown.left = false;
         this.isDown.right = false;
+
+        this.intendedVelocity = 0;
     },
 
     startMoveLeft: function() {
-        this.sprite.body.velocity.x = -150;
-
         this.sprite.animations.play('left');
-
         this.isDown.left = true;
+
+        this.intendedVelocity = -150;
     },
 
     startMoveRight: function() {
-        this.sprite.body.velocity.x = 150;
-
         this.sprite.animations.play('right');
-
         this.isDown.right = true;
+
+        this.intendedVelocity = 150;
     },
 
     pause: function() {
