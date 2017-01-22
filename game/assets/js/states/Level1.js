@@ -37,5 +37,6 @@ MoonMage.states.Level1.prototype = {
 
         this.player.update(hitPlatform);
         this.moon.update();
+        this.water.update(this);
     },
 }
