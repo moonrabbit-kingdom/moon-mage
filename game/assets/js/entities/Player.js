@@ -31,7 +31,7 @@ MoonMage.entities.player.prototype = {
         this.handleHorizontalMovement();
 
         //  Allow the sprite to jump if they are touching the ground.
-        if (this.cursors.up.isDown && this.sprite.body.touching.down && hitPlatform) {
+        if (this.cursors.up.isDown && this.sprite.body.blocked.down) {
             this.sprite.body.velocity.y = -350;
         }
     },
