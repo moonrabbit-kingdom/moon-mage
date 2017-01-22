@@ -36,6 +36,6 @@ MoonMage.states.Preloader.prototype = {
 
     update: function () {
         //this.ready = true;
-        this.state.start('MainMenu');
+        this.state.start(MoonMage.config.startState === null ? 'MainMenu' : MoonMage.config.startState);
     },
 }

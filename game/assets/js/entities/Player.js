@@ -101,6 +101,15 @@ MoonMage.entities.player.prototype = {
         this.isDown.right = true;
     },
 
+    pause: function() {
+        this.sprite.animations.paused = true;
+        this.stopMoving();
+    },
+
+    unpause: function() {
+        this.sprite.animations.paused = false;
+    },
+
     checkIfDead: function() {
         if(this.sprite.body.y > this.game.world.height ||
            this.sprite.body.x < 0) this.respawn();
