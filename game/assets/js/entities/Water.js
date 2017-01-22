@@ -10,6 +10,7 @@ MoonMage.entities.Water = function(game) {
 
     this.createWaterBasin();
     this.createWavePolygon();
+    this.createWaterPhysics();
 };
 
 MoonMage.entities.Water.prototype = {
@@ -61,6 +62,25 @@ MoonMage.entities.Water.prototype = {
         this.waveSprite.anchor.set(0);
     },
 
+    createWaterPhysics() {
+        var waterBasinGraphics = this.game.add.graphics(0, 0);
+        waterBasinGraphics.beginFill(0xFF0000, 0.5);
+        waterBasinGraphics.drawRect(0, 0, this.constants.WAVE_WIDTH, this.constants.MAX_WAVE_HEIGHT);
+
+        var waterBasinTexture = waterBasinGraphics.generateTexture();
+        waterBasinGraphics.destroy();
+
+        this.wavePhysics = this.game.add.sprite(
+            0,
+            this.constants.HEIGHT_OFFSET,
+            waterBasinTexture
+        );
+
+        this.game.physics.arcade.enable(this.wavePhysics);
+        this.wavePhysics.body.immovable = true;
+        this.wavePhysics.anchor.set(0);
+    },
+
     update: function(level) {
         var moonX = level.moon.getX();
         var moonStrength = level.moon.getStrength();
@@ -68,5 +88,6 @@ MoonMage.entities.Water.prototype = {
         this.waveSprite.height = this.constants.MAX_WAVE_HEIGHT * moonStrength;
         this.waveSprite.position.x = moonX - this.constants.WAVE_WIDTH / 2;
         this.waveSprite.position.y = this.constants.HEIGHT_OFFSET - this.waveSprite.height;
+        this.wavePhysics.position = this.waveSprite.position;
     }
 };

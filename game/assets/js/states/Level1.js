@@ -28,12 +28,16 @@ MoonMage.states.Level1.prototype = {
 
     pushBoxes: function (player, star) {
         console.log(player, star);
+        return true;
     },
 
     update: function() {
         var hitPlatform = this.game.physics.arcade.collide(this.player.sprite, this.groundLayer);
         this.game.physics.arcade.collide(this.boxes, this.groundLayer);
-        this.game.physics.arcade.collide(this.player.sprite, this.boxes, this.pushBoxes);
+        this.game.physics.arcade.collide(this.player.sprite, this.boxes);
+
+        this.game.physics.arcade.collide(this.water.wavePhysics, this.player.sprite);
+        this.game.physics.arcade.collide(this.water.wavePhysics, this.boxes);
 
         this.player.update(hitPlatform);
         this.moon.update();
