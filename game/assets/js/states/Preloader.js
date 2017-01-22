@@ -35,6 +35,6 @@ MoonMage.states.Preloader.prototype = {
 
     update: function () {
         //this.ready = true;
-        this.state.start('Level1');
+        this.state.start('MainMenu');
     },
 }
