@@ -47,6 +47,7 @@ MoonMage.states.WinGame.prototype = {
     },
 
     _goToMainMenu() {
+        this.game.world.setBounds(0, 0, MoonMage.config.viewport.width, MoonMage.config.viewport.height);
         this.state.start('MainMenu');
     }
 }
