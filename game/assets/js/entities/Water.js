@@ -69,21 +69,21 @@ MoonMage.entities.Water.prototype = {
             -this.constants.OFFSCREEN_OVERFLOW,
             this.constants.HEIGHT_OFFSET + 10,
             this.game.world.bounds.width + this.constants.OFFSCREEN_OVERFLOW * 2,
-            this.game._height + this.constants.OFFSCREEN_OVERFLOW);
+            90);
 
         var waterBasinTexture = waterBasinGraphics.generateTexture();
         waterBasinGraphics.destroy();
 
         this.waterBasinSprite = this.game.add.sprite(
-            0,
-            this.constants.HEIGHT_OFFSET,
+            this.game.world.bounds.width / 2,
+            this.constants.HEIGHT_OFFSET + 50,
             waterBasinTexture
         );
 
-        this.game.physics.p2.enable(this.waterBasinSprite, false);
-        this.waterBasinSprite.body.setRectangle(MoonMage.config.viewport.width, this.constants.HEIGHT_OFFSET, 0, 0);
-        this.waterBasinSprite.anchor.set(0);
+        this.game.physics.p2.enable(this.waterBasinSprite);
         this.waterBasinSprite.body.kinematic = true;
+
+        this.waterBasinSprite.body.updateCollisionMask();
     },
 
     _updateElaborateWaterBasin() {

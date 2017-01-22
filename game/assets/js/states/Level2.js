@@ -39,7 +39,7 @@ MoonMage.states.Level2.prototype = {
         this.water = new MoonMage.entities.Water(this.game, this);
 
         this.water.waterBasinSprite.body.setCollisionGroup(waterCollisionGroup);
-        this.water.waterBasinSprite.body.collides(boxCollisionGroup);
+        this.water.waterBasinSprite.body.collides([boxCollisionGroup]);
 
         this.player = new MoonMage.entities.player(this.game, this.moon, 1430, this.game.world.height - 300);
 
@@ -48,7 +48,6 @@ MoonMage.states.Level2.prototype = {
         this.player.sprite.body.setCollisionGroup(spritesCollisionGroup);
         this.player.sprite.body.collides(tilesCollisionGroup, this.testCollide);
         this.player.sprite.body.collides(boxCollisionGroup);
-        this.player.sprite.body.collides(waterCollisionGroup);
 
        // map.setCollisionBetween(1, 12, true, layer2);
         var tileObjects = this.physics.p2.convertTilemap(this.map, 'Tile Layer 1');
@@ -56,7 +55,7 @@ MoonMage.states.Level2.prototype = {
         for (var i = 0; i < tileObjects.length; i++) {
             var tileBody = tileObjects[i];
             tileBody.setCollisionGroup(tilesCollisionGroup);
-            tileBody.collides(spritesCollisionGroup);
+            tileBody.collides([spritesCollisionGroup, boxCollisionGroup]);
         }
 
         var objects = this.game.cache.getJSON('level1Objects').layers[1].objects;
