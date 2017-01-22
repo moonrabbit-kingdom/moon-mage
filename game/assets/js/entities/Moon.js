@@ -10,7 +10,7 @@ MoonMage.entities.Moon = function(game) {
     this.moonRender.drawCircle(0, 0, 100);
 
     this.pointer = this.game.input.activePointer;
-    this.speed = 3;
+    this.speed = 6;
     this.distanceThreshold = 2.7;
     this.maxY = 160;
     this.minY = 60;
@@ -22,6 +22,7 @@ MoonMage.entities.Moon = function(game) {
     this.rangeX = this.maxRelativeX - this.minRelativeX;
 
     this.position = this.moonRender.position;
+    this.isStopped = true;
 
     this.oldPointerX = this.pointer.worldX;
     this.oldPointerY = this.pointer.worldY;
@@ -53,12 +54,14 @@ MoonMage.entities.Moon.prototype = {
     applyVelocity(destinationX, destinationY) {
         if (Math.abs(this.position.x - destinationX) > this.distanceThreshold
             || Math.abs(this.position.y - destinationY) > this.distanceThreshold) {
+            this.isStopped = false;
             this.position.x += this.velocity.x;
             this.position.y += this.velocity.y;
             this.position.x = this.clamp(this.position.x, this._getMinX(), this._getMaxX(), 'x');
             this.position.y = this.clamp(this.position.y, this.minY, this.maxY , 'y');
         }
         else {
+            this.isStopped = true;
             this.velocity.x = 0;
             this.velocity.y = 0;
         }

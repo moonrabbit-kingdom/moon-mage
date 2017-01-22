@@ -140,7 +140,7 @@ MoonMage.entities.Water.prototype = {
         );
 
         // this.waveSprite.height = 10;
-        this.waveSprite.mass = 6000;
+        this.waveSprite.mass = 100;
 
         this.game.physics.arcade.enable(this.waveSprite);
         this.waveSprite.anchor.set(1);
@@ -153,7 +153,7 @@ MoonMage.entities.Water.prototype = {
             wavePhysicsGraphics.lineStyle(2, 0xFF0000);
         }
 
-        wavePhysicsGraphics.beginFill(0xFF0000, 0);
+        wavePhysicsGraphics.beginFill(0xFF0000, 1);
         var minX = this.constants.WAVE_WIDTH * 1/4;
         var width = this.constants.WAVE_WIDTH * 2/4;
         wavePhysicsGraphics.drawRect(
@@ -200,10 +200,25 @@ MoonMage.entities.Water.prototype = {
             180
         );
 
+        // distance threshold dampens middle wobbling
+        var distanceThreshold = 2.7;
+        var xNotMovingMuch = Math.abs(this.wavePhysicsSprite.position.x - desiredX) < distanceThreshold;
+        var yNotMovingMuch = Math.abs(this.wavePhysicsSprite.position.y - desiredY) < distanceThreshold;
+
+        if (xNotMovingMuch && level.moon.isStopped) {
+            desiredVelocity.x = 0;
+        }
+
+        if (yNotMovingMuch && level.moon.isStopped && level.moon.isBeingControlled) {
+            desiredVelocity.y = 0;
+        }
+
+        // dampens top specifically
         if (level.moon.isBeingControlled && this.wavePhysicsSprite.position.y < 260 &&
             level.moon.position.y === level.moon.maxY) {
             desiredVelocity.y = 0;
         }
+
 
         this.wavePhysicsSprite.body.velocity.x = desiredVelocity.x;
         this.wavePhysicsSprite.body.velocity.y = desiredVelocity.y;
