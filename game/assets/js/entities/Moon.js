@@ -12,6 +12,7 @@ MoonMage.entities.Moon = function(game) {
     this.distanceThreshold = 2.7;
     this.maxY = 180;
     this.minY = 60;
+    this.rangeY = this.maxY - this.minY;
     this.maxX = this.game._width - 60;
     this.minX = 60;
 
@@ -60,5 +61,16 @@ MoonMage.entities.Moon.prototype = {
 
     clamp(value, min, max, what) {
         return Math.max(Math.min(value, max), min);
+    },
+
+    getX() {
+        return this.position.x;
+    },
+
+    /**
+     * Returns a value 0 to 1 of the moons strength
+     */
+    getStrength() {
+        return (this.position.y - this.minY) / this.rangeY;
     }
 };
