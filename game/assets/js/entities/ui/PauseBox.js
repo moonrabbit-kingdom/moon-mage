@@ -2,13 +2,9 @@ MoonMage.entities.ui.PauseBox = function (game, state) {
     this.game = game;
     this.state = state;
 
-    var centerX = this.game.camera.x + MoonMage.config.viewport.width/2;
-    var centerY = this.game.camera.y + MoonMage.config.viewport.height/2;
-    this.pauseBox = this.game.add.sprite(centerX, centerY, 'pause-menu-box');
-    this.pauseBox.anchor.setTo(0.5, 0.5);
-
-    this._setupButton(-140, 15, 'pause-continue', this.closePauseMenu);
-    this._setupButton(0, 15, 'pause-exit', this._exitPlay);
+    this._setupBox();
+    this._setupButton(-60, -10, 'Continue', this.closePauseMenu);
+    this._setupButton(-60, 40, 'Exit', this._exitPlay);
 
     this.pauseBox.scale.set(0);
 
@@ -19,9 +15,45 @@ MoonMage.entities.ui.PauseBox = function (game, state) {
 }
 
 MoonMage.entities.ui.PauseBox.prototype = {
-    _setupButton(x, y, sprite, callback) {
-        var button = this.game.add.button(x, y, sprite, callback, this);
+    _setupBox() {
+        var centerX = this.game.camera.x + MoonMage.config.viewport.width/2;
+        var centerY = this.game.camera.y + MoonMage.config.viewport.height/2;
+
+        var pauseBoxGraphics = this.game.add.graphics(0, 0);
+        pauseBoxGraphics.beginFill(0xFFFFFF, 1);
+        pauseBoxGraphics.lineStyle(2, 0x000000);
+        pauseBoxGraphics.drawRoundedRect(
+            centerX,
+            centerY,
+            300,
+            300,
+            20
+        );
+
+        var pauseBoxTexture = pauseBoxGraphics.generateTexture();
+        pauseBoxGraphics.destroy();
+
+        this.pauseBox = this.game.add.sprite(
+            centerX,
+            centerY,
+            pauseBoxTexture
+        );
+
+        var style = { font: '48px Arial', fill: '#000000', align: 'left' };
+        var text = this.game.add.text(-80, -100, 'PAUSED', style);
+        this.pauseBox.addChild(text);
+
+        this.pauseBox.anchor.set(0.5, 0.5);
+    },
+
+    _setupButton(x, y, text, callback) {
+        var button = this.game.add.button(x, y, null, callback, this);
         button.input.useHandCursor = true;
+
+        var style = { font: '28px Arial', fill: '#000000', align: 'left' };
+        var text = this.game.add.text(0, 0, text, style);
+        button.addChild(text);
+
         this.pauseBox.addChild(button);
     },
 
