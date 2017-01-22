@@ -18,21 +18,20 @@ MoonMage.controllers.LevelController.prototype = {
         return groundLayer;
     },
 
-    createBoxes: function (map, layerName, spriteName) {
-        var boxes = this.game.add.group();
+    createBoxes: function (map, layerName) {
+        var groundLayer = map.createLayer(layerName);
         //boxes.enableBody = true;
         //boxes.enableBody = true;
         //boxes.physicsBodyType = Phaser.Physics.P2JS;
 
-        map.createFromObjects(layerName, // layer name in json
-                              2, // gid
-                              spriteName, //
-                              1, // frame
-                              true,
-                              false,
-                              boxes, // group name
-                              MoonMage.entities.Box); // custom class
 
-        return boxes;
+        //layerName, // layer name in json
+        //2, // gid
+        //spriteName, //
+        //1, // frame
+        //true,
+        //false,
+        //boxes, // group name
+        //MoonMage.entities.Box); // custom class
     }
 }
