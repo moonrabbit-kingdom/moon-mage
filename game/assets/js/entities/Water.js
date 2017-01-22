@@ -10,7 +10,7 @@ MoonMage.entities.Water = function(game, level) {
         RIPPLE_VARIANCE: 10
     };
 
-    this._createWave(level);
+    //this._createWave(level);
     this._createElaborateWaterBasin();
 };
 
@@ -64,7 +64,7 @@ MoonMage.entities.Water.prototype = {
 
         // Create Physics
         var waterBasinGraphics = this.game.add.graphics(0, 0);
-        waterBasinGraphics.beginFill(this.constants.COLOR, 0); // clear
+        waterBasinGraphics.beginFill(this.constants.COLOR, 0.5); // clear
         waterBasinGraphics.drawRect(
             -this.constants.OFFSCREEN_OVERFLOW,
             this.constants.HEIGHT_OFFSET + 10,
@@ -80,9 +80,10 @@ MoonMage.entities.Water.prototype = {
             waterBasinTexture
         );
 
-        this.game.physics.arcade.enable(this.waterBasinSprite);
-        this.waterBasinSprite.body.immovable = true;
+        this.game.physics.p2.enable(this.waterBasinSprite, false);
+        this.waterBasinSprite.body.setRectangle(MoonMage.config.viewport.width, this.constants.HEIGHT_OFFSET, 0, 0);
         this.waterBasinSprite.anchor.set(0);
+        this.waterBasinSprite.body.kinematic = true;
     },
 
     _updateElaborateWaterBasin() {
@@ -250,6 +251,6 @@ MoonMage.entities.Water.prototype = {
 
     update: function(level) {
         this._updateElaborateWaterBasin();
-        this._updateWave(level);
+        //this._updateWave(level);
     }
 };

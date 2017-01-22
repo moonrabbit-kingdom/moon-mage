@@ -34,16 +34,21 @@ MoonMage.states.Level2.prototype = {
         var spritesCollisionGroup = this.physics.p2.createCollisionGroup();
         var tilesCollisionGroup = this.physics.p2.createCollisionGroup();
         var boxCollisionGroup = this.physics.p2.createCollisionGroup();
+        var waterCollisionGroup = this.physics.p2.createCollisionGroup();
 
-        this.game.physics.p2.updateBoundsCollisionGroup(false);
+        this.water = new MoonMage.entities.Water(this.game, this);
+
+        this.water.waterBasinSprite.body.setCollisionGroup(waterCollisionGroup);
+        this.water.waterBasinSprite.body.collides(boxCollisionGroup);
 
         this.player = new MoonMage.entities.player(this.game, this.moon, 1430, this.game.world.height - 300);
 
         // copypast
         this.game.physics.p2.enable('dude', false);
         this.player.sprite.body.setCollisionGroup(spritesCollisionGroup);
-        this.player.sprite.body.collides(tilesCollisionGroup);
+        this.player.sprite.body.collides(tilesCollisionGroup, this.testCollide);
         this.player.sprite.body.collides(boxCollisionGroup);
+        this.player.sprite.body.collides(waterCollisionGroup);
 
        // map.setCollisionBetween(1, 12, true, layer2);
         var tileObjects = this.physics.p2.convertTilemap(this.map, 'Tile Layer 1');
@@ -64,15 +69,16 @@ MoonMage.states.Level2.prototype = {
             this.game.physics.p2.enable(box, false);
             box.body.setRectangle(32, 32, 0, 0);
             box.body.setCollisionGroup(boxCollisionGroup);
-            box.body.collides([spritesCollisionGroup, tilesCollisionGroup]);
+            box.body.collides([spritesCollisionGroup, tilesCollisionGroup, waterCollisionGroup]);
         };
 
-        //this.water = new MoonMage.entities.Water(this.game, this);
 
         this.game.camera.follow(this.player.sprite, Phaser.Camera.FOLLOW_PLATFORMER);
 
         //this._createPauseMenu();
     },
+
+    testCollide: function (a, b) { console.log('test', a, b); },
 
     update: function() {
         this.player.update();
