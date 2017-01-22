@@ -34,12 +34,6 @@ MoonMage.entities.Water.prototype = {
         this.game.physics.arcade.enable(this.waterBasinSprite);
         this.waterBasinSprite.body.immovable = true;
         this.waterBasinSprite.anchor.set(0);
-
-
-        // waterBasinGraphics.boundsPadding = 0;
-        // this.waterBasinSprite = this.game.add.sprite(0, 0);
-        // this.waterBasinSprite.addChild(waterBasinGraphics);
-        // this.game.physics.arcade.enable(this.waterBasinSprite);
     },
 
     createWaveSprite() {
