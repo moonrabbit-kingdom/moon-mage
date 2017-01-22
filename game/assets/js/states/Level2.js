@@ -41,7 +41,7 @@ MoonMage.states.Level2.prototype = {
         this.water.waterBasinSprite.body.setCollisionGroup(waterCollisionGroup);
         this.water.waterBasinSprite.body.collides([boxCollisionGroup]);
 
-        this.player = new MoonMage.entities.player(this.game, this.moon, 1430, this.game.world.height - 300);
+        this.player = new MoonMage.entities.player(this.game, this.moon, 100, this.game.world.height - 300);
 
         // copypast
         this.game.physics.p2.enable('dude', false);
@@ -67,6 +67,7 @@ MoonMage.states.Level2.prototype = {
             var box = boxes.create(object.x, object.y, 'box');
             this.game.physics.p2.enable(box, false);
             box.body.setRectangle(64, 64, 0, 0);
+            box.body.fixedRotation = true;
             box.body.setCollisionGroup(boxCollisionGroup);
             box.body.collides([spritesCollisionGroup,
                                tilesCollisionGroup,
@@ -74,6 +75,13 @@ MoonMage.states.Level2.prototype = {
                                boxCollisionGroup]);
         };
 
+
+        var firstText = new MoonMage.entities.ui.TextBox(this.game, "'↑' to jump", 500, 80, 250);
+
+        var secondText = new MoonMage.entities.ui.TextBox(this.game, "hold 'a' to invoke moon powers", 1500, 80, 600);
+        //this.game.add.text(100, 100,
+        //this.game.add.text(400, 100,
+        //this.game.add.text(600, 100, "notice the moon");
 
         this.game.camera.follow(this.player.sprite, Phaser.Camera.FOLLOW_PLATFORMER);
 
