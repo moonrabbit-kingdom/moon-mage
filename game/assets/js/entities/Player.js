@@ -2,7 +2,7 @@ MoonMage.entities.player = function (game) {
     this.game = game;
 
     // The player and its settings
-    this.sprite = this.game.add.sprite(32, this.game.world.height - 150, 'dude');
+    this.sprite = this.game.add.sprite(32, this.game.world.height - 300, 'dude');
 
     //  We need to enable physics on the player
     this.game.physics.arcade.enable(this.sprite);
