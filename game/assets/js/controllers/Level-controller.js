@@ -6,7 +6,7 @@ MoonMage.controllers.LevelController = function (game, level) {
 MoonMage.controllers.LevelController.prototype = {
     loadTileMap: function () {
         map = this.game.add.tilemap(this.level, 32, 32);
-        map.addTilesetImage('background');
+        map.addTilesetImage('ground');
 
         return map;
     },
@@ -22,9 +22,9 @@ MoonMage.controllers.LevelController.prototype = {
         var boxes = this.game.add.group();
         boxes.enableBody = true;
         map.createFromObjects(layerName, // layer name in json
-                              3, // gid
+                              2, // gid
                               spriteName, //
-                              null,
+                              1, // frame
                               true,
                               false,
                               boxes, // group name
