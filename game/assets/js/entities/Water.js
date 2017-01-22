@@ -12,6 +12,9 @@ MoonMage.entities.Water = function(game, level) {
 
     this._createWave(level);
     this._createElaborateWaterBasin();
+
+    this.isControlled = false;
+    this.cursors = this.game.input.keyboard.createCursorKeys();
 };
 
 MoonMage.entities.Water.prototype = {
@@ -173,7 +176,10 @@ MoonMage.entities.Water.prototype = {
 
         this.game.physics.p2.enable(this.wavePhysicsSprite);
         this.wavePhysicsSprite.body.fixedRotation = true;
-        this.wavePhysicsSprite.body.offset.setTo(this.constants.WAVE_WIDTH * 1/4, -this.constants.MAX_WAVE_HEIGHT/2);
+        this.wavePhysicsSprite.body.kinematic = true;
+        // this.wavePhysicsSprite.body.offset.setTo(this.constants.WAVE_WIDTH * 1/4, -this.constants.MAX_WAVE_HEIGHT/2);
+        this.wavePhysicsSprite.body.y = this.constants.HEIGHT_OFFSET + this.constants.MAX_WAVE_HEIGHT/2 + this.constants.RIPPLE_VARIANCE;
+        this.wavePhysicsSprite.body.x += this.constants.WAVE_WIDTH * 1/4;
     },
 
     _updateWave(level) {
@@ -183,47 +189,87 @@ MoonMage.entities.Water.prototype = {
         this._updateWaveSprite(level);
     },
 
-    _updateWavePhysics(level) {
-        var desiredX = level.moon.position.x - 30; // woah oah it's magic
-        var desiredY = this.constants.HEIGHT_OFFSET + this.constants.RIPPLE_VARIANCE + 40;
-
-        if (level.moon.isBeingControlled) {
-            desiredY = this._mapMoonY(level.moon);
-        }
-
-        var desiredVelocity = getVelocityToPoint(
-            desiredX,
-            desiredY,
-            this.wavePhysicsSprite.position.x,
-            this.wavePhysicsSprite.position.y,
-            180
-        );
-
-        // distance threshold dampens middle wobbling
-        var distanceThreshold = 2.7;
-        var xDiff = Math.abs(this.wavePhysicsSprite.position.x - desiredX)
-        var yDiff = Math.abs(this.wavePhysicsSprite.position.y - desiredY)
-        var xNotMovingMuch = xDiff < distanceThreshold;
-        var yNotMovingMuch = yDiff < distanceThreshold;
-
-        if (xNotMovingMuch && level.moon.isStopped) {
-            desiredVelocity.x = 0;
-        }
-
-        if (yNotMovingMuch && level.moon.isStopped && level.moon.isBeingControlled) {
-            desiredVelocity.y = 0;
-        }
-
-        // dampens top specifically
-        if (level.moon.isBeingControlled && this.wavePhysicsSprite.position.y < 260 &&
-            level.moon.position.y === level.moon.maxY) {
-            desiredVelocity.y = 0;
-        }
-
-
-        this.wavePhysicsSprite.body.velocity.x = desiredVelocity.x;
-        this.wavePhysicsSprite.body.velocity.y = desiredVelocity.y;
+    setControl(isControlled) {
+        this.isControlled = isControlled;
     },
+
+    _getMovementIntent() {
+        var intent = {
+            x: 0,
+            y: 0
+        };
+
+        if (this.cursors.up.isDown) {
+            intent.y--
+        }
+        if (this.cursors.down.isDown) {
+            intent.y++
+        }
+        if (this.cursors.left.isDown) {
+            intent.x--
+        }
+        if (this.cursors.right.isDown) {
+            intent.x++
+        }
+
+        return intent;
+    },
+
+    _updateWavePhysics() {
+        // console.log(this.wavePhysicsSprite.position);
+        if (this.isControlled) {
+            var intent = this._getMovementIntent();
+            console.log(intent);
+
+            this.wavePhysicsSprite.body.velocity.x = 100 * intent.x;
+            this.wavePhysicsSprite.body.velocity.y = 100 * intent.y;
+        } else {
+            // seek starting position
+        }
+    },
+
+    // TODO, holding onto this equation for now, don't remove
+    // _updateWavePhysics(level) {
+    //     var desiredX = level.moon.position.x - 30; // woah oah it's magic
+    //     var desiredY = this.constants.HEIGHT_OFFSET + this.constants.RIPPLE_VARIANCE + 40;
+
+    //     if (level.moon.isBeingControlled) {
+    //         desiredY = this._mapMoonY(level.moon);
+    //     }
+
+    //     var desiredVelocity = getVelocityToPoint(
+    //         desiredX,
+    //         desiredY,
+    //         this.wavePhysicsSprite.position.x,
+    //         this.wavePhysicsSprite.position.y,
+    //         180
+    //     );
+
+    //     // distance threshold dampens middle wobbling
+    //     var distanceThreshold = 2.7;
+    //     var xDiff = Math.abs(this.wavePhysicsSprite.position.x - desiredX)
+    //     var yDiff = Math.abs(this.wavePhysicsSprite.position.y - desiredY)
+    //     var xNotMovingMuch = xDiff < distanceThreshold;
+    //     var yNotMovingMuch = yDiff < distanceThreshold;
+
+    //     if (xNotMovingMuch && level.moon.isStopped) {
+    //         desiredVelocity.x = 0;
+    //     }
+
+    //     if (yNotMovingMuch && level.moon.isStopped && level.moon.isBeingControlled) {
+    //         desiredVelocity.y = 0;
+    //     }
+
+    //     // dampens top specifically
+    //     if (level.moon.isBeingControlled && this.wavePhysicsSprite.position.y < 260 &&
+    //         level.moon.position.y === level.moon.maxY) {
+    //         desiredVelocity.y = 0;
+    //     }
+
+
+    //     this.wavePhysicsSprite.body.velocity.x = desiredVelocity.x;
+    //     this.wavePhysicsSprite.body.velocity.y = desiredVelocity.y;
+    // },
 
     _mapMoonY(moon) {
         var moonY = moon.position.y;
@@ -239,12 +285,8 @@ MoonMage.entities.Water.prototype = {
     },
 
     _updateWaveSprite() {
-        this.waveSprite.position.x = this.wavePhysicsSprite.position.x + this.constants.WAVE_WIDTH * 3/4;
-
-        var baseY = this.constants.HEIGHT_OFFSET + this.constants.RIPPLE_VARIANCE;
-        var physicsY = this.wavePhysicsSprite.position.y;
-        var rangeY = this.constants.MAX_WAVE_HEIGHT;
-        this.waveSprite.scale.y = (baseY - physicsY) / rangeY;
+        this.waveSprite.position.x = this.wavePhysicsSprite.position.x + this.constants.WAVE_WIDTH * 1/2;
+        this.waveSprite.position.y = this.wavePhysicsSprite.position.y + this.constants.MAX_WAVE_HEIGHT/2;
     },
 
     update: function(level) {

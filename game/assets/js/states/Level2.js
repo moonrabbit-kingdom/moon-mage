@@ -45,7 +45,7 @@ MoonMage.states.Level2.prototype = {
         // new this.game.physics.p2.BodyDebug(this.game, this.water.wavePhysicsSprite.body);
         // Phaser.Physics.P2.BodyDebug(this.game, this.water.wavePhysicsSprite.body);
 
-        this.player = new MoonMage.entities.player(this.game, this.moon, /* 1430 */ 32, this.game.world.height - 300);
+        this.player = new MoonMage.entities.player(this.game, this.moon, this.water, /* 1430 */ 32, this.game.world.height - 300);
 
         // copypast
         this.game.physics.p2.enable('dude', false);

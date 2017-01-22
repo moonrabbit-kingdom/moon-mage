@@ -1,6 +1,7 @@
-MoonMage.entities.player = function (game, moon, startingX, startingY) {
+MoonMage.entities.player = function (game, moon, water, startingX, startingY) {
     this.game = game;
     this.moon = moon;
+    this.water = water;
     this.ridingOn = null;
     this.intendedVelocity = 0;
     this.ridingVelocity = 0;
@@ -49,13 +50,15 @@ MoonMage.entities.player.prototype = {
             this.ridingVelocity = this.ridingOn.body.velocity.x;
         }
 
-        if (this.game.input.keyboard.isDown(Phaser.Keyboard.A)) {
+        if (this.game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR)) {
            this.isControllingMoon = true;
            this.stopMoving();
-           this.moon.setMoonControl(true);
+        //    this.moon.setMoonControl(true);
+            this.water.setControl(true);
         } else {
            this.isControllingMoon = false;
-           this.moon.setMoonControl(false);
+        //    this.moon.setMoonControl(false);
+            this.water.setControl(false);
         }
 
         if (!this.isControllingMoon) {
