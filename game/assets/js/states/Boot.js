@@ -1,17 +1,17 @@
 MoonMage.states.Boot = function(game) {
-    console.log('Boot.construct');
+    MoonMage.debug('stateHooks', 'Boot.constructor');
     this.game = game;
 };
 
 MoonMage.states.Boot.prototype = {
     preload: function() {
-        console.log('Boot.preload', this.game);
+        MoonMage.debug('stateHooks', 'Boot.preload');
         this.game.load.image('logo', 'phaser.png');
 
     },
 
     create: function() {
-        console.log('Boot.create');
+        MoonMage.debug('stateHooks', 'Boot.create');
         this.scale.minWidth = 1000;
         this.scale.minHeight = 562;
         this.scale.pageAlignHorizontally = true;

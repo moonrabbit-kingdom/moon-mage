@@ -65,8 +65,6 @@ MoonMage.entities.Moon.prototype = {
     handleUncontrolledMovement() {
         var returnToX = this.defaultX + this.game.camera.x;
 
-        console.log('camera', this.game.camera.x, returnToX);
-
         this.setVelocityToPoint(returnToX, this.defaultY);
         this.applyVelocity(returnToX, this.defaultY);
     },
@@ -124,7 +122,7 @@ MoonMage.entities.Moon.prototype = {
         return (this.position.y - this.minY) / this.rangeY;
     },
 
-    toggleMoonControl() {
-        this.isBeingControlled = !this.isBeingControlled;
+    setMoonControl(isBeingControlled) {
+        this.isBeingControlled = isBeingControlled;
     }
 };

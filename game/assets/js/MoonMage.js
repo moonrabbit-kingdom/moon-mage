@@ -1,5 +1,6 @@
 var MoonMage = {
     states: {},
     entities: {},
-    controllers: {}
+    controllers: {},
+    config: null
 };
