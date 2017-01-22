@@ -67,7 +67,7 @@ MoonMage.entities.player.prototype = {
 
         //  Allow the sprite to jump if they are touching the ground.
         if (this.cursors.up.isDown && this.sprite.body.blocked.down) {
-            this.sprite.body.velocity.y = -200;
+            this.sprite.body.velocity.y = -300;
         }
     },
 
@@ -117,6 +117,7 @@ MoonMage.entities.player.prototype = {
     },
 
     respawn: function() {
+        this.stopMoving();
         this.sprite.body.x = this.startingX;
         this.sprite.body.y = this.startingY;
     }

@@ -10,21 +10,22 @@ MoonMage.states.Level1.prototype = {
 
     create: function() {
 
-        this.game.physics.startSystem(Phaser.Physics.ARCADE);
-
-        this.water = new MoonMage.entities.Water(this.game);
-
-        this.moon = new MoonMage.entities.Moon(this.game);
 
         // load the tilemap and create the ground and moveable "diamonds"
         var levelController = new MoonMage.controllers.LevelController(this.game, 'level1');
 
         this.map = levelController.loadTileMap();
+        this.game.world.setBounds(0, 0, this.map.widthInPixels, 562);
         this.groundLayer = levelController.createGround(this.map, 'Tile Layer 1');
         this.boxes = levelController.createBoxes(this.map, 'Object Layer 1', 'diamond');
 
+        this.water = new MoonMage.entities.Water(this.game);
+
+        this.moon = new MoonMage.entities.Moon(this.game);
+
         this.player = new MoonMage.entities.player(this.game, this.moon, 32, this.game.world.height - 300);
-        this.game.camera.follow(this.player.sprite);
+        this.game.camera.follow(this.player.sprite, Phaser.Camera.FOLLOW_PLATFORMER);
+
     },
 
     pushBoxes: function (player, star) {

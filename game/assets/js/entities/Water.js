@@ -19,7 +19,7 @@ MoonMage.entities.Water.prototype = {
         waterBasinGraphics.drawRect(
             -this.constants.OFFSCREEN_OVERFLOW,
             this.constants.HEIGHT_OFFSET,
-            this.game._width + this.constants.OFFSCREEN_OVERFLOW * 2,
+            this.game.world.bounds.width + this.constants.OFFSCREEN_OVERFLOW * 2,
             this.game._height + this.constants.OFFSCREEN_OVERFLOW);
 
         var waterBasinTexture = waterBasinGraphics.generateTexture();

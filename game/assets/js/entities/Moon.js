@@ -13,10 +13,11 @@ MoonMage.entities.Moon = function(game) {
     this.speed = 3;
     this.distanceThreshold = 2.7;
     this.maxY = 160;
+
     this.minY = 60;
     this.rangeY = this.maxY - this.minY;
-    this.maxX = this.game._width - 60;
-    this.minX = 60;
+    this.maxX = this._getMaxX();
+    this.minX = this._getMinX();
 
     this.position = this.moonRender.position;
 
@@ -52,7 +53,7 @@ MoonMage.entities.Moon.prototype = {
             || Math.abs(this.position.y - destinationY) > this.distanceThreshold) {
             this.position.x += this.velocity.x;
             this.position.y += this.velocity.y;
-            this.position.x = this.clamp(this.position.x, this.minX, this.maxX, 'x');
+            this.position.x = this.clamp(this.position.x, this._getMinX(), this._getMaxX(), 'x');
             this.position.y = this.clamp(this.position.y, this.minY, this.maxY , 'y');
         }
         else {
@@ -62,8 +63,12 @@ MoonMage.entities.Moon.prototype = {
     },
 
     handleUncontrolledMovement() {
-        this.setVelocityToPoint(this.defaultX, this.defaultY);
-        this.applyVelocity(this.defaultX, this.defaultY);
+        var returnToX = this.defaultX + this.game.camera.x;
+
+        console.log('camera', this.game.camera.x, returnToX);
+
+        this.setVelocityToPoint(returnToX, this.defaultY);
+        this.applyVelocity(returnToX, this.defaultY);
     },
 
     handleControlledMovement() {
@@ -102,6 +107,14 @@ MoonMage.entities.Moon.prototype = {
 
     getRangeY() {
         return this.rangeY;
+    },
+
+    _getMaxX: function() {
+        return this.game.camera.x + this.game._width - 60;
+    },
+
+    _getMinX: function() {
+        return this.game.camera.x + 60;
     },
 
     /**
