@@ -5,7 +5,7 @@ MoonMage.config = {
      *
      * If none is provided the game will load into the MainMenu
      */
-    startState: 'Level1',
+    startState: null,
 
     /**
      * Viewport dimensions
