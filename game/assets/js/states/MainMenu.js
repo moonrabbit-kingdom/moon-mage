@@ -9,6 +9,8 @@ MoonMage.states.MainMenu.prototype = {
         this.game.load.image('main-menu-background', 'assets/img/main-menu/background.png');
         this.game.load.image('main-menu-caret', 'assets/img/main-menu/caret.png');
         this.game.load.image('main-menu-start', 'assets/img/main-menu/start.png');
+
+        this.game.load.audio('background-music', 'assets/audio/background-music.mp3');
     },
 
     create: function() {
@@ -24,6 +26,11 @@ MoonMage.states.MainMenu.prototype = {
         var caret = this.game.add.sprite(this.game.world.centerX - 270, 460, 'main-menu-caret');
 
         this.game.add.tween(caret.position).to( { x: caret.position.x + variance}, 1000, Phaser.Easing.Exponential.EaseInOut, true, 1, -1, true);
+
+        this.sound = this.game.add.audio('background-music');
+        this.game.sound.setDecodedCallback([this.sound], function() {
+            this.sound.loopFull(0.6);
+        }, this);
     },
 
     update: function() {
@@ -33,6 +40,7 @@ MoonMage.states.MainMenu.prototype = {
     },
 
     _startGame() {
+        this.sound.pause();
         this.state.start('PlayIntro');
     }
 }

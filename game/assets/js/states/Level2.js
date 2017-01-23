@@ -9,6 +9,7 @@ MoonMage.states.Level2.prototype = {
     preload: function() {
         MoonMage.debug('stateHooks', 'Level1.preload');
 
+        this.game.load.audio('background-music', 'assets/audio/background-music.mp3');
     },
 
     create: function() {
@@ -88,6 +89,11 @@ MoonMage.states.Level2.prototype = {
 
         this.pauseBox = new MoonMage.entities.ui.PauseBox(this.game, this.state);
         this.pauseLastPressed = new Date().getTime();
+
+        this.sound = this.game.add.audio('background-music');
+        this.game.sound.setDecodedCallback([this.sound], function() {
+            this.sound.loopFull(0.6);
+        }, this);
     },
 
     update: function() {
@@ -110,6 +116,7 @@ MoonMage.states.Level2.prototype = {
         }
 
         if (this.player.sprite.position.x > this.game.world.width - 64) {
+            this.sound.pause();
             this.game.world.setBounds(0, 0, MoonMage.config.viewport.width, MoonMage.config.viewport.height);
             this.state.start('WinGame');
         }
