@@ -10,24 +10,24 @@ MoonMage.entities.player = function (game, moon, water, startingX, startingY) {
     this.startingY = startingY;
 
     // The player and its settings
-    this.sprite = this.game.add.sprite(this.startingX, this.startingY, 'dude');
+    this.sprite = this.game.add.sprite(this.startingX, this.startingY, 'luna');
 
     //  We need to enable physics on the player
-    this.game.physics.p2.enable(this.sprite);
-    //this.game.physics.arcade.enable(this.sprite);
+    this.game.physics.p2.enable(this.sprite, false);
 
-    ////  Player physics properties. Give the little guy a slight bounce.
-    //this.sprite.body.bounce.y = 0.2;
-    //this.sprite.body.gravity.y = 600;
-    //this.sprite.mass = 1;
-    //this.sprite.body.collideWorldBounds = true;
+    this.sprite.body.setCircle(30);
 
     this.sprite.body.fixedRotation = true;
     this.sprite.body.damping = 0.5;
 
     //  Our two animations, walking left and right.
-    this.sprite.animations.add('left', [0, 1, 2, 3], 10, true);
-    this.sprite.animations.add('right', [5, 6, 7, 8], 10, true);
+    // 179
+    // 180 -239
+    var idleFrames = Array.apply(null, Array(180)).map(function (_, i) {return i;});
+    var castingFrames = Array.apply(null, Array(60)).map(function (_, i) {return i + 180;});
+
+    this.sprite.animations.add('idle', idleFrames, 40, true);
+    this.sprite.animations.add('casting', castingFrames, 30, true);
 
     // controls
     this.cursors = this.game.input.keyboard.createCursorKeys();
@@ -51,20 +51,20 @@ MoonMage.entities.player.prototype = {
         }
 
         if (this.game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR)) {
-           this.isControllingMoon = true;
-           this.stopMoving();
-        //    this.moon.setMoonControl(true);
+            this.sprite.animations.play('casting', 30, true);
+
+            this.isControllingMoon = true;
+            this.stopMoving();
             this.water.setControl(true);
         } else {
-           this.isControllingMoon = false;
-        //    this.moon.setMoonControl(false);
+            this.isControllingMoon = false;
             this.water.setControl(false);
         }
 
         if (!this.isControllingMoon) {
+            this.sprite.animations.play('idle');
             this.handleControllingPlayer();
         }
-        // else -> Moon control handled by moon
 
         var newVelocity = this.intendedVelocity + this.ridingVelocity;
         if (newVelocity < 0) {
@@ -130,10 +130,6 @@ MoonMage.entities.player.prototype = {
     },
 
     stopMoving: function() {
-        this.sprite.animations.stop();
-
-        this.sprite.frame = 4;
-
         this.isDown.left = false;
         this.isDown.right = false;
 
@@ -141,14 +137,12 @@ MoonMage.entities.player.prototype = {
     },
 
     startMoveLeft: function() {
-        this.sprite.animations.play('left');
         this.isDown.left = true;
 
         this.intendedVelocity = -150;
     },
 
     startMoveRight: function() {
-        this.sprite.animations.play('right');
         this.isDown.right = true;
 
         this.intendedVelocity = 150;
