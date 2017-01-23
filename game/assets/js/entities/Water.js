@@ -217,7 +217,6 @@ MoonMage.entities.Water.prototype = {
     _updateWavePhysics() {
         if (this.isControlled) {
             var intent = this._getMovementIntent();
-            console.log(intent);
 
             this.wavePhysicsSprite.body.velocity.x = 100 * intent.x;
             this.wavePhysicsSprite.body.velocity.y = 100 * intent.y;
