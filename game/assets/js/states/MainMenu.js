@@ -33,6 +33,6 @@ MoonMage.states.MainMenu.prototype = {
     },
 
     _startGame() {
-        this.state.start('Level2');
+        this.state.start('PlayIntro');
     }
 }

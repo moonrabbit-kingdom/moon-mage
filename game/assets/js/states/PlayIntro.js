@@ -16,24 +16,27 @@ MoonMage.states.PlayIntro.prototype = {
 
         this.video.onPlay.addOnce(function() {
             this.game.time.events.add(96000, function() {
-                this._goToMainMenu();
+                this._goToGame();
             }, this);
         }, this);
 
         sprite = this.video.addToWorld(this.game.world.centerX, this.game.world.centerY, 0.5, 0.5);
 
         this.video.play();
+
+        var style = { font: '28px Arial', fill: '#FFFFFF', align: 'left' };
+        var text = this.game.add.text(0, 0, text, style);
     },
 
     update: function() {
         if (this.game.input.keyboard.isDown(Phaser.Keyboard.ENTER)) {
             this.video.stop();
-            this._goToMainMenu();
+            this._goToGame();
         }
     },
 
-    _goToMainMenu() {
+    _goToGame() {
         this.game.world.setBounds(0, 0, MoonMage.config.viewport.width, MoonMage.config.viewport.height);
-        this.state.start('MainMenu');
+        this.state.start('Level2');
     }
 }
