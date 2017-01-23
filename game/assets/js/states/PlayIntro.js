@@ -24,8 +24,8 @@ MoonMage.states.PlayIntro.prototype = {
 
         this.video.play();
 
-        var style = { font: '28px Arial', fill: '#FFFFFF', align: 'left' };
-        var text = this.game.add.text(0, 0, text, style);
+        var style = { font: '28px Arial', fill: '#FFFFFF', align: 'center' };
+        var text = this.game.add.text(this.game.world.centerX - 110, MoonMage.config.viewport.height - 40, 'press \'enter\' to skip' , style);
     },
 
     update: function() {
