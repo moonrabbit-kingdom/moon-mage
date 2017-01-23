@@ -29,21 +29,22 @@ MoonMage.states.WinGame.prototype = {
 
         this.game.add.tween(caret.position).to( { x: caret.position.x + variance}, 1000, Phaser.Easing.Exponential.EaseInOut, true, 1, -1, true);
 
-        video = this.game.add.video('ending');
+        this.video = this.game.add.video('ending');
 
-        video.onPlay.addOnce(function() {
+        this.video.onPlay.addOnce(function() {
             this.game.time.events.add(50000, function() {
                 this._goToMainMenu();
             }, this);
         }, this);
 
-        sprite = video.addToWorld(this.game.world.centerX, this.game.world.centerY, 0.5, 0.5);
+        sprite = this.video.addToWorld(this.game.world.centerX, this.game.world.centerY, 0.5, 0.5);
 
-        video.play();
+        this.video.play();
     },
 
     update: function() {
         if (this.game.input.keyboard.isDown(Phaser.Keyboard.ENTER)) {
+            this.video.stop();
             this._goToMainMenu();
         }
     },
