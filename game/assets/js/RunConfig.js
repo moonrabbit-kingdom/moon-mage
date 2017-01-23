@@ -5,7 +5,7 @@ MoonMage.config = {
      *
      * If none is provided the game will load into the MainMenu
      */
-    startState: 'Level2',
+    startState: null,
 
     /**
      * Viewport dimensions
@@ -23,7 +23,7 @@ MoonMage.config = {
      */
     debug: {
         stateHooks: false,
-        wavePhysics: true, // bounding boxes, etc
+        wavePhysics: false, // bounding boxes, etc
         water: false
     }
 };

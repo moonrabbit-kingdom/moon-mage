@@ -6,9 +6,8 @@ MoonMage.states.WinGame.prototype = {
     preload: function() {
         MoonMage.debug('stateHooks', 'WinGame.preload');
 
-        this.game.load.image('main-menu-background', 'assets/img/main-menu/background.png');
+        this.game.load.video('ending', 'assets/video/ending.mp4');
         this.game.load.image('main-menu-caret', 'assets/img/main-menu/caret.png');
-        this.game.load.image('main-menu-start', 'assets/img/main-menu/start.png');
     },
 
     create: function() {
@@ -29,6 +28,18 @@ MoonMage.states.WinGame.prototype = {
         );
 
         this.game.add.tween(caret.position).to( { x: caret.position.x + variance}, 1000, Phaser.Easing.Exponential.EaseInOut, true, 1, -1, true);
+
+        video = this.game.add.video('ending');
+
+        video.onPlay.addOnce(function() {
+            this.game.time.events.add(50000, function() {
+                this._goToMainMenu();
+            }, this);
+        }, this);
+
+        sprite = video.addToWorld(this.game.world.centerX, this.game.world.centerY, 0.5, 0.5);
+
+        video.play();
     },
 
     update: function() {
@@ -47,6 +58,7 @@ MoonMage.states.WinGame.prototype = {
     },
 
     _goToMainMenu() {
+        this.game.world.setBounds(0, 0, MoonMage.config.viewport.width, MoonMage.config.viewport.height);
         this.state.start('MainMenu');
     }
 }
