@@ -81,15 +81,11 @@ MoonMage.states.Level2.prototype = {
             this.moon.update(this.water.wavePhysicsSprite.position.x);
 
             if (this._shouldTogglePause()) {
-                this.game.physics.p2.paused = true;
-                this.player.pause();
-                this.pauseBox.openPauseMenu();
+                this.pauseBox.openPauseMenu(this._onPause.bind(this));
             }
         } else {
             if (this._shouldTogglePause()) {
-                this.game.physics.p2.paused = false;
-                this.player.unpause();
-                this.pauseBox.closePauseMenu();
+                this.pauseBox.closePauseMenu(this._onResume.bind(this));
             }
         }
 
@@ -113,5 +109,15 @@ MoonMage.states.Level2.prototype = {
         }
 
         return false;
+    },
+
+    _onPause() {
+        this.game.physics.p2.paused = true;
+        this.player.pause();
+    },
+
+    _onResume() {
+        this.game.physics.p2.paused = false;
+        this.player.unpause();
     }
 }
