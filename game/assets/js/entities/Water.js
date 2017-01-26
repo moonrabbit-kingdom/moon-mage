@@ -7,10 +7,11 @@ MoonMage.entities.Water = function(game, level) {
         WAVE_WIDTH: 120,
         COLOR: 0x0033FF,
         COLOR_HIGHLIGHT: 0x2577FF,
-        RIPPLE_VARIANCE: 10
+        RIPPLE_VARIANCE: 10,
+        WAVE_POINT_RHYTHM: 32
     };
 
-    this._createWave(level);
+    this._createWavePhysics(level);
     this._createElaborateWaterBasin();
 
     this.isControlled = false;
@@ -53,7 +54,7 @@ MoonMage.entities.Water.prototype = {
             [-this.constants.OFFSCREEN_OVERFLOW, this.constants.HEIGHT_OFFSET]
         ];
 
-        for (var i = 0; i < MoonMage.config.viewport.width; i += 32) {
+        for (var i = 0; i < MoonMage.config.viewport.width; i += this.constants.WAVE_POINT_RHYTHM) {
             this.points.push([i, this.constants.HEIGHT_OFFSET]);
         }
 
@@ -102,50 +103,29 @@ MoonMage.entities.Water.prototype = {
         for(; i < 4; i++) {
             this.elaborateGraphics.lineTo(this.points[i][0] + this.game.camera.x, this.points[i][1] + mod);
         }
+
+        var waveLeft = this.wavePhysicsSprite.position.x - this.game.camera.x;
+        var waveTop = Math.min(this.wavePhysicsSprite.y - this.constants.MAX_WAVE_HEIGHT/2 - this.constants.RIPPLE_VARIANCE, this.constants.HEIGHT_OFFSET);
+        var halfTop = Math.min(this.wavePhysicsSprite.y - this.constants.MAX_WAVE_HEIGHT/2, this.constants.HEIGHT_OFFSET);
+        var leftIndex = Math.round(waveLeft / this.constants.WAVE_POINT_RHYTHM + 4);
+
         for(; i < this.points.length - 1; i++) {
             var x = this.points[i][0] + this.game.camera.x;
-            if (i % 2 === 0) {
-                this.elaborateGraphics.lineTo(x, this.points[i][1] + mod);
+
+            if (i === leftIndex) {
+                this.elaborateGraphics.lineTo(x, waveTop);
+            } else if (i === leftIndex - 1) {
+                this.elaborateGraphics.lineTo(x, waveTop);
+            } else if (i === leftIndex + 1) {
+                this.elaborateGraphics.lineTo(x, waveTop);
+            } else if (i % 2 === 0) {
+                this.elaborateGraphics.lineTo(x, this.constants.HEIGHT_OFFSET + mod);
             } else {
-                this.elaborateGraphics.lineTo(x, this.points[i][1] - mod);
+                this.elaborateGraphics.lineTo(x, this.constants.HEIGHT_OFFSET - mod);
             }
         }
 
         this.elaborateGraphics.endFill();
-    },
-
-    _createWave(level) {
-        // create visual
-        this._createWaveSprite(level);
-        // create physics
-        this._createWavePhysics(level);
-    },
-
-    _createWaveSprite(level) {
-        var wavePoly = new Phaser.Polygon([
-            new Phaser.Point(0, this.constants.MAX_WAVE_HEIGHT),
-            new Phaser.Point(this.constants.WAVE_WIDTH * 1/4, 0),
-            new Phaser.Point(this.constants.WAVE_WIDTH * 3/4, 0),
-            new Phaser.Point(this.constants.WAVE_WIDTH, this.constants.MAX_WAVE_HEIGHT)
-        ]);
-
-        var waveGraphics = this.game.add.graphics(0, 0);
-        waveGraphics.lineStyle(2, this.constants.COLOR_HIGHLIGHT);
-
-        waveGraphics.beginFill(this.constants.COLOR);
-        waveGraphics.drawPolygon(wavePoly.points);
-
-        var waveTexture = waveGraphics.generateTexture();
-        waveGraphics.destroy();
-
-        this.waveSprite = this.game.add.sprite(
-            0,
-            this.constants.HEIGHT_OFFSET + this.constants.RIPPLE_VARIANCE,
-            waveTexture
-        );
-
-        this.game.physics.arcade.enable(this.waveSprite);
-        this.waveSprite.anchor.set(1);
     },
 
     _createWavePhysics(level) {
@@ -184,8 +164,6 @@ MoonMage.entities.Water.prototype = {
     _updateWave(level) {
         // update physics
         this._updateWavePhysics(level);
-        // update visual (scale, etc)
-        this._updateWaveSprite(level);
     },
 
     setControl(isControlled) {
@@ -310,13 +288,8 @@ MoonMage.entities.Water.prototype = {
     //     return mappedY;
     // },
 
-    _updateWaveSprite() {
-        this.waveSprite.position.x = this.wavePhysicsSprite.position.x + this.constants.WAVE_WIDTH * 1/2;
-        this.waveSprite.position.y = this.wavePhysicsSprite.position.y + this.constants.MAX_WAVE_HEIGHT/2;
-    },
-
     update: function(level) {
-        this._updateElaborateWaterBasin();
         this._updateWave(level);
+        this._updateElaborateWaterBasin();
     }
 };
