@@ -15,18 +15,9 @@ MoonMage.states.Level2.prototype = {
     create: function() {
         MoonMage.debug('stateHooks', 'Level1.create');
 
-        // load the tilemap and create the ground and moveable "diamonds"
-        var levelController = new MoonMage.controllers.LevelController(this.game, 'level1');
-
-        this.map = levelController.loadTileMap();
-        this.game.world.setBounds(0, 0, this.map.widthInPixels, 562);
-        this.groundLayer = levelController.createGround(this.map, 'Tile Layer 1');
-
-        this.moon = new MoonMage.entities.Moon(this.game);
-
+        // create physics
         this.game.physics.startSystem(Phaser.Physics.P2JS);
         this.game.physics.p2.setImpactEvents(true);
-
 
         this.game.physics.p2.gravity.y = 350;
         this.game.physics.p2.world.defaultContactMaterial.friction = 0.3;
@@ -36,6 +27,20 @@ MoonMage.states.Level2.prototype = {
         var tilesCollisionGroup = this.physics.p2.createCollisionGroup();
         var boxCollisionGroup = this.physics.p2.createCollisionGroup();
         var waterCollisionGroup = this.physics.p2.createCollisionGroup();
+
+        // load the tilemap and create the ground and moveable boxes
+        var levelController = new MoonMage.controllers.LevelController(this.game, 'level1');
+        this.game.world.setBounds(0, 0, levelController.map.widthInPixels, 562);
+
+        levelController.createGround('Tile Layer 1',
+            tilesCollisionGroup,
+            [spritesCollisionGroup, boxCollisionGroup])
+
+        levelController.createBoxes('level1Objects',
+            boxCollisionGroup,
+            [spritesCollisionGroup, tilesCollisionGroup, waterCollisionGroup, boxCollisionGroup])
+
+        this.moon = new MoonMage.entities.Moon(this.game);
 
         this.water = new MoonMage.entities.Water(this.game, this);
 
@@ -54,35 +59,8 @@ MoonMage.states.Level2.prototype = {
         this.player.sprite.body.collides(tilesCollisionGroup, this.testCollide);
         this.player.sprite.body.collides(boxCollisionGroup);
 
-       // map.setCollisionBetween(1, 12, true, layer2);
-        var tileObjects = this.physics.p2.convertTilemap(this.map, 'Tile Layer 1');
-
-        for (var i = 0; i < tileObjects.length; i++) {
-            var tileBody = tileObjects[i];
-            tileBody.setCollisionGroup(tilesCollisionGroup);
-            tileBody.collides([spritesCollisionGroup, boxCollisionGroup]);
-        }
-
-        var objects = this.game.cache.getJSON('level1Objects').layers[1].objects;
-
-        var boxes = this.game.add.group();
-
-        for (var i = 0; i < objects.length; i++) {
-            var object = objects[i];
-            var box = boxes.create(object.x, object.y, 'box');
-            this.game.physics.p2.enable(box, false);
-            box.body.setRectangle(64, 64, 0, 0);
-            box.body.fixedRotation = true;
-            box.body.setCollisionGroup(boxCollisionGroup);
-            box.body.collides([spritesCollisionGroup,
-                               tilesCollisionGroup,
-                               waterCollisionGroup,
-                               boxCollisionGroup]);
-        };
-
-
+        // create text instructions
         var firstText = new MoonMage.entities.ui.TextBox(this.game, "'↑' to jump", 500, 80, 250);
-
         var secondText = new MoonMage.entities.ui.TextBox(this.game, "hold 'space' to invoke moon powers", 1500, 80, 700);
 
         this.game.camera.follow(this.player.sprite, Phaser.Camera.FOLLOW_PLATFORMER);

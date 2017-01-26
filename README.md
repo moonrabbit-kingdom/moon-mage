@@ -11,7 +11,7 @@ https://moon-mage.herokuapp.com
     npm install
 
 ## Usage
-    npm run start
+    npm run start-dev
 
 ## Making Maps
 1. Download and run [Tiled](http://www.mapeditor.org/)
