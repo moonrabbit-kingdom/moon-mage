@@ -3,11 +3,14 @@ MoonMage.states.Level2 = function(game) {
     this.game = game;
     this.player;
     this.platformGroup;
+    this.levelID = 'level1';
 };
 
 MoonMage.states.Level2.prototype = {
     preload: function() {
         MoonMage.debug('stateHooks', 'Level1.preload');
+        this.game.load.tilemap(this.levelID, 'assets/levels/level1.json', null, Phaser.Tilemap.TILED_JSON);
+        this.game.load.json('level1Objects', 'assets/levels/level1.json');
 
         this.game.load.audio('background-music', 'assets/audio/background-music.mp3');
     },
@@ -29,14 +32,14 @@ MoonMage.states.Level2.prototype = {
         var waterCollisionGroup = this.physics.p2.createCollisionGroup();
 
         // load the tilemap and create the ground and moveable boxes
-        var levelController = new MoonMage.controllers.LevelController(this.game, 'level1');
-        this.game.world.setBounds(0, 0, levelController.map.widthInPixels, 562);
+        this.levelController = new MoonMage.controllers.LevelController(this.game, 'level1');
+        this.game.world.setBounds(0, 0, this.levelController.map.widthInPixels, 562);
 
-        levelController.createGround('Tile Layer 1',
+        this.levelController.createGround('Tile Layer 1',
             tilesCollisionGroup,
             [spritesCollisionGroup, boxCollisionGroup])
 
-        levelController.createBoxes('level1Objects',
+        this.levelController.createBoxes('level1Objects',
             boxCollisionGroup,
             [spritesCollisionGroup, tilesCollisionGroup, waterCollisionGroup, boxCollisionGroup])
 

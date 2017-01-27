@@ -14,9 +14,6 @@ MoonMage.states.Preloader.prototype = {
         this.game.load.spritesheet('dude', 'assets/img/dude.png', 32, 48);
         this.game.load.spritesheet('ground', 'assets/spritesheets/ground.png', 32, 32, 2);
 
-        this.game.load.tilemap('level1', 'assets/levels/level1.json', null, Phaser.Tilemap.TILED_JSON);
-        this.game.load.json('level1Objects', 'assets/levels/level1.json');
-
     },
 
     create: function () {
