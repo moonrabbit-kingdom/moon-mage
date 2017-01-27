@@ -1,5 +1,6 @@
 MoonMage.entities.Water = function(game, level) {
     this.game = game;
+    this.level = level;
     this.constants = {
         HEIGHT_OFFSET: 470,
         OFFSCREEN_OVERFLOW: 15,
@@ -12,7 +13,7 @@ MoonMage.entities.Water = function(game, level) {
     };
 
     this._createWavePhysics(level);
-    this._createElaborateWaterBasin();
+    this._createElaborateWaterBasin(level);
 
     this.isControlled = false;
     this.cursors = this.game.input.keyboard.createCursorKeys();
@@ -45,7 +46,7 @@ MoonMage.entities.Water.prototype = {
         this.waterBasinSprite.anchor.set(0);
     },
 
-    _createElaborateWaterBasin() {
+    _createElaborateWaterBasin(level) {
         var beyondScreenY = MoonMage.config.viewport.height + this.constants.HEIGHT_OFFSET;
         this.points = [
             [MoonMage.config.viewport.width, this.constants.HEIGHT_OFFSET],
@@ -88,6 +89,9 @@ MoonMage.entities.Water.prototype = {
         this.waterBasinSprite.body.kinematic = true;
 
         this.waterBasinSprite.body.updateCollisionMask();
+
+        this.waterBasinSprite.body.setCollisionGroup(level.physicsController.waterCollisionGroup);
+        this.waterBasinSprite.body.collides([level.physicsController.boxCollisionGroup]);
     },
 
     _updateElaborateWaterBasin() {
@@ -156,6 +160,12 @@ MoonMage.entities.Water.prototype = {
         this.game.physics.p2.enable(this.wavePhysicsSprite);
         this.wavePhysicsSprite.body.fixedRotation = true;
         this.wavePhysicsSprite.body.kinematic = true;
+        this.wavePhysicsSprite.body.setCollisionGroup(level.physicsController.waterCollisionGroup);
+        this.wavePhysicsSprite.body.collides([level.physicsController.boxCollisionGroup]);
+
+        // new this.game.physics.p2.BodyDebug(this.game, this.water.wavePhysicsSprite.body);
+        // Phaser.Physics.P2.BodyDebug(this.game, this.water.wavePhysicsSprite.body);
+
         // this.wavePhysicsSprite.body.offset.setTo(this.constants.WAVE_WIDTH * 1/4, -this.constants.MAX_WAVE_HEIGHT/2);
         this.wavePhysicsSprite.body.y = this.constants.HEIGHT_OFFSET + this.constants.MAX_WAVE_HEIGHT/2 + this.constants.RIPPLE_VARIANCE;
         this.wavePhysicsSprite.body.x += this.constants.WAVE_WIDTH * 1/4;

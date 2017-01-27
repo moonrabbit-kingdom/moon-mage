@@ -1,7 +1,8 @@
-MoonMage.entities.player = function (game, moon, water, startingX, startingY) {
+MoonMage.entities.player = function (game, level, startingX, startingY) {
     this.game = game;
-    this.moon = moon;
-    this.water = water;
+    this.level = level;
+    this.moon = this.level.moon;
+    this.water = this.level.water;
     this.ridingOn = null;
     this.intendedVelocity = 0;
     this.ridingVelocity = 0;
@@ -20,9 +21,12 @@ MoonMage.entities.player = function (game, moon, water, startingX, startingY) {
     this.sprite.body.fixedRotation = true;
     this.sprite.body.damping = 0.5;
 
+    this.sprite.body.setCollisionGroup(this.level.physicsController.spritesCollisionGroup);
+    this.sprite.body.collides([this.level.physicsController.tilesCollisionGroup,
+                               this.level.physicsController.boxCollisionGroup]);
+
     //  Our two animations, walking left and right.
-    // 179
-    // 180 -239
+    // idle: 0 - 179, casting: 180 -239
     var idleFrames = Array.apply(null, Array(180)).map(function (_, i) {return i;});
     var castingFrames = Array.apply(null, Array(60)).map(function (_, i) {return i + 180;});
 

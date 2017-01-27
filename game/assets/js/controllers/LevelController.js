@@ -1,18 +1,16 @@
-MoonMage.controllers.LevelController = function (game, levelID) {
+MoonMage.controllers.LevelController = function (game, level) {
     this.game = game;
     this.tileObjects;
     this.boxes = this.game.add.group();
 
-    this.levelID = levelID;
-    this.map = this.game.add.tilemap(this.levelID, 32, 32);
+    this.level = level;
+    this.map = this.game.add.tilemap(this.level.levelID, 32, 32);
     this.map.addTilesetImage('ground');
 }
 
 MoonMage.controllers.LevelController.prototype = {
-    loadTileMap: function () {
-    },
 
-    createGround: function (layerName, tilesCollisionGroup, collides) {
+    createGround: function (layerName) {
         // draws the img
         this.map.createLayer(layerName);
         // adds collision to the img
@@ -21,14 +19,12 @@ MoonMage.controllers.LevelController.prototype = {
         this.tileObjects = this.game.physics.p2.convertTilemap(this.map, layerName);
         for (var i = 0; i < this.tileObjects.length; i++) {
             var tileBody = this.tileObjects[i];
-            tileBody.setCollisionGroup(tilesCollisionGroup);
-            tileBody.collides(collides);
+            tileBody.setCollisionGroup(this.level.physicsController.tilesCollisionGroup);
+            tileBody.collides([this.level.physicsController.spritesCollisionGroup,
+                               this.level.physicsController.boxCollisionGroup])
         }
 
         return this.tileObjects;
-    },
-
-    addPhysics: function (physicsController) {
     },
 
     createBoxes: function (jsonCachedFile, boxCollisionGroup, collides) {
@@ -39,8 +35,11 @@ MoonMage.controllers.LevelController.prototype = {
             this.game.physics.p2.enable(box, false);
             box.body.setRectangle(64, 64, 0, 0);
             box.body.fixedRotation = true;
-            box.body.setCollisionGroup(boxCollisionGroup);
-            box.body.collides(collides);
+            box.body.setCollisionGroup(this.level.physicsController.boxCollisionGroup);
+            box.body.collides([this.level.physicsController.spritesCollisionGroup,
+                               this.level.physicsController.tilesCollisionGroup,
+                               this.level.physicsController.waterCollisionGroup,
+                               this.level.physicsController.boxCollisionGroup]);
         };
         return this.boxes;
     }
