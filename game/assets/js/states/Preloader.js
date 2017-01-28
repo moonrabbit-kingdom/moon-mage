@@ -9,6 +9,7 @@ MoonMage.states.Preloader.prototype = {
 
         this.game.load.image('box', 'assets/img/box.png');
         this.game.load.image('moon', 'assets/img/moon.png');
+        this.game.load.image('water-particle', 'assets/img/water-particle.jpg');
 
         this.game.load.spritesheet('luna', 'assets/spritesheets/luna.png', 48, 64, 240);
         this.game.load.spritesheet('dude', 'assets/img/dude.png', 32, 48);

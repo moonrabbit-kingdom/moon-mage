@@ -61,19 +61,22 @@ MoonMage.entities.Water.prototype = {
         //     waterParticleTexture
         // );
 
-        this.emitter = this.game.add.emitter(40, 40, 200);
-        debugger;
+        this.emitter = this.game.add.emitter(
+            0,
+            0,
+            200
+        );
 
-        this.emitter.makeParticles('moon');
+        this.emitter.makeParticles('water-particle');
 
         this.emitter.setRotation(0, 0);
         this.emitter.setAlpha(0.3, 0.8);
         this.emitter.setScale(0.5, 1);
-        this.emitter.gravity = -200;
+        // this.emitter.gravity = -200;
 
         //	false means don't explode all the sprites at once, but instead release at a rate of one particle per 100ms
         //	The 5000 value is the lifespan of each particle before it's killed
-        this.emitter.start(false, 5000, 100);
+        //this.emitter.start(false, 5000, 100);
     },
 
     _createElaborateWaterBasin(level) {
@@ -124,7 +127,7 @@ MoonMage.entities.Water.prototype = {
         this.waterBasinSprite.body.collides([level.physicsController.boxCollisionGroup]);
     },
 
-    _updateElaborateWaterBasin() {
+    _updateElaborateWaterBasin(level) {
         this.elaborateGraphics.clear();
 
         this.elaborateGraphics.lineStyle(2, this.constants.COLOR_HIGHLIGHT);
@@ -160,6 +163,24 @@ MoonMage.entities.Water.prototype = {
         }
 
         this.elaborateGraphics.endFill();
+
+        if (level.player.isControllingMoon) {
+            this.emitter.x = this.wavePhysicsSprite.x;
+            this.emitter.y = this.wavePhysicsSprite.y - this.constants.MAX_WAVE_HEIGHT/2;
+
+            // if (!this.wasControllingMoon) {
+            // if (!this.emitter.alive) {
+                // this.emitter.start(false, 5000, 100);
+                // this.emitter.start(false, 1200, 1000, 10);
+                this.emitter.start(true, 1200, null, 10);
+                // this.wasControllingMoon = true;
+            // }
+            // }
+
+        } else {
+            this.wasControllingMoon = false;
+            // this.emitter.kill();
+        }
     },
 
     _createWavePhysics(level) {
@@ -325,7 +346,7 @@ MoonMage.entities.Water.prototype = {
 
     update: function(level) {
         this._updateWavePhysics(level);
-        this._updateElaborateWaterBasin();
+        this._updateElaborateWaterBasin(level);
 
 
     }
