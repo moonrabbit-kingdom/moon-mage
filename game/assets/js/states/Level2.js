@@ -34,8 +34,9 @@ MoonMage.states.Level2.prototype = {
         this.player = new MoonMage.entities.player(this.game, this, 32, this.game.world.height - 300);
 
         // create text instructions
-        var firstText = new MoonMage.entities.ui.TextBox(this.game, "'↑' to jump", 500, 80, 250);
-        var secondText = new MoonMage.entities.ui.TextBox(this.game, "hold 'space' to invoke moon powers", 1500, 80, 700);
+        var firstText = new MoonMage.entities.ui.TextBox(this.game, "→", 80, 380);
+        var firstText = new MoonMage.entities.ui.TextBox(this.game, "↑", 535, 380);
+        var secondText = new MoonMage.entities.ui.TextBox(this.game, "'space'  &  ← ↑ →", 1300, 380);
 
         this.game.camera.follow(this.player.sprite, Phaser.Camera.FOLLOW_PLATFORMER);
 
