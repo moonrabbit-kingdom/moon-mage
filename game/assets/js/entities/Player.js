@@ -15,9 +15,11 @@ MoonMage.entities.player = function (game, level, startingX, startingY) {
 
     this.sprite.sendToBack();
     //  We need to enable physics on the player
-    this.game.physics.p2.enable(this.sprite, false);
+    this.game.physics.p2.enable(this.sprite, MoonMage.config.debug.playerPhysics);
 
-    this.sprite.body.setCircle(30);
+    this.sprite.body.clearShapes();
+    this.sprite.body.addRectangle(10, 68, -12, 0);
+    this.sprite.body.addCircle(12, -12);
 
     this.sprite.body.fixedRotation = true;
     this.sprite.body.damping = 0.5;
