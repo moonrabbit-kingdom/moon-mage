@@ -13,6 +13,7 @@ MoonMage.entities.player = function (game, level, startingX, startingY) {
     // The player and its settings
     this.sprite = this.game.add.sprite(this.startingX, this.startingY, 'luna');
 
+    this.sprite.sendToBack();
     //  We need to enable physics on the player
     this.game.physics.p2.enable(this.sprite, false);
 

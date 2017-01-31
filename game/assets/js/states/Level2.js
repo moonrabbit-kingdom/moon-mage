@@ -25,20 +25,23 @@ MoonMage.states.Level2.prototype = {
         this.game.world.setBounds(0, 0, this.levelController.map.widthInPixels, 562);
 
         this.levelController.createGround('Tile Layer 1');
-        this.levelController.createBoxes('level1Objects');
+ 
+        // create text instructions
+        var firstText = new MoonMage.entities.ui.TextBox(this.game, "→", 80, 380);
+        var firstText = new MoonMage.entities.ui.TextBox(this.game, "↑", 535, 380);
+        var secondText = new MoonMage.entities.ui.TextBox(this.game, "'space'  &  ← ↑ →", 1300, 380);
+
+       this.levelController.createBoxes('level1Objects');
 
         this.moon = new MoonMage.entities.Moon(this.game);
 
         this.water = new MoonMage.entities.Water(this.game, this);
 
         this.player = new MoonMage.entities.player(this.game, this, 32, this.game.world.height - 300);
-
-        // create text instructions
-        var firstText = new MoonMage.entities.ui.TextBox(this.game, "→", 80, 380);
-        var firstText = new MoonMage.entities.ui.TextBox(this.game, "↑", 535, 380);
-        var secondText = new MoonMage.entities.ui.TextBox(this.game, "'space'  &  ← ↑ →", 1300, 380);
-
         this.game.camera.follow(this.player.sprite, Phaser.Camera.FOLLOW_PLATFORMER);
+
+        // swaps the order in the world group. position determines z order
+        this.game.world.swap(this.player.sprite, this.moon.moonRender);
 
         this.pauseBox = new MoonMage.entities.ui.PauseBox(this.game, this.state);
         this.pauseLastPressed = new Date().getTime();
