@@ -20,7 +20,7 @@ MoonMage.states.PlayIntro.prototype = {
             }, this);
         }, this);
 
-        sprite = this.video.addToWorld(this.game.world.centerX, this.game.world.centerY, 0.5, 0.5);
+        sprite = this.video.addToWorld(this.game.world.centerX, this.game.world.centerY, 0.5, 0.5, 1.172, 1.169);
 
         this.video.play();
 
