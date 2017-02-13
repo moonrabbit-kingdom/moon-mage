@@ -31,7 +31,7 @@ MoonMage.states.Level2.prototype = {
         var firstText = new MoonMage.entities.ui.TextBox(this.game, "↑", 535, 380);
         var secondText = new MoonMage.entities.ui.TextBox(this.game, "'space'  &  ← ↑ →", 1300, 380);
 
-       this.levelController.createBoxes('level1Objects');
+        this.levelController.createBoxes('level1Objects');
 
         this.moon = new MoonMage.entities.Moon(this.game);
 
@@ -39,6 +39,19 @@ MoonMage.states.Level2.prototype = {
 
         this.player = new MoonMage.entities.player(this.game, this, 32, this.game.world.height - 300);
         this.game.camera.follow(this.player.sprite, Phaser.Camera.FOLLOW_PLATFORMER);
+
+        //  Here is the contact material. It's a combination of 2 materials, so whenever shapes with
+        //  those 2 materials collide it uses the following settings.
+        //  A single material can be used by as many different sprites as you like.
+        var contactMaterial = this.game.physics.p2.createContactMaterial(this.water.waveMaterial, this.levelController.boxMaterial);
+
+        contactMaterial.friction = 100;     // Friction to use in the contact of these two materials.
+        contactMaterial.restitution = 0;  // Restitution (i.e. how bouncy it is!) to use in the contact of these two materials.
+        contactMaterial.stiffness = 1e7;    // Stiffness of the resulting ContactEquation that this ContactMaterial generate.
+        contactMaterial.relaxation = 3;     // Relaxation of the resulting ContactEquation that this ContactMaterial generate.
+        contactMaterial.frictionStiffness = 1e7;    // Stiffness of the resulting FrictionEquation that this ContactMaterial generate.
+        contactMaterial.frictionRelaxation = 3;     // Relaxation of the resulting FrictionEquation that this ContactMaterial generate.
+        contactMaterial.surfaceVelocity = 0;        // Will add surface velocity to this material. If bodyA rests on top if bodyB, and the surface velocity is positive, bodyA will slide to the right
 
         // swaps the order in the world group. position determines z order
         this.game.world.swap(this.player.sprite, this.moon.moonRender);

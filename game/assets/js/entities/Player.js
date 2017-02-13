@@ -21,8 +21,24 @@ MoonMage.entities.player = function (game, level, startingX, startingY) {
     this.sprite.body.addRectangle(10, 68, -12, 0);
     this.sprite.body.addCircle(12, -12);
 
+    this.sprite.body.data.mass = 1;
     this.sprite.body.fixedRotation = true;
     this.sprite.body.damping = 0.5;
+
+    this.material = this.game.physics.p2.createMaterial('playerMaterial', this.sprite.body);
+    this.groundVelocity = new Phaser.Point();
+
+    //On contact; keep reference to the current ground velocity
+    this.sprite.body.onBeginContact.add(function (_otherBody) {
+        if (_otherBody) this.groundVelocity = _otherBody.velocity;
+    }, this);
+
+
+    //on end contact, loose reference
+    this.sprite.body.onEndContact.add(function (_otherBody) {
+        if (_otherBody) this.groundVelocity = new Phaser.Point().copyFrom(_otherBody.velocity);
+    }, this);
+
 
     this.sprite.body.setCollisionGroup(this.level.physicsController.spritesCollisionGroup);
     this.sprite.body.collides([this.level.physicsController.tilesCollisionGroup,
@@ -51,12 +67,6 @@ MoonMage.entities.player = function (game, level, startingX, startingY) {
 
 MoonMage.entities.player.prototype = {
     update: function (hitPlatform) {
-
-        this.ridingVelocity = 0;
-        if (this.ridingOn !== null) {
-            this.ridingVelocity = this.ridingOn.body.velocity.x;
-        }
-
         if (this.game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR)) {
             this.sprite.animations.play('casting', 30, true);
 
@@ -73,7 +83,7 @@ MoonMage.entities.player.prototype = {
             this.handleControllingPlayer();
         }
 
-        var newVelocity = this.intendedVelocity + this.ridingVelocity;
+        var newVelocity = this.intendedVelocity + this.groundVelocity.x;
         if (newVelocity < 0) {
             this.sprite.body.moveLeft(-newVelocity);
         } else {
@@ -88,7 +98,6 @@ MoonMage.entities.player.prototype = {
         //  Allow the sprite to jump if they are touching the ground.
         if (this.cursors.up.isDown && this.checkIfCanJump()) {
             this.sprite.body.velocity.y = -300;
-            this.ridingOn = null;
         }
 
     },

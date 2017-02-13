@@ -6,7 +6,7 @@ MoonMage.controllers.PhysicsController = function (game) {
     this.game.physics.p2.setImpactEvents(true);
 
     this.game.physics.p2.gravity.y = 350;
-    this.game.physics.p2.world.defaultContactMaterial.friction = 0.3;
+    this.game.physics.p2.world.defaultContactMaterial.friction = 0.5;
     this.game.physics.p2.world.setGlobalStiffness(1e5);
 
     this.spritesCollisionGroup = this.game.physics.p2.createCollisionGroup();

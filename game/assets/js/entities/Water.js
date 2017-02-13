@@ -160,8 +160,11 @@ MoonMage.entities.Water.prototype = {
         this.game.physics.p2.enable(this.wavePhysicsSprite);
         this.wavePhysicsSprite.body.fixedRotation = true;
         this.wavePhysicsSprite.body.kinematic = true;
+        this.wavePhysicsSprite.body.data.mass = 1000000;
         this.wavePhysicsSprite.body.setCollisionGroup(level.physicsController.waterCollisionGroup);
         this.wavePhysicsSprite.body.collides([level.physicsController.boxCollisionGroup]);
+
+        this.waveMaterial = this.game.physics.p2.createMaterial('waveMaterial', this.wavePhysicsSprite.body);
 
         // new this.game.physics.p2.BodyDebug(this.game, this.water.wavePhysicsSprite.body);
         // Phaser.Physics.P2.BodyDebug(this.game, this.water.wavePhysicsSprite.body);

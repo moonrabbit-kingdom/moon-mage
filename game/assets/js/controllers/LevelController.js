@@ -29,6 +29,9 @@ MoonMage.controllers.LevelController.prototype = {
 
     createBoxes: function (jsonCachedFile, boxCollisionGroup, collides) {
         var objects = this.game.cache.getJSON(jsonCachedFile).layers[1].objects;
+
+        this.boxMaterial = this.game.physics.p2.createMaterial("boxMaterial");
+
         for (var i = 0; i < objects.length; i++) {
             var object = objects[i];
             var box = this.boxes.create(object.x, object.y, 'box');
@@ -40,6 +43,11 @@ MoonMage.controllers.LevelController.prototype = {
                                this.level.physicsController.tilesCollisionGroup,
                                this.level.physicsController.waterCollisionGroup,
                                this.level.physicsController.boxCollisionGroup]);
+
+           box.body.data.mass = 1;
+           //box.groundVelocity = new Phaser.Point();
+
+           box.body.setMaterial(this.boxMaterial);
         };
         return this.boxes;
     }
