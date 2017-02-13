@@ -6,8 +6,6 @@ MoonMage.states.Boot = function(game) {
 MoonMage.states.Boot.prototype = {
     preload: function() {
         MoonMage.debug('stateHooks', 'Boot.preload');
-        this.game.load.image('logo', 'phaser.png');
-
     },
 
     create: function() {

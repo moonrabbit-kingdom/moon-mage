@@ -37,6 +37,6 @@ MoonMage.states.PlayIntro.prototype = {
 
     _goToGame() {
         this.game.world.setBounds(0, 0, MoonMage.config.viewport.width, MoonMage.config.viewport.height);
-        this.state.start('Level2');
+        this.state.start('Level1');
     }
 }
