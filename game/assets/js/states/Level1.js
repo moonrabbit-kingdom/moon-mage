@@ -4,14 +4,14 @@ MoonMage.states.Level1 = function(game) {
     this.player;
     this.platformGroup;
     this.levelID = 'level1';
+    this.levelController = new MoonMage.controllers.LevelController(this.game, this, 'assets/levels/level1.json', 'Tile Layer 1');
 };
 
 MoonMage.states.Level1.prototype = {
     preload: function() {
         MoonMage.debug('stateHooks', 'Level1.preload');
-        this.game.load.tilemap(this.levelID, 'assets/levels/level1.json', null, Phaser.Tilemap.TILED_JSON);
-        this.game.load.json('level1Objects', 'assets/levels/level1.json');
 
+        this.levelController.preload();
         this.game.load.audio('background-music', 'assets/audio/background-music.mp3');
     },
 
@@ -21,17 +21,16 @@ MoonMage.states.Level1.prototype = {
         this.physicsController = new MoonMage.controllers.PhysicsController(this.game);
 
         // load the tilemap and create the ground and moveable boxes
-        this.levelController = new MoonMage.controllers.LevelController(this.game, this);
+        this.levelController.createGround();
         this.game.world.setBounds(0, 0, this.levelController.map.widthInPixels, 562);
 
-        this.levelController.createGround('Tile Layer 1');
 
         // create text instructions
         var firstText = new MoonMage.entities.ui.TextBox(this.game, "→", 80, 380);
         var firstText = new MoonMage.entities.ui.TextBox(this.game, "↑", 535, 380);
         var secondText = new MoonMage.entities.ui.TextBox(this.game, "'space'  &  ← ↑ →", 1300, 380);
 
-        this.levelController.createBoxes('level1Objects');
+        this.levelController.createBoxes();
 
         this.moon = new MoonMage.entities.Moon(this.game);
 

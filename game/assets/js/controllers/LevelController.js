@@ -1,22 +1,30 @@
-MoonMage.controllers.LevelController = function (game, level) {
+MoonMage.controllers.LevelController = function (game, level, tilemapPath, tileLayerName) {
     this.game = game;
     this.tileObjects;
-    this.boxes = this.game.add.group();
 
     this.level = level;
-    this.map = this.game.add.tilemap(this.level.levelID, 32, 32);
-    this.map.addTilesetImage('ground');
+
+    this.tilemapID = this.level.levelID + '_tilemap';
+    this.jsonID = this.level.levelID + '_objects';
+    this.tilemapPath = tilemapPath;
+    this.tileLayerName = tileLayerName;
 }
 
 MoonMage.controllers.LevelController.prototype = {
+    preload: function () {
+        this.game.load.tilemap(this.tilemapID, this.tilemapPath, null, Phaser.Tilemap.TILED_JSON);
+        this.game.load.json(this.jsonID, this.tilemapPath);
+    },
 
-    createGround: function (layerName) {
+    createGround: function () {
+        this.map = this.game.add.tilemap(this.tilemapID, 32, 32);
+        this.map.addTilesetImage('ground');
         // draws the img
-        this.map.createLayer(layerName);
+        this.map.createLayer(this.tileLayerName);
         // adds collision to the img
-        this.map.setCollisionBetween(1, 100, true, layerName);
+        this.map.setCollisionBetween(1, 100, true, this.tileLayerName);
 
-        this.tileObjects = this.game.physics.p2.convertTilemap(this.map, layerName);
+        this.tileObjects = this.game.physics.p2.convertTilemap(this.map, this.tileLayerName);
         for (var i = 0; i < this.tileObjects.length; i++) {
             var tileBody = this.tileObjects[i];
             tileBody.setCollisionGroup(this.level.physicsController.tilesCollisionGroup);
@@ -27,11 +35,12 @@ MoonMage.controllers.LevelController.prototype = {
         return this.tileObjects;
     },
 
-    createBoxes: function (jsonCachedFile, boxCollisionGroup, collides) {
-        var objects = this.game.cache.getJSON(jsonCachedFile).layers[1].objects;
+    createBoxes: function () {
+        var objects = this.game.cache.getJSON(this.jsonID).layers[1].objects;
 
         this.boxMaterial = this.game.physics.p2.createMaterial("boxMaterial");
 
+        this.boxes = this.game.add.group();
         for (var i = 0; i < objects.length; i++) {
             var object = objects[i];
             var box = this.boxes.create(object.x, object.y, 'box');
