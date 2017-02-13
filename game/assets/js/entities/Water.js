@@ -245,62 +245,6 @@ MoonMage.entities.Water.prototype = {
         this.wavePhysicsSprite.body.y = Math.max(Math.min(this.wavePhysicsSprite.body.y, MoonMage.config.viewport.height + this.constants.MAX_WAVE_HEIGHT/2), 350);
     },
 
-    // TODO, holding onto this equation for now, don't remove
-    // _updateWavePhysics(level) {
-    //     var desiredX = level.moon.position.x - 30; // woah oah it's magic
-    //     var desiredY = this.constants.HEIGHT_OFFSET + this.constants.RIPPLE_VARIANCE + 40;
-
-    //     if (level.moon.isBeingControlled) {
-    //         desiredY = this._mapMoonY(level.moon);
-    //     }
-
-    //     var desiredVelocity = getVelocityToPoint(
-    //         desiredX,
-    //         desiredY,
-    //         this.wavePhysicsSprite.position.x,
-    //         this.wavePhysicsSprite.position.y,
-    //         180
-    //     );
-
-    //     // distance threshold dampens middle wobbling
-    //     var distanceThreshold = 2.7;
-    //     var xDiff = Math.abs(this.wavePhysicsSprite.position.x - desiredX)
-    //     var yDiff = Math.abs(this.wavePhysicsSprite.position.y - desiredY)
-    //     var xNotMovingMuch = xDiff < distanceThreshold;
-    //     var yNotMovingMuch = yDiff < distanceThreshold;
-
-    //     if (xNotMovingMuch && level.moon.isStopped) {
-    //         desiredVelocity.x = 0;
-    //     }
-
-    //     if (yNotMovingMuch && level.moon.isStopped && level.moon.isBeingControlled) {
-    //         desiredVelocity.y = 0;
-    //     }
-
-    //     // dampens top specifically
-    //     if (level.moon.isBeingControlled && this.wavePhysicsSprite.position.y < 260 &&
-    //         level.moon.position.y === level.moon.maxY) {
-    //         desiredVelocity.y = 0;
-    //     }
-
-
-    //     this.wavePhysicsSprite.body.velocity.x = desiredVelocity.x;
-    //     this.wavePhysicsSprite.body.velocity.y = desiredVelocity.y;
-    // },
-
-    // _mapMoonY(moon) {
-    //     var moonY = moon.position.y;
-    //     var moonMinY = moon.getMinY();
-    //     var moonRangeY = moon.getRangeY();
-    //     var waveMinY = 260;
-    //     var waveRangeY = 270;
-
-    //     var scalar = (moonY - moonMinY) / moonRangeY;
-    //     var mappedY = waveMinY + (waveRangeY * (1 - scalar));
-
-    //     return mappedY;
-    // },
-
     update: function(level) {
         this._updateWave(level);
         this._updateElaborateWaterBasin();

@@ -25,7 +25,7 @@ MoonMage.states.Level2.prototype = {
         this.game.world.setBounds(0, 0, this.levelController.map.widthInPixels, 562);
 
         this.levelController.createGround('Tile Layer 1');
- 
+
         // create text instructions
         var firstText = new MoonMage.entities.ui.TextBox(this.game, "→", 80, 380);
         var firstText = new MoonMage.entities.ui.TextBox(this.game, "↑", 535, 380);
@@ -37,7 +37,7 @@ MoonMage.states.Level2.prototype = {
 
         this.water = new MoonMage.entities.Water(this.game, this);
 
-        this.player = new MoonMage.entities.player(this.game, this, 32, this.game.world.height - 300);
+        this.player = new MoonMage.entities.player(this.game, this, 32, this.game.world.height - 300, this._onPlayerDeath.bind(this));
         this.game.camera.follow(this.player.sprite, Phaser.Camera.FOLLOW_PLATFORMER);
 
         //  Here is the contact material. It's a combination of 2 materials, so whenever shapes with
@@ -85,6 +85,10 @@ MoonMage.states.Level2.prototype = {
             this.game.world.setBounds(0, 0, MoonMage.config.viewport.width, MoonMage.config.viewport.height);
             this.state.start('WinGame');
         }
+    },
+
+    _onPlayerDeath() {
+        this.state.start('Level2');
     },
 
     _shouldTogglePause() {

@@ -1,4 +1,4 @@
-MoonMage.entities.player = function (game, level, startingX, startingY) {
+MoonMage.entities.player = function (game, level, startingX, startingY, onPlayerDeath) {
     this.game = game;
     this.level = level;
     this.moon = this.level.moon;
@@ -6,6 +6,7 @@ MoonMage.entities.player = function (game, level, startingX, startingY) {
     this.ridingOn = null;
     this.intendedVelocity = 0;
     this.ridingVelocity = 0;
+    this.onPlayerDeath = onPlayerDeath;
 
     this.startingX = startingX;
     this.startingY = startingY;
@@ -186,7 +187,12 @@ MoonMage.entities.player.prototype = {
 
     respawn: function() {
         this.stopMoving();
-        this.sprite.body.x = this.startingX;
-        this.sprite.body.y = this.startingY;
+
+        if (this.onPlayerDeath) {
+            this.onPlayerDeath();
+        } else {
+            this.sprite.body.x = this.startingX;
+            this.sprite.body.y = this.startingY;
+        }
     }
 }
