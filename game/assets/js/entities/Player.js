@@ -31,13 +31,13 @@ MoonMage.entities.player = function (game, level, startingX, startingY, onPlayer
 
     //On contact; keep reference to the current ground velocity
     this.sprite.body.onBeginContact.add(function (_otherBody) {
-        if (_otherBody) this.groundVelocity = _otherBody.velocity;
+        //if (_otherBody) this.groundVelocity = _otherBody.velocity;
     }, this);
 
 
     //on end contact, loose reference
     this.sprite.body.onEndContact.add(function (_otherBody) {
-        if (_otherBody) this.groundVelocity = new Phaser.Point().copyFrom(_otherBody.velocity);
+        //if (_otherBody) this.groundVelocity = new Phaser.Point();
     }, this);
 
 
