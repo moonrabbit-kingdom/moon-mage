@@ -47,18 +47,7 @@ MoonMage.entities.Water.prototype = {
     },
 
     _createElaborateWaterBasin(level) {
-        var beyondScreenY = MoonMage.config.viewport.height + this.constants.HEIGHT_OFFSET;
-        this.points = [
-            [MoonMage.config.viewport.width, this.constants.HEIGHT_OFFSET],
-            [MoonMage.config.viewport.width, beyondScreenY],
-            [-this.constants.OFFSCREEN_OVERFLOW, beyondScreenY],
-            [-this.constants.OFFSCREEN_OVERFLOW, this.constants.HEIGHT_OFFSET]
-        ];
-
-        for (var i = 0; i < MoonMage.config.viewport.width; i += this.constants.WAVE_POINT_RHYTHM) {
-            this.points.push([i, this.constants.HEIGHT_OFFSET]);
-        }
-
+        // setup water mod
         this.mod = {
             y: -this.constants.RIPPLE_VARIANCE/2
         };
@@ -97,37 +86,54 @@ MoonMage.entities.Water.prototype = {
     _updateElaborateWaterBasin() {
         this.elaborateGraphics.clear();
 
+        // X variables
+        var wavePointRhythm = this.constants.WAVE_POINT_RHYTHM;
+        var startX = this.game.camera.x - (this.game.camera.x % wavePointRhythm);
+        var cameraEndX = this.game.camera.x + MoonMage.config.viewport.width;
+        var endX = cameraEndX + wavePointRhythm; // allow for one point beyond the screen limit
+
+        // Y variables
+        var mod = Math.round(this.mod.y);
+        var highY = this.constants.HEIGHT_OFFSET + mod;
+        var lowY = this.constants.HEIGHT_OFFSET - mod;
+        var usingHigh = true;
+
+        // Wave variables
+        var waveLeft = this.wavePhysicsSprite.position.x - this.constants.WAVE_WIDTH / 4;
+        var waveRight = waveLeft + this.constants.WAVE_WIDTH / 2;
+        var waveTop = Math.min(this.wavePhysicsSprite.y - this.constants.MAX_WAVE_HEIGHT/2 - this.constants.RIPPLE_VARIANCE, this.constants.HEIGHT_OFFSET);
+        var isMoving = this.wavePhysicsSprite.body.velocity.x != 0 || this.wavePhysicsSprite.body.velocity.y != 0 || this.isControlled;
+
+        // Draw
         this.elaborateGraphics.lineStyle(2, this.constants.COLOR_HIGHLIGHT);
         this.elaborateGraphics.beginFill(this.constants.COLOR);
-        this.elaborateGraphics.moveTo(this.points[0][0] + this.game.camera.x, this.points[0][1]);
-        this.elaborateGraphics.lineTo(this.points[1][0] + this.game.camera.x, this.points[1][1]);
+        this.elaborateGraphics.moveTo(startX, lowY); // usingHigh should be the opposite of this
+        this.elaborateGraphics.lineTo();
+        var hasDrawnWave = false;
 
-        var mod = Math.round(this.mod.y);
-        var i = 0;
-        for(; i < 4; i++) {
-            this.elaborateGraphics.lineTo(this.points[i][0] + this.game.camera.x, this.points[i][1] + mod);
-        }
+        for (var x = startX + wavePointRhythm; x < endX; x += wavePointRhythm) {
 
-        var waveLeft = this.wavePhysicsSprite.position.x - this.game.camera.x;
-        var waveTop = Math.min(this.wavePhysicsSprite.y - this.constants.MAX_WAVE_HEIGHT/2 - this.constants.RIPPLE_VARIANCE, this.constants.HEIGHT_OFFSET);
-        var halfTop = Math.min(this.wavePhysicsSprite.y - this.constants.MAX_WAVE_HEIGHT/2, this.constants.HEIGHT_OFFSET);
-        var leftIndex = Math.round(waveLeft / this.constants.WAVE_POINT_RHYTHM + 4);
+            if (isMoving && !hasDrawnWave && x > waveLeft) {
+                this.elaborateGraphics.lineTo(waveLeft, waveTop);
+                this.elaborateGraphics.lineTo(waveRight, waveTop);
 
-        for(; i < this.points.length - 1; i++) {
-            var x = this.points[i][0] + this.game.camera.x;
-
-            if (i === leftIndex) {
-                this.elaborateGraphics.lineTo(x, waveTop);
-            } else if (i === leftIndex - 1) {
-                this.elaborateGraphics.lineTo(x, waveTop);
-            } else if (i === leftIndex + 1) {
-                this.elaborateGraphics.lineTo(x, waveTop);
-            } else if (i % 2 === 0) {
-                this.elaborateGraphics.lineTo(x, this.constants.HEIGHT_OFFSET + mod);
+                x = waveRight - (waveRight % wavePointRhythm) + wavePointRhythm;
+                hasDrawnWave = true;
             } else {
-                this.elaborateGraphics.lineTo(x, this.constants.HEIGHT_OFFSET - mod);
+                if (usingHigh) {
+                    this.elaborateGraphics.lineTo(x, highY);
+                } else {
+                    this.elaborateGraphics.lineTo(x, lowY);
+                }
+
+                usingHigh = !usingHigh;
             }
         }
+
+        var beyondScreenY = MoonMage.config.viewport.height + this.constants.HEIGHT_OFFSET;
+        this.elaborateGraphics.lineTo(endX, lowY);
+        this.elaborateGraphics.lineTo(endX, beyondScreenY);
+        this.elaborateGraphics.lineTo(startX, beyondScreenY);
 
         this.elaborateGraphics.endFill();
     },
