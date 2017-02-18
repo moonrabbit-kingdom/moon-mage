@@ -13,6 +13,7 @@ MoonMage.states.Level1.prototype = {
 
         this.levelController.preload();
         this.game.load.audio('background-music', 'assets/audio/background-music.mp3');
+        this.game.load.audio('wave-sound', 'assets/audio/wave-sound.wav');
     },
 
     create: function() {

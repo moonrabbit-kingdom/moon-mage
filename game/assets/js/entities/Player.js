@@ -11,6 +11,12 @@ MoonMage.entities.player = function (game, level, startingX, startingY, onPlayer
     this.startingX = startingX;
     this.startingY = startingY;
 
+    this.waveSound = this.game.add.audio('wave-sound');
+    this.soundLoaded = false;
+    this.game.sound.setDecodedCallback([this.waveSound], function() {
+        this.soundLoaded = true;
+    }, this);
+
     // The player and its settings
     this.sprite = this.game.add.sprite(this.startingX, this.startingY, 'luna');
 
@@ -82,6 +88,12 @@ MoonMage.entities.player.prototype = {
         if (!this.isControllingMoon) {
             this.sprite.animations.play('idle');
             this.handleControllingPlayer();
+
+            if (this.soundLoaded && this.waveSound.isPlaying) {
+                this.waveSound.fadeOut(1000);
+            }
+        } else if (this.soundLoaded && !this.waveSound.isPlaying) {
+            this.waveSound.fadeIn(300, true);
         }
 
         var newVelocity = this.intendedVelocity + this.groundVelocity.x;
