@@ -5,6 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "imagemin": "parallelshell 'npm run imagemin-base' 'npm run imagemin-spritesheets'",
+    "imagemin-base": "imagemin game/assets/img game/assets/img -p",
+    "imagemin-spritesheets": "imagemin game/assets/spritesheets game/assets/spritesheets -p",
     "move-phaser": "cp ./node_modules/phaser/build/phaser.js ./game/assets/js/lib/phaser.js",
     "start-dev": "npm run move-phaser && browser-sync start -s './game' -f './game'",
     "start": "npm run move-phaser && http-server ./game"
@@ -16,6 +19,8 @@
     "phaser": "^2.6.2"
   },
   "devDependencies": {
-    "browser-sync": "^2.11.1"
+    "browser-sync": "^2.11.1",
+    "imagemin-cli": "^2.1.0",
+    "parallelshell": "^2.0.0"
   }
 }
