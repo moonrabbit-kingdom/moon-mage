@@ -13,6 +13,8 @@ MoonMage.states.Preloader.prototype = {
         this.game.load.spritesheet('luna', 'assets/spritesheets/luna.png', 48, 64, 240);
         this.game.load.spritesheet('ground', 'assets/spritesheets/ground.png', 32, 32, 2);
 
+        this.game.load.audio('background-music', 'assets/audio/background-music.mp3');
+        this.game.load.audio('wave-sound', 'assets/audio/wave-sound.wav');
     },
 
     create: function () {
