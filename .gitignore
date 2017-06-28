@@ -3,5 +3,5 @@ node_modules/
 npm-debug.log
 *.swp
 concat-stats-for
-game/dist
+public
 assets/lib

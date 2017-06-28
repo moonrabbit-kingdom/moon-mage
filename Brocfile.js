@@ -5,34 +5,69 @@ var Gzip = require('broccoli-gzip');
 var MergeTrees = require('broccoli-merge-trees');
 var path = require('path');
 
-var app = new Rollup('game/assets/js', {
-  rollup: {
-    entry: 'App.js',
-    dest: 'bundle.js',
-    format: 'iife',
-    globals: {
-      phaser: 'Phaser'
+function getJSNode() {
+  var js = new Rollup('game/assets/js', {
+    rollup: {
+      entry: 'App.js',
+      dest: 'bundle.js',
+      format: 'iife',
+      globals: {
+        phaser: 'Phaser'
+      }
     }
-  }
-});
+  });
 
-// Add Phaser in
-app = new MergeTrees([app, path.dirname(require.resolve('phaser'))]);
+  // Add Phaser in
+  js = new MergeTrees([js, path.dirname(require.resolve('phaser'))]);
 
-app = concat(app, {
-  outputFile: 'bundle.js',
-  headerFiles: ['phaser.js'],
-  inputFiles: ['bundle.js'],
-});
+  js = concat(js, {
+    outputFile: 'bundle.js',
+    headerFiles: ['phaser.js'],
+    inputFiles: ['bundle.js'],
+  });
 
-// Only pickup the bundle files
-app = new Funnel(app, {
-  include: ['bundle.*']
-});
+  // Only pickup the bundle files
+  js = new Funnel(js, {
+    include: ['bundle.*'],
+    destDir: 'assets/js'
+  });
 
-// Provide a Gzip compressed asset
-app = new Gzip(app, {
-  extensions: ['js']
-});
+  // Provide a Gzip compressed asset
+  js = new Gzip(js, {
+    extensions: ['js']
+  });
+
+  return js
+}
+
+function getHTMLNode() {
+  var html = new Funnel('./game', {
+    include: ['index.html']
+  });
+
+  return html;
+}
+
+function getAssetsNode() {
+  var assets = new Funnel('game/assets', {
+    include: [
+      'audio/**/*',
+      'img/**/*',
+      'levels/**/*',
+      'spritesheets/**/*',
+      'video/**/*'
+    ],
+    destDir: 'assets'
+  });
+
+  return assets;
+}
+
+var app = new MergeTrees([
+  getJSNode(),
+  getHTMLNode(),
+  getAssetsNode()
+]);
+
 
 module.exports = app;
