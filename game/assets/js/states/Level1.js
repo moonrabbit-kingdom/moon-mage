@@ -69,11 +69,11 @@ Level1.prototype = {
       this.moon.update(this.water.wavePhysicsSprite.position.x);
 
       if (this._shouldTogglePause()) {
-        this.pauseBox.openPauseMenu(this._onPause.bind(this));
+        this._onPause();
       }
     } else {
       if (this._shouldTogglePause()) {
-        this.pauseBox.closePauseMenu(this._onResume.bind(this));
+        this._onResume();
       }
     }
 
@@ -104,11 +104,13 @@ Level1.prototype = {
   },
 
   _onPause () {
+    this.pauseBox.openPauseMenu();
     this.game.physics.p2.paused = true;
     this.player.pause();
   },
 
   _onResume () {
+    this.pauseBox.closePauseMenu();
     this.game.physics.p2.paused = false;
     this.player.unpause();
   }

@@ -67,7 +67,7 @@ MoonMage.entities.ui.PauseBox.prototype = {
     return this.pause.isPaused;
   },
 
-  openPauseMenu: function (onPausedCallback) {
+  openPauseMenu: function () {
     this.pauseBox.position.x = this.game.camera.x + MoonMage.config.viewport.width / 2;
     this.pauseBox.position.y = this.game.camera.y + MoonMage.config.viewport.height / 2;
 
@@ -79,11 +79,9 @@ MoonMage.entities.ui.PauseBox.prototype = {
 
     this.pause.isPaused = true;
     this.pause.tween = this.game.add.tween(this.pauseBox.scale).to({ x: 1, y: 1 }, 100, Phaser.Easing.Linear.None, true);
-
-    onPausedCallback();
   },
 
-  closePauseMenu: function (onResumeCallback) {
+  closePauseMenu: function () {
     var tween = this.pause.tween;
 
     if ((tween && tween.isRunning) || !this.pause.isPaused) {
@@ -92,8 +90,6 @@ MoonMage.entities.ui.PauseBox.prototype = {
 
     this.pause.isPaused = false;
     this.pause.tween = this.game.add.tween(this.pauseBox.scale).to({ x: 0, y: 0 }, 150, Phaser.Easing.Linear.None, true);
-
-    onResumeCallback();
   },
 
   _exitPlay: function () {
