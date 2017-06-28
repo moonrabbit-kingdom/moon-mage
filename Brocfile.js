@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 var Rollup = require('broccoli-rollup');
 var concat = require('broccoli-concat');
 var Funnel = require('broccoli-funnel');
