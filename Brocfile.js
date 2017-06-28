@@ -4,8 +4,6 @@ var uglify = require('broccoli-uglify-js');
 var MergeTrees = require('broccoli-merge-trees');
 var path = require('path');
 
-var nodeResolve = require('rollup-plugin-node-resolve');
-
 var app = new Rollup('game/assets/js', {
   rollup: {
     entry: 'App.js',
