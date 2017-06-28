@@ -53,7 +53,7 @@ Level1.prototype = {
     // swaps the order in the world group. position determines z order
     this.game.world.swap(this.player.sprite, this.moon.moonRender);
 
-    this.pauseBox = new MoonMage.entities.ui.PauseBox(this.game, this.state);
+    this.pauseBox = new MoonMage.entities.ui.PauseBox(this.game, this.state, this._onResume.bind(this));
     this.pauseLastPressed = new Date().getTime();
 
     this.sound = this.game.add.audio('background-music');

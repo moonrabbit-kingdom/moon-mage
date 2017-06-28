@@ -1,6 +1,6 @@
 import MoonMage from '../../MoonMage';
 
-MoonMage.entities.ui.PauseBox = function (game, state) {
+MoonMage.entities.ui.PauseBox = function (game, state, resumeCallback) {
   this.game = game;
   this.state = state;
 
@@ -8,7 +8,7 @@ MoonMage.entities.ui.PauseBox = function (game, state) {
   game.scale.fullScreenScaleMode = Phaser.ScaleManager.EXACT_FIT;
 
   this._setupBox();
-  this._setupButton(-60, -10, 'Continue', this.closePauseMenu);
+  this._setupButton(-60, -10, 'Continue', resumeCallback || this.closePauseMenu);
   this._setupButton(-60, 40, 'Exit', this._exitPlay);
   this._setupButton(-60, 90, 'Fullscreen', this._toggleFullScreen);
 
