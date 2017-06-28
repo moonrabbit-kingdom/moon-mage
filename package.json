@@ -4,7 +4,7 @@
   "description": "Template for Browser Game",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "eslint game/assets/js && npm run build",
     "imagemin": "parallelshell 'npm run imagemin-base' 'npm run imagemin-spritesheets'",
     "imagemin-base": "imagemin game/assets/img game/assets/img -p",
     "imagemin-spritesheets": "imagemin game/assets/spritesheets game/assets/spritesheets -p",
@@ -32,6 +32,12 @@
   },
   "devDependencies": {
     "browser-sync": "^2.11.1",
+    "eslint": "^4.1.1",
+    "eslint-config-standard": "^10.2.1",
+    "eslint-plugin-import": "^2.6.0",
+    "eslint-plugin-node": "^5.1.0",
+    "eslint-plugin-promise": "^3.5.0",
+    "eslint-plugin-standard": "^3.0.1",
     "imagemin-cli": "^2.1.0",
     "parallelshell": "^2.0.0"
   }

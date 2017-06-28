@@ -18,15 +18,15 @@ import './entities/Box';
 import './entities/ui/PauseBox';
 import './entities/ui/TextBox';
 
-window.onload = function() {
-    var game = new Phaser.Game(MoonMage.config.viewport.width, MoonMage.config.viewport.height, Phaser.CANVAS, '');
+window.onload = function () {
+  var game = new Phaser.Game(MoonMage.config.viewport.width, MoonMage.config.viewport.height, Phaser.CANVAS, '');
 
-    game.state.add('Boot', Boot);
-    game.state.add('Preloader', Preloader);
-    game.state.add('MainMenu', MainMenu);
-    game.state.add('WinGame', WinGame);
-    game.state.add('PlayIntro', PlayIntro);
-    game.state.add('Level1', Level);
+  game.state.add('Boot', Boot);
+  game.state.add('Preloader', Preloader);
+  game.state.add('MainMenu', MainMenu);
+  game.state.add('WinGame', WinGame);
+  game.state.add('PlayIntro', PlayIntro);
+  game.state.add('Level1', Level);
 
-    game.state.start('Boot');
+  game.state.start('Boot');
 };
