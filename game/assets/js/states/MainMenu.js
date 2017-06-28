@@ -11,8 +11,6 @@ MainMenu.prototype = {
     this.game.load.image('main-menu-background', 'assets/img/main-menu/background.png');
     this.game.load.image('main-menu-caret', 'assets/img/main-menu/caret.png');
     this.game.load.image('main-menu-start', 'assets/img/main-menu/start.png');
-
-    this.game.load.audio('background-music', 'assets/audio/background-music.mp3');
   },
 
   create: function () {
