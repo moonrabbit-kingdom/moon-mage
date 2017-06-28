@@ -1,9 +1,11 @@
-MoonMage.states.Boot = function(game) {
+import MoonMage from '../MoonMage';
+
+var Boot = function(game) {
     MoonMage.debug('stateHooks', 'Boot.constructor');
     this.game = game;
 };
 
-MoonMage.states.Boot.prototype = {
+Boot.prototype = {
     preload: function() {
         MoonMage.debug('stateHooks', 'Boot.preload');
     },
@@ -19,3 +21,5 @@ MoonMage.states.Boot.prototype = {
         this.state.start('Preloader');
     }
 }
+
+export default Boot;

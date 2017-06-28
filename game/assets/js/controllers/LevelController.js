@@ -1,4 +1,6 @@
-MoonMage.controllers.LevelController = function (game, level, tilemapPath, tileLayerName) {
+import MoonMage from '../MoonMage';
+
+var LevelController = function (game, level, tilemapPath, tileLayerName) {
     this.game = game;
     this.tileObjects;
 
@@ -10,7 +12,7 @@ MoonMage.controllers.LevelController = function (game, level, tilemapPath, tileL
     this.tileLayerName = tileLayerName;
 }
 
-MoonMage.controllers.LevelController.prototype = {
+LevelController.prototype = {
     preload: function () {
         this.game.load.tilemap(this.tilemapID, this.tilemapPath, null, Phaser.Tilemap.TILED_JSON);
         this.game.load.json(this.jsonID, this.tilemapPath);
@@ -61,3 +63,5 @@ MoonMage.controllers.LevelController.prototype = {
         return this.boxes;
     }
 }
+
+export default LevelController;

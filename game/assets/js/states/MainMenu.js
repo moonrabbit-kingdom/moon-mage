@@ -1,8 +1,10 @@
-MoonMage.states.MainMenu = function(game) {
+import MoonMage from '../MoonMage';
+
+var MainMenu = function(game) {
     MoonMage.debug('stateHooks', 'MainMenu.constructor');
 };
 
-MoonMage.states.MainMenu.prototype = {
+MainMenu.prototype = {
     preload: function() {
         MoonMage.debug('stateHooks', 'MainMenu.preload');
 
@@ -44,3 +46,5 @@ MoonMage.states.MainMenu.prototype = {
         this.state.start('PlayIntro');
     }
 }
+
+export default MainMenu;

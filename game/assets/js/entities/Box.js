@@ -1,3 +1,5 @@
+import MoonMage from '../MoonMage';
+
 MoonMage.entities.Box = function (game, x, y, spriteName) {
     Phaser.Sprite.call(this, game, x, y, spriteName);
 

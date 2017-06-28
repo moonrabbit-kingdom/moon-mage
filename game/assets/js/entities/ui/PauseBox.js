@@ -1,3 +1,5 @@
+import MoonMage from '../../MoonMage';
+
 MoonMage.entities.ui.PauseBox = function (game, state) {
     this.game = game;
     this.state = state;
