@@ -1,6 +1,7 @@
 var Rollup = require('broccoli-rollup');
 var concat = require('broccoli-concat');
-var uglify = require('broccoli-uglify-js');
+var Funnel = require('broccoli-funnel');
+var Gzip = require('broccoli-gzip');
 var MergeTrees = require('broccoli-merge-trees');
 var path = require('path');
 
@@ -15,6 +16,7 @@ var app = new Rollup('game/assets/js', {
   }
 });
 
+// Add Phaser in
 app = new MergeTrees([app, path.dirname(require.resolve('phaser'))]);
 
 app = concat(app, {
@@ -23,6 +25,14 @@ app = concat(app, {
   inputFiles: ['bundle.js'],
 });
 
-// app = new Uglify(app);
+// Only pickup the bundle files
+app = new Funnel(app, {
+  include: ['bundle.*']
+});
+
+// Provide a Gzip compressed asset
+app = new Gzip(app, {
+  extensions: ['js']
+});
 
 module.exports = app;
