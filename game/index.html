@@ -9,13 +9,58 @@
         <meta property="og:title" content="Moon Mage" />
         <meta property="og:description" content="The year is 20XX. Moon Rabbits lived peacefully in the moon until a spaceship landed in the moon. Outside the spaceship comes scientists who developed super strong steroids. The rabbits thought they were innocent but the buff dudes beat up their entire kingdom. These scientists seek to take control over the moon so that humans too can live in the moon. The rabbit king stole the spaceship and crash landed on the earth. A girl found the rabbit and in his last breath, he gave the girl powers to control the moon and save their kingdom. The only problem is that she can no longer swim. The buff scientists, notice that their moon is getting moved around, and now they went back to earth to kill the girl so that they have complete control of the moon." />
         <meta property="og:image" content="http://moon-mage.herokuapp.com/assets/img/title.png" />
+
         <style>
             html {
                 background: black;
             }
         </style>
+
+        <script src="/assets/js/lib/phaser.js"></script>
+
+        <!--utils/-->
+        <script src="/assets/js/utils/get-velocity-to-point.js"></script>
+        <!--setup/-->
+        <script src="/assets/js/MoonMage.js"></script>
+        <script src="/assets/js/RunConfig.js"></script>
+        <script src="/assets/js/Debug.js"></script>
+        <!--controllers/-->
+        <script src="/assets/js/controllers/LevelController.js"></script>
+        <script src="/assets/js/controllers/PhysicsController.js"></script>
+        <!--states/-->
+        <script src="/assets/js/states/Boot.js"></script>
+        <script src="/assets/js/states/Preloader.js"></script>
+        <script src="/assets/js/states/MainMenu.js"></script>
+        <script src="/assets/js/states/WinGame.js"></script>
+        <script src="/assets/js/states/PlayIntro.js"></script>
+        <!--levels/-->
+        <script src="/assets/js/states/Level1.js"></script>
+        <!--entities/-->
+        <script src="/assets/js/entities/Player.js"></script>
+        <script src="/assets/js/entities/Water.js"></script>
+        <script src="/assets/js/entities/Moon.js"></script>
+        <script src="/assets/js/entities/Box.js"></script>
+        <script src="/assets/js/entities/ui/PauseBox.js"></script>
+        <script src="/assets/js/entities/ui/TextBox.js"></script>
     </head>
     <body>
-      <script type="text/javascript" src="/dist/bundle.js"></script>
+
+    <script type="text/javascript">
+
+    window.onload = function() {
+        var game = new Phaser.Game(MoonMage.config.viewport.width, MoonMage.config.viewport.height, Phaser.CANVAS, '');
+
+        game.state.add('Boot', MoonMage.states.Boot);
+        game.state.add('Preloader', MoonMage.states.Preloader);
+        game.state.add('MainMenu', MoonMage.states.MainMenu);
+        game.state.add('WinGame', MoonMage.states.WinGame);
+        game.state.add('PlayIntro', MoonMage.states.PlayIntro);
+        game.state.add('Level1', MoonMage.states.Level1);
+
+        game.state.start('Boot');
+    };
+
+    </script>
+
     </body>
 </html>

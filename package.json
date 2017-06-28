@@ -8,27 +8,17 @@
     "imagemin": "parallelshell 'npm run imagemin-base' 'npm run imagemin-spritesheets'",
     "imagemin-base": "imagemin game/assets/img game/assets/img -p",
     "imagemin-spritesheets": "imagemin game/assets/spritesheets game/assets/spritesheets -p",
-    "start-dev": "npm run build && browser-sync start -s './game' -f './game'",
-    "start": "npm run build && http-server ./game",
-    "build": "rm -fr game/dist && ./node_modules/.bin/broccoli build game/dist"
+    "move-phaser": "cp ./node_modules/phaser/build/phaser.js ./game/assets/js/lib/phaser.js",
+    "start-dev": "npm run move-phaser && browser-sync start -s './game' -f './game'",
+    "start": "npm run move-phaser && http-server ./game"
   },
   "author": "Spencer Apple (http://spencerapple.com/)",
   "license": "MIT",
-  "engines": {
-    "node": "7.6.0",
-    "npm": "4.1.2"
-  },
   "dependencies": {
     "http-server": "^0.9.0",
     "phaser": "^2.6.2"
   },
   "devDependencies": {
-    "broccoli": "^1.1.2",
-    "broccoli-cli": "^1.0.0",
-    "broccoli-concat": "^3.2.2",
-    "broccoli-merge-trees": "^2.0.0",
-    "broccoli-rollup": "^1.3.0",
-    "broccoli-uglify-js": "^0.2.0",
     "browser-sync": "^2.11.1",
     "imagemin-cli": "^2.1.0",
     "parallelshell": "^2.0.0"

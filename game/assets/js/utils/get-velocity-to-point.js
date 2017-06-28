@@ -1,4 +1,4 @@
-export default function getVelocityToPoint(destinationX, destinationY, positionX, positionY, speed) {
+var getVelocityToPoint = function(destinationX, destinationY, positionX, positionY, speed) {
     var angle = Math.atan2(destinationY - positionY, destinationX - positionX);
 
     speed = speed || 1;
@@ -7,4 +7,4 @@ export default function getVelocityToPoint(destinationX, destinationY, positionX
         x: Math.cos(angle) * speed,
         y: Math.sin(angle) * speed
     };
-};
+}

@@ -1,4 +1,4 @@
-var PhysicsController = function (game) {
+MoonMage.controllers.PhysicsController = function (game) {
     this.game = game;
     // create physics
     this.game.physics.startSystem(Phaser.Physics.P2JS);
@@ -15,4 +15,5 @@ var PhysicsController = function (game) {
     this.waterCollisionGroup = this.game.physics.p2.createCollisionGroup();
 }
 
-export default PhysicsController;
+//MoonMage.controllers.PhysicsController.prototype = {
+//}

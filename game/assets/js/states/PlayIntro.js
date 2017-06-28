@@ -1,10 +1,8 @@
-import MoonMage from '../MoonMage';
-
-var PlayIntro = function(game) {
+MoonMage.states.PlayIntro = function(game) {
     MoonMage.debug('stateHooks', 'PlayIntro.constructor');
 };
 
-PlayIntro.prototype = {
+MoonMage.states.PlayIntro.prototype = {
     preload: function() {
         MoonMage.debug('stateHooks', 'PlayIntro.preload');
 
@@ -22,7 +20,7 @@ PlayIntro.prototype = {
             }, this);
         }, this);
 
-        this.video.addToWorld(this.game.world.centerX, this.game.world.centerY, 0.5, 0.5, 1.172, 1.169);
+        sprite = this.video.addToWorld(this.game.world.centerX, this.game.world.centerY, 0.5, 0.5, 1.172, 1.169);
 
         this.video.play();
 
@@ -42,5 +40,3 @@ PlayIntro.prototype = {
         this.state.start('Level1');
     }
 }
-
-export default PlayIntro;

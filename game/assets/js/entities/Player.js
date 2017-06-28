@@ -1,5 +1,3 @@
-import MoonMage from '../MoonMage';
-
 MoonMage.entities.player = function (game, level, startingX, startingY, onPlayerDeath) {
     this.game = game;
     this.level = level;

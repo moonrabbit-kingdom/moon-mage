@@ -1,6 +1,3 @@
-import MoonMage from '../MoonMage';
-import getVelocityToPoint from '../utils/get-velocity-to-point';
-
 MoonMage.entities.Water = function(game, level) {
     this.game = game;
     this.level = level;

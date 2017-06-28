@@ -1,6 +1,4 @@
-import MoonMage from '../MoonMage';
-
-var Level1 = function(game) {
+MoonMage.states.Level1 = function(game) {
     MoonMage.debug('stateHooks', 'Level1.constructor');
     this.game = game;
     this.player;
@@ -9,7 +7,7 @@ var Level1 = function(game) {
     this.levelController = new MoonMage.controllers.LevelController(this.game, this, 'assets/levels/level1.json', 'Tile Layer 1');
 };
 
-Level1.prototype = {
+MoonMage.states.Level1.prototype = {
     preload: function() {
         MoonMage.debug('stateHooks', 'Level1.preload');
 
@@ -116,5 +114,3 @@ Level1.prototype = {
         this.player.unpause();
     }
 }
-
-export default Level1;
