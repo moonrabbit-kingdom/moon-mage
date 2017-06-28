@@ -1,4 +1,4 @@
-MoonMage.config = {
+export default {
     /**
      * Use quickboot to quickly jump into a state, simply provide a string with the
      * registered state name

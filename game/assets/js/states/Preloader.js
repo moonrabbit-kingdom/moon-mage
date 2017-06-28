@@ -1,8 +1,10 @@
-MoonMage.states.Preloader = function (game) {
+import MoonMage from '../MoonMage';
+
+var Preloader = function (game) {
     MoonMage.debug('stateHooks', 'Preloader.constructor');
 };
 
-MoonMage.states.Preloader.prototype = {
+Preloader.prototype = {
 
     preload: function () {
         MoonMage.debug('stateHooks', 'Preloader.preload');
@@ -27,3 +29,5 @@ MoonMage.states.Preloader.prototype = {
         this.state.start(MoonMage.config.startState === null ? 'MainMenu' : MoonMage.config.startState);
     },
 }
+
+export default Preloader;

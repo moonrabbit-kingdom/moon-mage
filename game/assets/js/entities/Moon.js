@@ -1,3 +1,5 @@
+import MoonMage from '../MoonMage';
+
 MoonMage.entities.Moon = function(game) {
     this.game = game;
 

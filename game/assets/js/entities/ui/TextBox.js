@@ -1,3 +1,5 @@
+import MoonMage from '../../MoonMage';
+
 MoonMage.entities.ui.TextBox = function (game, text, x, y) {
     this.game = game;
     this.x = x;
@@ -19,7 +21,7 @@ MoonMage.entities.ui.TextBox.prototype = {
         var centerY = this.y;
         var style = { font: '28px Arial', fill: '#000000', align: 'left' };
         var text = this.game.add.text(0, 0, this.text, style);
- 
+
         var textBoxGraphics = this.game.add.graphics(0, 0);
         textBoxGraphics.beginFill(0xFFFFFF, 1);
         textBoxGraphics.lineStyle(2, 0x000000);

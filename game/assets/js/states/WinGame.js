@@ -1,8 +1,10 @@
-MoonMage.states.WinGame = function(game) {
+import MoonMage from '../MoonMage';
+
+var WinGame = function(game) {
     MoonMage.debug('stateHooks', 'WinGame.constructor');
 };
 
-MoonMage.states.WinGame.prototype = {
+WinGame.prototype = {
     preload: function() {
         MoonMage.debug('stateHooks', 'WinGame.preload');
 
@@ -37,7 +39,7 @@ MoonMage.states.WinGame.prototype = {
             }, this);
         }, this);
 
-        sprite = this.video.addToWorld(this.game.world.centerX, this.game.world.centerY, 0.5, 0.5, 1.172, 1.169);
+        var sprite = this.video.addToWorld(this.game.world.centerX, this.game.world.centerY, 0.5, 0.5, 1.172, 1.169);
 
         this.video.play();
     },
@@ -63,3 +65,5 @@ MoonMage.states.WinGame.prototype = {
         this.state.start('MainMenu');
     }
 }
+
+export default WinGame;
