@@ -35,16 +35,18 @@ function getJSNode() {
   });
 
   // Provide a Gzip compressed asset
-  js = new Gzip(js, {
-    extensions: ['js']
-  });
+  if (process.env.ENV !== 'dev') {
+    js = new Gzip(js, {
+      extensions: ['js']
+    });
+  }
 
   return js
 }
 
 function getHTMLNode() {
   var html = new Funnel('./game', {
-    include: ['index.html']
+    include: ['index' + (process.env.ENV === 'dev' ? '-dev' : '') + '.html'],
   });
 
   return html;

@@ -8,9 +8,9 @@
     "imagemin": "parallelshell 'npm run imagemin-base' 'npm run imagemin-spritesheets'",
     "imagemin-base": "imagemin game/assets/img game/assets/img -p",
     "imagemin-spritesheets": "imagemin game/assets/spritesheets game/assets/spritesheets -p",
-    "start-dev": "npm run build-dev && browser-sync start -s './game' -f './game'",
+    "start-dev": "npm run build-dev && browser-sync start -s './public' -f './game' --index 'index-dev.html'",
     "start": "npm run build && http-server --gzip true",
-    "build-dev": "ENV=dev rm -fr game/dist && broccoli build game/dist",
+    "build-dev": "rm -fr public && ENV=dev broccoli build public",
     "build": "rm -fr public && broccoli build public"
   },
   "author": "Spencer Apple (http://spencerapple.com/)",
